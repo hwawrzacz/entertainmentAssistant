@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Entertainment Assistant</string>
+
+<!--    Hints -->
+    <string name="hint_login">Login</string>
+    <string name="hint_password">Password</string>
+
+<!--    Buttons -->
+    <string name="action_cancel">Cancel</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_with_google">Sign in with google</string>
+
+<!--    Labels -->
+    <string name="label_or">or</string>
 </resources>
