@@ -78,6 +78,34 @@
                 android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/repeat_password_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_input_small"
+
+            android:hint="@string/hint_repeat_password"
+            app:errorEnabled="true"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxCornerRadiusBottomEnd="@dimen/border_radius"
+            app:boxCornerRadiusBottomStart="@dimen/border_radius"
+            app:boxCornerRadiusTopEnd="@dimen/border_radius"
+            app:boxCornerRadiusTopStart="@dimen/border_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/password_wrapper"
+            app:layout_constraintStart_toStartOf="@+id/password_wrapper"
+            app:layout_constraintTop_toBottomOf="@+id/password_wrapper"
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/repeat_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_register"
             android:layout_width="match_parent"
@@ -92,9 +120,9 @@
             app:boxCornerRadiusTopStart="@dimen/border_radius"
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/password_wrapper"
-            app:layout_constraintStart_toStartOf="@+id/password_wrapper"
-            app:layout_constraintTop_toBottomOf="@+id/password_wrapper"
+            app:layout_constraintEnd_toEndOf="@+id/repeat_password_wrapper"
+            app:layout_constraintStart_toStartOf="@+id/repeat_password_wrapper"
+            app:layout_constraintTop_toBottomOf="@+id/repeat_password_wrapper"
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.button.MaterialButton

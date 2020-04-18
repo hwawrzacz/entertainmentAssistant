@@ -6,5 +6,6 @@ enum class LoginError(var value: String) {
     LOGIN_INVALID_CHARACTERS("Login contains invalid characters"),
     PASSWORD_EMPTY("Password cannot be empty"),
     PASSWORD_TOO_SHORT("Password must contain > 5 digits"),
+    PASSWORDS_DONT_MATCH("Passwords don't match"),
     NOT_INITIALIZED("")
 }

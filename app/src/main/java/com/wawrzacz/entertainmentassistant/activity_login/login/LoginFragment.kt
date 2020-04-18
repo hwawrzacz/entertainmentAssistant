@@ -1,9 +1,10 @@
-package com.wawrzacz.entertainmentassistant.login
+package com.wawrzacz.entertainmentassistant.activity_login.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,12 +24,17 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.LoginError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentLoginBinding
 
 class LoginFragment: Fragment() {
 
-    private val SING_IN_REQUEST_CODE = 1
+    companion object Consts {
+        private const val SING_IN_REQUEST_CODE = 1
+        private const val SIGN_IN_CANCELLED_ERROR_CODE = "12501: "
+        private const val SIGN_IN_NO_INTERNET_ERROR_CODE = "7: "
+    }
     private val firebaseAuth = FirebaseAuth.getInstance()
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
@@ -66,7 +72,9 @@ class LoginFragment: Fragment() {
     }
 
     private fun initializeViewModel() {
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProvider(this,
+            LoginViewModelFactory()
+        )
             .get(LoginViewModel::class.java)
     }
 
@@ -83,20 +91,9 @@ class LoginFragment: Fragment() {
 
     private fun checkLoggedUser() {
         val currentUserFirebase = firebaseAuth.currentUser
-        val currentUserGoogle = GoogleSignIn.getLastSignedInAccount(context) //firebaseAuth.currentUse
 
         if (currentUserFirebase != null) {
-            Snackbar.make(
-                 requireView(),
-                "FUser ${currentUserFirebase.displayName} already signed in",
-                Snackbar.LENGTH_LONG
-            ).show()
-        } else if (currentUserGoogle != null) {
-            Snackbar.make(
-                requireView(),
-                "GUser ${currentUserGoogle.displayName} already signed in",
-                Snackbar.LENGTH_LONG
-            ).show()
+            handleSuccessfullyLoggedInUser()
         } else {
             Snackbar.make(requireView(),"No user logged in", Snackbar.LENGTH_LONG).show()
         }
@@ -155,7 +152,9 @@ class LoginFragment: Fragment() {
                 GoogleSignIn.getClient(requireContext(), googleSignInOptions).signOut()
 
             val googleSignInIntent = GoogleSignIn.getClient(requireContext(), googleSignInOptions).signInIntent
-            startActivityForResult(googleSignInIntent, SING_IN_REQUEST_CODE)
+            startActivityForResult(googleSignInIntent,
+                SING_IN_REQUEST_CODE
+            )
         }
     }
 
@@ -174,8 +173,17 @@ class LoginFragment: Fragment() {
             task.addOnCompleteListener {
                 if (it.isSuccessful) {
                     firebaseAuthWithGoogleAccount(it.result!!)
-                } else {
-                    handleUnsuccessfullyLoggedInUser()
+                }
+                else {
+                    when (val exceptionMessage = it.exception?.message) {
+                        SIGN_IN_CANCELLED_ERROR_CODE -> {
+                            openSnackBarLong(getString(R.string.message_sing_in_with_google_cancelled))
+                        }
+                        SIGN_IN_NO_INTERNET_ERROR_CODE -> {
+                            openSnackBarLong(getString(R.string.message_no_internet_access))
+                        }
+                        else -> handleUnsuccessfullyLoggedInUser(exceptionMessage.toString())
+                    }
                 }
             }
         }
@@ -187,16 +195,23 @@ class LoginFragment: Fragment() {
             if (it.isSuccessful) {
                 handleSuccessfullyLoggedInUser()
             } else {
-                handleUnsuccessfullyLoggedInUser()
+                handleUnsuccessfullyLoggedInUser(it.exception?.message)
             }
         }
     }
 
     private fun handleSuccessfullyLoggedInUser() {
-        Snackbar.make(requireView(), "Hello ${firebaseAuth.currentUser!!.displayName}", Snackbar.LENGTH_LONG).show()
+        val mainActivityIntent = Intent(context, MainActivity::class.java)
+        startActivity(mainActivityIntent)
+        requireActivity().finish()
     }
 
-    private fun handleUnsuccessfullyLoggedInUser() {
-        Snackbar.make(requireView(), "Authentication failed", Snackbar.LENGTH_LONG).show()
+    private fun handleUnsuccessfullyLoggedInUser(error: String?) {
+        openSnackBarLong("Authentication failed: $error")
+    }
+
+
+    private fun openSnackBarLong(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
     }
 }

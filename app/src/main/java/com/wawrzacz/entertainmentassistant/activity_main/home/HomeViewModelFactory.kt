@@ -1,10 +1,10 @@
-package com.wawrzacz.entertainmentassistant.login
+package com.wawrzacz.entertainmentassistant.activity_main.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class LoginViewModelFactory: ViewModelProvider.Factory {
+class HomeViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginViewModel() as T
+        return HomeViewModel() as T
     }
 }

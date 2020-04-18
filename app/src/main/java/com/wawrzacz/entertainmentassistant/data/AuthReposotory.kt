@@ -23,15 +23,23 @@ object AuthReposotory {
 
         firebaseAuth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener {
-                if (it.isSuccessful) {
+                when {
+                    it.isSuccessful -> {
 
-                } else if (it.isComplete) {
+                    }
+                    it.isComplete -> {
 
-                } else if (it.isCanceled) {
+                    }
+                    it.isCanceled -> {
 
+                    }
                 }
             }
         }
+    }
+
+    fun register(username: String, password: String) {
+
     }
 
     fun signOut() {
