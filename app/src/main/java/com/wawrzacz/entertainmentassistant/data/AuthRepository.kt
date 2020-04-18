@@ -1,25 +1,27 @@
 package com.wawrzacz.entertainmentassistant.data
 
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 
-object AuthReposotory {
+object AuthRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private var _loggedUser = MutableLiveData<LoggedUser?>(null)
-    private var loggedUser: LiveData<LoggedUser?> = _loggedUser
+    private var loggedUser = MutableLiveData<LoggedUser?>(null)
 
-    init {
+    fun getLoggedUser(): LiveData<LoggedUser?> {
         if (firebaseAuth.currentUser != null) {
             val loggedUser = firebaseAuth.currentUser
-            val email = loggedUser!!.email!!
-            this._loggedUser.value = LoggedUser(email)
+            val login = loggedUser!!.email!!
+            val displayName = loggedUser!!.displayName!!
+            this.loggedUser.value = LoggedUser(login, displayName)
         }
+
+        return loggedUser
     }
 
     fun signIn(username: String, password: String) {
-        if (_loggedUser.value != null) {
+        if (loggedUser.value != null) {
 
         firebaseAuth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener {
@@ -43,7 +45,7 @@ object AuthReposotory {
     }
 
     fun signOut() {
-        _loggedUser.value = null
+        loggedUser.value = null
         firebaseAuth.signOut()
     }
 

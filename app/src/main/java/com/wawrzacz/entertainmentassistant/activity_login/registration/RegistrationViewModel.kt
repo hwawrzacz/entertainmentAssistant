@@ -3,12 +3,12 @@ package com.wawrzacz.entertainmentassistant.activity_login.registration
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.AuthReposotory
+import com.wawrzacz.entertainmentassistant.data.AuthRepository
 import com.wawrzacz.entertainmentassistant.data.LoginError
 import java.util.regex.Pattern
 
 class RegistrationViewModel: ViewModel() {
-    private val authRepository = AuthReposotory
+    private val authRepository = AuthRepository
 
     private val _loginError = MutableLiveData<LoginError?>(LoginError.NOT_INITIALIZED)
     val loginError: LiveData<LoginError?> = _loginError

@@ -30,11 +30,12 @@ import com.wawrzacz.entertainmentassistant.databinding.FragmentLoginBinding
 
 class LoginFragment: Fragment() {
 
-    companion object Consts {
+    companion object Codes {
         private const val SING_IN_REQUEST_CODE = 1
         private const val SIGN_IN_CANCELLED_ERROR_CODE = "12501: "
         private const val SIGN_IN_NO_INTERNET_ERROR_CODE = "7: "
     }
+
     private val firebaseAuth = FirebaseAuth.getInstance()
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
@@ -66,11 +67,6 @@ class LoginFragment: Fragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        checkLoggedUser()
-    }
-
     private fun initializeViewModel() {
         loginViewModel = ViewModelProvider(this,
             LoginViewModelFactory()
@@ -87,16 +83,6 @@ class LoginFragment: Fragment() {
         signInWithGoogleButton = binding.buttonSignInWithGoogle
         registerButton = binding.buttonRegister
         fragmentTitle = binding.fragmentTitle
-    }
-
-    private fun checkLoggedUser() {
-        val currentUserFirebase = firebaseAuth.currentUser
-
-        if (currentUserFirebase != null) {
-            handleSuccessfullyLoggedInUser()
-        } else {
-            Snackbar.make(requireView(),"No user logged in", Snackbar.LENGTH_LONG).show()
-        }
     }
 
     private fun setInputsListeners() {
@@ -137,6 +123,12 @@ class LoginFragment: Fragment() {
         loginViewModel.inputsValidity.observe(viewLifecycleOwner, Observer {
             val inputsValidity = it
             signInButton.isEnabled = inputsValidity
+        })
+
+        loginViewModel.loggedUser.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                handleSuccessfullyLoggedInUser()
+            }
         })
     }
 
@@ -203,11 +195,20 @@ class LoginFragment: Fragment() {
     private fun handleSuccessfullyLoggedInUser() {
         val mainActivityIntent = Intent(context, MainActivity::class.java)
         startActivity(mainActivityIntent)
+        loginViewModel.loggedUser.removeObservers(viewLifecycleOwner)
+        removeViewModelObservers()
         requireActivity().finish()
     }
 
+    private fun removeViewModelObservers() {
+        loginViewModel.loginError.removeObservers(viewLifecycleOwner)
+        loginViewModel.passwordError.removeObservers(viewLifecycleOwner)
+        loginViewModel.inputsValidity.removeObservers(viewLifecycleOwner)
+        loginViewModel.loggedUser.removeObservers(viewLifecycleOwner)
+    }
+
     private fun handleUnsuccessfullyLoggedInUser(error: String?) {
-        openSnackBarLong("Authentication failed: $error")
+        openSnackBarLong(error.toString())
     }
 
 

@@ -2,13 +2,15 @@ package com.wawrzacz.entertainmentassistant.activity_login.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.AuthReposotory
+import com.wawrzacz.entertainmentassistant.data.AuthRepository
+import com.wawrzacz.entertainmentassistant.data.LoggedUser
 import com.wawrzacz.entertainmentassistant.data.LoginError
 import java.util.regex.Pattern
 
 class LoginViewModel: ViewModel() {
-    private val authRepository = AuthReposotory
+    private val authRepository = AuthRepository
 
     private val _loginError = MutableLiveData<LoginError?>(LoginError.NOT_INITIALIZED)
     val loginError: LiveData<LoginError?> = _loginError
@@ -18,6 +20,10 @@ class LoginViewModel: ViewModel() {
 
     private val _inputsValidity = MutableLiveData<Boolean>(false)
     val inputsValidity: LiveData<Boolean> = _inputsValidity
+
+    val loggedUser: LiveData<LoggedUser?> = Transformations.map(authRepository.getLoggedUser()) {
+        it
+    }
 
     //#region Validation
     fun loginChanged(login: String) {
@@ -59,5 +65,6 @@ class LoginViewModel: ViewModel() {
     private fun singIn(username: String, password: String) {
         authRepository.signIn(username, password)
     }
+
 
 }

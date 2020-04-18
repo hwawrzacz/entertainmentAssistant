@@ -2,8 +2,13 @@ package com.wawrzacz.entertainmentassistant.activity_main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -15,25 +20,34 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
 import com.google.firebase.auth.FirebaseAuth
 import com.wawrzacz.entertainmentassistant.activity_login.LoginActivity
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.data.LoggedUser
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var mainActivityViewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+
+        createToolbar()
+        initializeViewModel()
+        observeViewModelChanges()
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -68,13 +82,34 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun createToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+    }
+
+    private fun initializeViewModel() {
+        mainActivityViewModel = ViewModelProvider(viewModelStore, MainActivityViewModelFactory())
+            .get(MainActivityViewModel::class.java)
+    }
+
+    private fun observeViewModelChanges() {
+        mainActivityViewModel.loggedUser.observe(this, Observer {
+            if (it != null) {
+                openToastLong("Hello ${it?.displayName}")
+            }
+        })
+    }
+
     private fun signOut() {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        firebaseAuth.signOut()
+        mainActivityViewModel.signOut()
     }
 
     private fun openLoginActivity() {
         val loginActivityIntent = Intent(this, LoginActivity::class.java)
         startActivity(loginActivityIntent)
+    }
+
+    private fun openToastLong(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 }
