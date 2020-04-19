@@ -3,10 +3,12 @@
 
     <!--    Hints -->
     <string name="hint_login">Login</string>
+    <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_repeat_password">Repeat password</string>
 
     <!--    Actions -->
+    <string name="action_back">Back</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_register">Register</string>
     <string name="action_sign_in">Sign in</string>
@@ -29,8 +31,9 @@
 
     <string name="home_second">Home Second</string>
 
-<!--    Messages -->
+    <!--    Messages -->
     <string name="message_no_internet_access">No internet access</string>
     <string name="message_check_internet_access">Check your internet access</string>
     <string name="message_sing_in_with_google_cancelled">Sign in with Google cancelled</string>
+    <string name="message_registered_successfully">User registered successfully</string>
 </resources>

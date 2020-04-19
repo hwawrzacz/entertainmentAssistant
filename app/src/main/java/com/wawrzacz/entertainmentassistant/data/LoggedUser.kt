@@ -1,6 +1,13 @@
 package com.wawrzacz.entertainmentassistant.data
 
 class LoggedUser(
-    var login: String,
-    var displayName: String
-) { }
+    val email: String,
+    var displayName: String?
+) {
+    init {
+        if (displayName == null) {
+            val indexOfAtSign = email.indexOf("@")
+            displayName = email.substring(0, indexOfAtSign)
+        }
+    }
+}

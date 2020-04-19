@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,7 +25,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.data.LoginError
+import com.wawrzacz.entertainmentassistant.data.SignInResult
+import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
+import com.wawrzacz.entertainmentassistant.data.errors.SignInError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentLoginBinding
 
 class LoginFragment: Fragment() {
@@ -40,8 +42,8 @@ class LoginFragment: Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
 
-    private lateinit var loginWrapper: TextInputLayout
-    private lateinit var login: TextInputEditText
+    private lateinit var emailWrapper: TextInputLayout
+    private lateinit var email: TextInputEditText
     private lateinit var passwordWrapper: TextInputLayout
     private lateinit var password: TextInputEditText
     private lateinit var signInButton: Button
@@ -75,8 +77,8 @@ class LoginFragment: Fragment() {
     }
 
     private fun initializeBindings() {
-        loginWrapper = binding.loginWrapper
-        login = binding.login
+        emailWrapper = binding.emailWrapper
+        email = binding.email
         passwordWrapper = binding.passwordWrapper
         password = binding.password
         signInButton = binding.buttonSignIn
@@ -86,11 +88,11 @@ class LoginFragment: Fragment() {
     }
 
     private fun setInputsListeners() {
-        login.addTextChangedListener(object: TextWatcher {
+        email.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                 loginViewModel.loginChanged(login.text.toString())
+                 loginViewModel.loginChanged(email.text.toString())
             }
         })
 
@@ -106,15 +108,15 @@ class LoginFragment: Fragment() {
     private fun observeViewModelChanges() {
         loginViewModel.loginError.observe(viewLifecycleOwner, Observer {
             val loginError = it
-            if (loginError != LoginError.NOT_INITIALIZED)
-                loginWrapper.error = loginError?.value
+            if (loginError != LoginFormError.NOT_INITIALIZED)
+                emailWrapper.error = loginError?.value
             if (loginError == null)
-                loginWrapper.error = null
+                emailWrapper.error = null
         })
 
         loginViewModel.passwordError.observe(viewLifecycleOwner, Observer {
             val passwordError = it
-            if (passwordError != LoginError.NOT_INITIALIZED)
+            if (passwordError != LoginFormError.NOT_INITIALIZED)
                 passwordWrapper.error = passwordError?.value
             if (passwordError == null)
                 passwordWrapper.error = null
@@ -133,8 +135,12 @@ class LoginFragment: Fragment() {
     }
 
     private fun setButtonsListeners() {
-        registerButton.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
+        signInButton.setOnClickListener {
+            startSignInAnimation()
+            loginViewModel.signIn(email.text.toString(), password.text.toString())
+                .observe(viewLifecycleOwner, Observer{
+                    handleSignInResponse(it)
+                })
         }
 
         signInWithGoogleButton.setOnClickListener {
@@ -147,6 +153,32 @@ class LoginFragment: Fragment() {
             startActivityForResult(googleSignInIntent,
                 SING_IN_REQUEST_CODE
             )
+        }
+
+        registerButton.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
+        }
+    }
+
+    private fun startSignInAnimation() {
+
+    }
+
+    private fun stopSignInAnimation() {
+
+    }
+
+    private fun handleSignInResponse(response: SignInResult) {
+        when {
+            response.signedInSuccessfully -> {
+                handleSuccessfullyLoggedInUser()
+            }
+            response.customMessage != null -> {
+                handleUnsuccessfullyLoggedInUser(response.customMessage)
+            }
+            response.signInError != SignInError.NOT_INITIALIZED -> {
+                handleUnsuccessfullyLoggedInUser(response.signInError.toString())
+            }
         }
     }
 
