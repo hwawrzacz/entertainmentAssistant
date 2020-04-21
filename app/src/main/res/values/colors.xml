@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--    Main -->
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+
+<!--    Background -->
+    <color name="bg_main">#FFFFFF</color>
+    <color name="bg_movies">#CE93D8</color>
+    <color name="bg_books">#FFF59D</color>
+    <color name="bg_games">#A5D6A7</color>
+
 <!--    Text -->
     <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_lighter">#CCFFFFFF</color>
+    <color name="text_darker">#66000000</color>
 </resources>

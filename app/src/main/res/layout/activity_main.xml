@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -11,19 +12,22 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
 
+            style="@style/Widget.MaterialComponents.Toolbar.Surface"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
             app:menu="@menu/menu_bottom_nav"
             app:titleTextColor="@color/text_on_primary"
             app:subtitleTextColor="@color/text_on_primary"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-<!--            app:titleTextColor="@color/text_on_primary"/>-->
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="?attr/actionBarSize"
 
             android:name="androidx.navigation.fragment.NavHostFragment"
             app:defaultNavHost="true"
@@ -34,15 +38,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
 
+        <fragment
+            android:id="@+id/backdrop_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:forceHasOverlappingRendering="true"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+
+            android:layout_gravity="bottom"
+
+            android:name="com.wawrzacz.entertainmentassistant.activity_main.account.AccountFragment" />
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:translationZ="-9dp"
+
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             app:menu="@menu/menu_bottom_nav" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
