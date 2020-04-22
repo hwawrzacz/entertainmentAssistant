@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeBottomSheetFragment() {
-        val accountFragment = AccountFragment.newInstance()
+        val accountFragment = AccountFragment()
         supportFragmentManager.beginTransaction()
             .add(R.id.backdrop_fragment, accountFragment)
             .commit()

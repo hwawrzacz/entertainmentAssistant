@@ -32,10 +32,10 @@ import com.wawrzacz.entertainmentassistant.databinding.FragmentLoginBinding
 
 class LoginFragment: Fragment() {
 
-    companion object Codes {
-        private const val SING_IN_REQUEST_CODE = 1
-        private const val SIGN_IN_CANCELLED_ERROR_CODE = "12501: "
-        private const val SIGN_IN_NO_INTERNET_ERROR_CODE = "7: "
+    private object Codes {
+        const val SING_IN_REQUEST_CODE = 1
+        const val SIGN_IN_CANCELLED_ERROR_CODE = "12501: "
+        const val SIGN_IN_NO_INTERNET_ERROR_CODE = "7: "
     }
 
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -151,7 +151,7 @@ class LoginFragment: Fragment() {
 
             val googleSignInIntent = GoogleSignIn.getClient(requireContext(), googleSignInOptions).signInIntent
             startActivityForResult(googleSignInIntent,
-                SING_IN_REQUEST_CODE
+                Codes.SING_IN_REQUEST_CODE
             )
         }
 
@@ -191,7 +191,7 @@ class LoginFragment: Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SING_IN_REQUEST_CODE) {
+        if (requestCode == Codes.SING_IN_REQUEST_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             task.addOnCompleteListener {
@@ -200,10 +200,10 @@ class LoginFragment: Fragment() {
                 }
                 else {
                     when (val exceptionMessage = it.exception?.message) {
-                        SIGN_IN_CANCELLED_ERROR_CODE -> {
+                        Codes.SIGN_IN_CANCELLED_ERROR_CODE -> {
                             openSnackBarLong(getString(R.string.message_sing_in_with_google_cancelled))
                         }
-                        SIGN_IN_NO_INTERNET_ERROR_CODE -> {
+                        Codes.SIGN_IN_NO_INTERNET_ERROR_CODE -> {
                             openSnackBarLong(getString(R.string.message_no_internet_access))
                         }
                         else -> handleUnsuccessfullyLoggedInUser(exceptionMessage.toString())

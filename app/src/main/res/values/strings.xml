@@ -14,6 +14,8 @@
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_with_google">Sign in with google</string>
     <string name="action_sign_out">Sign out</string>
+    <string name="action_change_password">Change password</string>
+    <string name="action_delete_account">Delete account</string>
 
     <!--    Labels -->
     <string name="label_or">or</string>

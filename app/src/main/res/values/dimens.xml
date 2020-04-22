@@ -3,10 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
-    <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="margin_notification_bar">40dp</dimen>
+
+    <!--    Width, height -->
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="list_item_height">56dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
+    <dimen name="account_panel_height">420dp</dimen>
+    <dimen name="button_account_width">240dp</dimen>
 
     <!--    Fonts -->
     <dimen name="font_button_regular">18sp</dimen>
@@ -18,6 +23,8 @@
     <dimen name="margin_input_small">4dp</dimen>
     <dimen name="margin_input_regular">8dp</dimen>
     <dimen name="margin_input_big">16dp</dimen>
+    <dimen name="padding_drawable_left">32dp</dimen>
+    <dimen name="space_huge">40dp</dimen>
 
     <!--    Radius -->
     <dimen name="border_radius">8dp</dimen>
