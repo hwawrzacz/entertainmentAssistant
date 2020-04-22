@@ -41,8 +41,11 @@
         <fragment
             android:id="@+id/backdrop_fragment"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/account_panel_height"
+            android:layout_height="wrap_content"
 
+            android:layout_marginLeft="@dimen/padding_fragment_small"
+            android:layout_marginRight="@dimen/padding_fragment_small"
+            android:layout_marginBottom="-20dp"
             app:behavior_hideable="true"
             app:behavior_peekHeight="0dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"

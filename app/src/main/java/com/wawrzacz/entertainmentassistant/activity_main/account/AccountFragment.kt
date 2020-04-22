@@ -43,6 +43,7 @@ class AccountFragment : Fragment() {
 
     private fun addButtonsListeners() {
         binding.buttonSignOut.setOnClickListener { handleSignOut() }
+        binding.buttonChangeEmail.setOnClickListener { handleEmailChange() }
         binding.buttonChangePassword.setOnClickListener { handlePasswordChange() }
         binding.buttonDeleteAccount.setOnClickListener { handleDeleteAccount() }
     }
@@ -59,6 +60,10 @@ class AccountFragment : Fragment() {
         signOut()
         openLoginActivity()
         requireActivity().finish()
+    }
+
+    private fun handleEmailChange() {
+        showToastLong("Change email mock")
     }
 
     private fun handlePasswordChange() {

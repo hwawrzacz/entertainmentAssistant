@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_fragment">
+        android:padding="@dimen/padding_fragment_regular">
 
         <TextView
             android:id="@+id/fragment_title"
@@ -26,7 +26,7 @@
             android:id="@+id/email_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_input_big"
+            android:layout_marginTop="@dimen/margin_big"
 
             android:hint="@string/hint_email"
             app:errorEnabled="true"
@@ -54,7 +54,7 @@
             android:id="@+id/password_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_input_small"
+            android:layout_marginTop="@dimen/margin_small"
 
             android:hint="@string/hint_password"
             app:errorEnabled="true"
@@ -82,7 +82,7 @@
             android:id="@+id/repeat_password_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_input_small"
+            android:layout_marginTop="@dimen/margin_small"
 
             android:hint="@string/hint_repeat_password"
             app:errorEnabled="true"
@@ -110,7 +110,7 @@
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_input_big"
+            android:layout_marginTop="@dimen/margin_big"
 
             android:text="@string/action_register"
 
@@ -129,7 +129,7 @@
             android:id="@+id/button_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_input_small"
+            android:layout_marginTop="@dimen/margin_small"
 
             android:text="@string/action_back"
 
