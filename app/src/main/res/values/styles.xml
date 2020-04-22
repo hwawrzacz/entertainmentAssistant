@@ -11,6 +11,12 @@
         <item name="buttonStyle">@style/buttonDisableCaps</item>
     </style>
 
+    <!-- Splash screen -->
+    <style name="AppTheme.Launcher" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    </style>
+
     <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/text_on_primary</item>
     </style>
