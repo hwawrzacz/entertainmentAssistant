@@ -75,4 +75,8 @@ object AuthRepository {
         firebaseAuth.signOut()
     }
 
+    fun deleteAccount() {
+        firebaseAuth.currentUser?.delete()
+    }
+
 }

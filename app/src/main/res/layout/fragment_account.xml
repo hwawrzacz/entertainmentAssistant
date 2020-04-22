@@ -17,12 +17,10 @@
 
             <ImageView
                 android:id="@+id/account_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/account_image"
-
-                app:layout_constraintCircleRadius="@dimen/border_radius"
-
+                android:layout_width="@dimen/account_image_size"
+                android:layout_height="@dimen/account_image_size"
+                android:src="@drawable/account_circle_24"
+                android:tint="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

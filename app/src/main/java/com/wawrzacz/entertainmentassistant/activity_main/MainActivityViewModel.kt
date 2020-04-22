@@ -8,13 +8,5 @@ import com.wawrzacz.entertainmentassistant.data.AuthRepository
 import com.wawrzacz.entertainmentassistant.data.LoggedUser
 
 class MainActivityViewModel: ViewModel() {
-    private val authRepository = AuthRepository
 
-    val loggedUser: LiveData<LoggedUser?> = Transformations.map(authRepository.getLoggedUser()) {
-        it
-    }
-
-    fun signOut() {
-        authRepository.signOut()
-    }
 }

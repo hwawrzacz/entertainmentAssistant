@@ -24,8 +24,6 @@ import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesFragment
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationMenu: BottomNavigationView
     private lateinit var actionBar: Toolbar
@@ -38,11 +36,7 @@ class MainActivity : AppCompatActivity() {
         setupMenuNavigation()
         setUpActionBar()
 
-//        initializeBottomSheetFragment()
         initializeBottomSheetBehavior()
-
-        initializeViewModel()
-        observeViewModelChanges()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,23 +47,14 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.nav_open_account_panel) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-//            signOut()
-//            openLoginActivity()
-//            finish()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun initializeViewModel() {
-        mainActivityViewModel = ViewModelProvider(viewModelStore, MainActivityViewModelFactory())
-            .get(MainActivityViewModel::class.java)
     }
 
     private fun initializeBindings() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         bottomNavigationMenu = binding.bottomNavigationView
-//        bottomNavigationMenu = findViewById(R.id.bottom_navigation_view)
     }
 
     private fun setupMenuNavigation() {
@@ -99,13 +84,6 @@ class MainActivity : AppCompatActivity() {
         setActionBarIcon(R.drawable.movies_rounded)
     }
 
-    private fun initializeBottomSheetFragment() {
-        val accountFragment = AccountFragment()
-        supportFragmentManager.beginTransaction()
-            .add(R.id.backdrop_fragment, accountFragment)
-            .commit()
-    }
-
     private fun initializeBottomSheetBehavior() {
         val fragment = supportFragmentManager.findFragmentById(R.id.backdrop_fragment)
 
@@ -118,14 +96,6 @@ class MainActivity : AppCompatActivity() {
                 this.bottomSheetBehavior = bottomSheetBehavior
             }
         }
-    }
-
-    private fun observeViewModelChanges() {
-        mainActivityViewModel.loggedUser.observe(this, Observer {
-            if (it != null) {
-                openToastLong("Hello ${it.displayName}")
-            }
-        })
     }
 
     //#region Navigation
@@ -156,15 +126,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun openLoginActivity() {
-        val loginActivityIntent = Intent(this, LoginActivity::class.java)
-        startActivity(loginActivityIntent)
-    }
     //#endregion
-
-    private fun signOut() {
-        mainActivityViewModel.signOut()
-    }
 
     private fun setActionBarTitle(title: String) {
         supportActionBar?.title = title

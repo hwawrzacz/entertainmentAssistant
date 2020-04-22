@@ -12,6 +12,7 @@
     <dimen name="tab_indicator_height">4dp</dimen>
     <dimen name="account_panel_height">420dp</dimen>
     <dimen name="button_account_width">240dp</dimen>
+    <dimen name="account_image_size">100dp</dimen>
 
     <!--    Fonts -->
     <dimen name="font_button_regular">18sp</dimen>
