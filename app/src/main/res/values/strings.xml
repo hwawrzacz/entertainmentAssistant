@@ -42,4 +42,10 @@
     <string name="message_check_internet_access">Check your internet access</string>
     <string name="message_sing_in_with_google_cancelled">Sign in with Google cancelled</string>
     <string name="message_registered_successfully">User registered successfully</string>
+    <string name="confirmation_message_delete_account_alert">This action cannot be undone. Are you sure you want to proceed?</string>
+
+    <!-- Dialogs, prompts -->
+    <string name="title_delete_account">Delete account</string>
+    <string name="answer_yes">Yes</string>
+    <string name="answer_no">No</string>
 </resources>

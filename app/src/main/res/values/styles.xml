@@ -14,7 +14,6 @@
     <!-- Splash screen -->
     <style name="AppTheme.Launcher" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/launch_screen</item>
-<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
     </style>
 
     <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">

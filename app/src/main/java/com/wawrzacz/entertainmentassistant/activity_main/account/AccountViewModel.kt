@@ -16,4 +16,10 @@ class AccountViewModel : ViewModel() {
     fun signOut() {
         authRepository.signOut()
     }
+
+    fun deleteAccount(): LiveData<Boolean> {
+        return Transformations.map(authRepository.deleteAccount()) {
+            it
+        }
+    }
 }

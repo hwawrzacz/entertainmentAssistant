@@ -75,8 +75,16 @@ object AuthRepository {
         firebaseAuth.signOut()
     }
 
-    fun deleteAccount() {
-        firebaseAuth.currentUser?.delete()
+    fun deleteAccount(): LiveData<Boolean> {
+        val userDeleteResult = MutableLiveData<Boolean>()
+
+        firebaseAuth.currentUser?.delete()?.addOnCompleteListener {
+            userDeleteResult.value = it.isSuccessful
+        }
+//        val number = Math.random()
+//        userDeleteResult.value = number > 0.5
+
+        return userDeleteResult
     }
 
 }

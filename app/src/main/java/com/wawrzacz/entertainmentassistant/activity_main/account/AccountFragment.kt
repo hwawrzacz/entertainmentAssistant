@@ -1,7 +1,8 @@
 package com.wawrzacz.entertainmentassistant.activity_main.account
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_login.LoginActivity
 import com.wawrzacz.entertainmentassistant.databinding.FragmentAccountBinding
@@ -41,13 +42,9 @@ class AccountFragment : Fragment() {
     }
 
     private fun addButtonsListeners() {
-        binding.buttonSignOut.setOnClickListener {
-            signOut()
-            openLoginActivity()
-            requireActivity().finish()
-        }
-        binding.buttonChangePassword.setOnClickListener { showToastLong("Change password mock") }
-        binding.buttonDeleteAccount.setOnClickListener { showToastLong("Delete account mock") }
+        binding.buttonSignOut.setOnClickListener { handleSignOut() }
+        binding.buttonChangePassword.setOnClickListener { handlePasswordChange() }
+        binding.buttonDeleteAccount.setOnClickListener { handleDeleteAccount() }
     }
 
     private fun observeViewModelChanges() {
@@ -58,7 +55,27 @@ class AccountFragment : Fragment() {
         })
     }
 
+    private fun handleSignOut() {
+        signOut()
+        openLoginActivity()
+        requireActivity().finish()
+    }
 
+    private fun handlePasswordChange() {
+        showToastLong("Change password mock")
+    }
+
+    private fun handleDeleteAccount() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.warning_24)
+            .setTitle(R.string.title_delete_account)
+            .setMessage(R.string.confirmation_message_delete_account_alert)
+            .setPositiveButton(R.string.answer_yes) { _, _ -> run {
+                deleteAccount()
+            } }
+            .setNegativeButton(R.string.answer_no, null)
+            .show()
+    }
 
     private fun openLoginActivity() {
         val loginActivityIntent = Intent(requireContext(), LoginActivity::class.java)
@@ -67,6 +84,16 @@ class AccountFragment : Fragment() {
 
     private fun signOut() {
         viewModel.signOut()
+    }
+
+    private fun deleteAccount() {
+        viewModel.deleteAccount().observe(viewLifecycleOwner, Observer {
+            if (it) {
+                openLoginActivity()
+                requireActivity().finish()
+            }
+            else showToastLong("Error while deleting user")
+        })
     }
 
     private fun showToastLong(message: String) {

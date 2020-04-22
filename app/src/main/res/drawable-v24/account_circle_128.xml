@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128"
+    android:tint="#FFFFFF">
+
+  <path
+      android:fillColor="#000000"
+      android:pathData="M64 4C30.88 4 4 30.88 4 64S30.88 124 64 124 124 97.12 124 64 97.12 4 64 4ZM64 22C73.96 22 82 30.04 82 40S73.96 58 64 58 46 49.96 46 40 54.04 22 64 22ZM64 107.2C49 107.2 35.74 99.52 28 87.88 28.18 75.94 52 69.4 64 69.4 75.94 69.4 99.82 75.94 100 87.88 92.26 99.52 79 107.2 64 107.2Z"/>
+</vector>
