@@ -11,28 +11,36 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TabLayout.Colored"
 
+            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorColor="@color/bg_movies"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorHeight="@dimen/tab_indicator_height"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+
             app:layout_constraintTop_toTopOf="parent" >
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-
+                android:text="@string/label_to_watch"
                 android:icon="@drawable/bookmark_24"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 
+                android:text="@string/label_favourites"
                 android:icon="@drawable/heart_filled_24"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 
+                android:text="@string/label_watched"
                 android:icon="@drawable/eye_24"/>
         </com.google.android.material.tabs.TabLayout>
 

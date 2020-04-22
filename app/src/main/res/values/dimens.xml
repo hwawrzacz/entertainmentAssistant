@@ -6,6 +6,7 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="margin_notification_bar">40dp</dimen>
+    <dimen name="tab_indicator_height">4dp</dimen>
 
     <!--    Fonts -->
     <dimen name="font_button_regular">18sp</dimen>

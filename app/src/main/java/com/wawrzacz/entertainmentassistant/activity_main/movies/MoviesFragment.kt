@@ -47,15 +47,12 @@ class MoviesFragment: Fragment() {
                         when (position) {
                             0 -> {
                                 tab.text = getString(R.string.label_to_watch)
-                                tab.icon = resources.getDrawable(R.drawable.bookmark_24, requireActivity().theme)
                             }
                             1 -> {
                                 tab.text = getString(R.string.label_favourites)
-                                tab.icon = resources.getDrawable(R.drawable.heart_filled_24, requireActivity().theme)
                             }
                             2 ->{
                                 tab.text = getString(R.string.label_watched)
-                                tab.icon = resources.getDrawable(R.drawable.eye_24, requireActivity().theme)
                             }
                         }
                     }

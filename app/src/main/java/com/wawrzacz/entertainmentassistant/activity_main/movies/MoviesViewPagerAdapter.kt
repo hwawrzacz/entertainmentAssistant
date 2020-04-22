@@ -8,8 +8,8 @@ class MoviesViewPagerAdapter(val fragment: Fragment): FragmentStateAdapter(fragm
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            1 -> MoviesWatchedFragment()
-            2 -> MoviesFavouritesFragment()
+            1 -> MoviesFavouritesFragment()
+            2 -> MoviesWatchedFragment()
             else -> MoviesToWatchFragment()
         }
     }
