@@ -1,7 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -9,18 +8,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wawrzacz.entertainmentassistant.R
-import com.wawrzacz.entertainmentassistant.activity_main.books.BooksFragment
-import com.wawrzacz.entertainmentassistant.activity_main.games.GamesFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesFragment
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNavigationMenu: BottomNavigationView
+    private lateinit var navController: NavController
     private lateinit var actionBar: Toolbar
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
@@ -29,10 +28,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         initializeBindings()
-        setupMenuNavigation()
-        setUpActionBar()
-
+        initializeActionBar()
         initializeBottomSheetBehavior()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setupMenuNavigation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -54,39 +56,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupMenuNavigation() {
-        bottomNavigationMenu.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_movies -> {
-                    openMoviesFragment()
-                    true
-                }
-                R.id.nav_books -> {
-                    openBooksFragment()
-                    true
-                }
-                R.id.nav_games -> {
-                    openGamesFragment()
-                    true
-                }
-                else -> false
-            }
-        }
+        navController = findNavController(R.id.main_fragment_container)
+        NavigationUI.setupWithNavController(bottomNavigationMenu, navController)
     }
 
-    private fun setUpActionBar() {
+    private fun initializeActionBar() {
         actionBar = binding.appToolbar
         setSupportActionBar(actionBar)
-        setActionBarTitle(getString(R.string.label_movies))
-        setActionBarIcon(R.drawable.movies_rounded)
     }
 
     private fun initializeBottomSheetBehavior() {
         val fragment = supportFragmentManager.findFragmentById(R.id.backdrop_fragment)
 
-        Log.i("schab", "Initialize: ${fragment?.view}")
-
         fragment?.let {
-            Log.i("schab", "Fragment success")
             BottomSheetBehavior.from(it.requireView()).let { bottomSheetBehavior ->
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 this.bottomSheetBehavior = bottomSheetBehavior
@@ -94,41 +76,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //#region Navigation
-    private fun openMoviesFragment() {
-        setActionBarTitle(getString(R.string.label_movies))
-        setActionBarIcon(R.drawable.movies_rounded)
-        val moviesFragment = MoviesFragment()
-        replaceFragment(moviesFragment)
-    }
-
-    private fun openBooksFragment() {
-        setActionBarTitle(getString(R.string.label_books))
-        setActionBarIcon(R.drawable.book)
-        val booksFragment = BooksFragment()
-        replaceFragment(booksFragment)
-    }
-
-    private fun openGamesFragment() {
-        setActionBarTitle(getString(R.string.label_games))
-        setActionBarIcon(R.drawable.gamepad)
-        val gamesFragment = GamesFragment()
-        replaceFragment(gamesFragment)
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_fragment_container, fragment)
-            .commit()
-    }
-
-    //#endregion
-
-    private fun setActionBarTitle(title: String) {
+    fun setActionBarTitle(title: String) {
         supportActionBar?.title = title
     }
 
-    private fun setActionBarIcon(resource: Int) {
+    fun setActionBarIcon(resource: Int) {
         supportActionBar?.setIcon(resource)
     }
 

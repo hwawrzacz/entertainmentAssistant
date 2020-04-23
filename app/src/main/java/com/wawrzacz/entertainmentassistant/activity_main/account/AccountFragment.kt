@@ -63,11 +63,11 @@ class AccountFragment : Fragment() {
     }
 
     private fun handleEmailChange() {
-        showToastLong("Change email mock")
+        showToastLong("Email change is not available yet")
     }
 
     private fun handlePasswordChange() {
-        showToastLong("Change password mock")
+        showToastLong("Password change is not available yet")
     }
 
     private fun handleDeleteAccount() {

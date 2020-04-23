@@ -26,22 +26,19 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:text="@string/label_to_watch"
-                android:icon="@drawable/bookmark_24"/>
+                android:text="@string/label_to_watch"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 
-                android:text="@string/label_favourites"
-                android:icon="@drawable/heart_filled_24"/>
+                android:text="@string/label_favourites"/>
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 
-                android:text="@string/label_watched"
-                android:icon="@drawable/eye_24"/>
+                android:text="@string/label_watched" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2

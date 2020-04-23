@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -35,10 +36,16 @@ class MoviesFragment: Fragment() {
         return binding.root
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        setUpActionBar()
+    }
+
     private fun initializeTabLayout() {
         tabLayout = binding.tabLayout
 
-        val tabLayoutMediator = TabLayoutMediator(
+        TabLayoutMediator(
             tabLayout,
             viewPager,
             TabLayoutMediator
@@ -63,5 +70,10 @@ class MoviesFragment: Fragment() {
     private fun initializeViewPager() {
         viewPager = binding.moviesViewPager
         viewPager.adapter = MoviesViewPagerAdapter(this)
+    }
+
+    private fun setUpActionBar() {
+        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_movies))
+        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.movies_rounded)
     }
 }

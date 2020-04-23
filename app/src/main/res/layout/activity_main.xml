@@ -16,13 +16,9 @@
             android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
             app:menu="@menu/menu_bottom_nav"
             app:titleTextColor="@color/text_on_primary"
-            app:subtitleTextColor="@color/text_on_primary"
+            app:subtitleTextColor="@color/text_on_primary"/>
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,12 +27,7 @@
 
             android:name="androidx.navigation.fragment.NavHostFragment"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/main_navigation"
-
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
+            app:navGraph="@navigation/main_navigation" />
 
         <fragment
             android:id="@+id/backdrop_fragment"
@@ -62,7 +53,8 @@
             android:translationZ="-9dp"
 
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
-            app:menu="@menu/menu_bottom_nav" />
+
+            app:menu="@menu/menu_bottom_nav"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
