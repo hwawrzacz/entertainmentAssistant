@@ -1,7 +1,5 @@
 package com.wawrzacz.entertainmentassistant.activity_main.account
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,7 +15,7 @@ import com.wawrzacz.entertainmentassistant.activity_login.LoginActivity
 import com.wawrzacz.entertainmentassistant.databinding.FragmentAccountBinding
 
 
-class AccountFragment : Fragment() {
+class AccountFragment: MyBottomSheetDialogFragment() {
     private lateinit var binding: FragmentAccountBinding
     private lateinit var viewModel: AccountViewModel
 
@@ -27,7 +24,8 @@ class AccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_account, container, false)
+        binding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_account, container, false)
 
         return binding.root
     }

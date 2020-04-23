@@ -28,8 +28,6 @@
     <dimen name="padding_drawable_left">32dp</dimen>
     <dimen name="space_big">32dp</dimen>
     <dimen name="space_huge">56dp</dimen>
-    <dimen name="margin_bottom_backdrop_fragment">12dp</dimen>
-    <dimen name="margin_bottom_backdrop_fragment_negative">-12dp</dimen>
 
     <!--    Radius -->
     <dimen name="border_radius">8dp</dimen>

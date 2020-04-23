@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -14,6 +13,7 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.account.AccountFragment
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationMenu: BottomNavigationView
     private lateinit var navController: NavController
     private lateinit var actionBar: Toolbar
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private val accountFragment = AccountFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         initializeBindings()
         initializeActionBar()
-        initializeBottomSheetBehavior()
     }
 
     override fun onStart() {
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.nav_open_account_panel) {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            expandAccountFragment()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -65,17 +64,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(actionBar)
     }
 
-    private fun initializeBottomSheetBehavior() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.backdrop_fragment)
-
-        fragment?.let {
-            BottomSheetBehavior.from(it.requireView()).let { bottomSheetBehavior ->
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                this.bottomSheetBehavior = bottomSheetBehavior
-            }
-        }
-    }
-
     fun setActionBarTitle(title: String) {
         supportActionBar?.title = title
     }
@@ -83,17 +71,8 @@ class MainActivity : AppCompatActivity() {
     fun setActionBarIcon(resource: Int) {
         supportActionBar?.setIcon(resource)
     }
-
-    private fun openToastLong(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onBackPressed() {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
-        else {
-            super.onBackPressed()
-        }
+    
+    private fun expandAccountFragment(){
+        if (!accountFragment.isAdded) accountFragment.show(supportFragmentManager, accountFragment.tag)
     }
 }

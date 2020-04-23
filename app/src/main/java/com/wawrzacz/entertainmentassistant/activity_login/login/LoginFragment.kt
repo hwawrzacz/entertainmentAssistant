@@ -1,15 +1,17 @@
 package com.wawrzacz.entertainmentassistant.activity_login.login
 
 import android.content.Intent
+import android.icu.text.StringPrepParseException
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,8 +36,8 @@ class LoginFragment: Fragment() {
 
     private object Codes {
         const val SING_IN_REQUEST_CODE = 1
-        const val SIGN_IN_CANCELLED_ERROR_CODE = "12501: "
-        const val SIGN_IN_NO_INTERNET_ERROR_CODE = "7: "
+        const val SIGN_IN_CANCELLED_ERROR_CODE = "12501"
+        const val SIGN_IN_NO_INTERNET_ERROR_CODE = "7"
     }
 
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -135,7 +137,7 @@ class LoginFragment: Fragment() {
     }
 
     private fun setButtonsListeners() {
-        signInButton.setOnClickListener {
+        binding.buttonSignIn.setOnClickListener {
             startSignInAnimation()
             loginViewModel.signIn(email.text.toString(), password.text.toString())
                 .observe(viewLifecycleOwner, Observer{
@@ -143,7 +145,7 @@ class LoginFragment: Fragment() {
                 })
         }
 
-        signInWithGoogleButton.setOnClickListener {
+        binding.buttonSignInWithGoogle.setOnClickListener {
             val googleSignInOptions = createGoogleSignInOptions()
 
             if (GoogleSignIn.getLastSignedInAccount(context) != null)
@@ -155,17 +157,9 @@ class LoginFragment: Fragment() {
             )
         }
 
-        registerButton.setOnClickListener {
+        binding.buttonRegister.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
         }
-    }
-
-    private fun startSignInAnimation() {
-
-    }
-
-    private fun stopSignInAnimation() {
-
     }
 
     private fun handleSignInResponse(response: SignInResult) {
@@ -190,30 +184,29 @@ class LoginFragment: Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Codes.SING_IN_REQUEST_CODE) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             task.addOnCompleteListener {
                 if (it.isSuccessful) {
-                    firebaseAuthWithGoogleAccount(it.result!!)
+                    firebaseAuthenticateWithGoogleAccount(it.result!!)
                 }
                 else {
-                    when (val exceptionMessage = it.exception?.message) {
+                    when (val errorCode = getErrorFirebaseErrorCodeFromString(it.exception?.message)) {
                         Codes.SIGN_IN_CANCELLED_ERROR_CODE -> {
                             openSnackBarLong(getString(R.string.message_sing_in_with_google_cancelled))
                         }
                         Codes.SIGN_IN_NO_INTERNET_ERROR_CODE -> {
                             openSnackBarLong(getString(R.string.message_no_internet_access))
                         }
-                        else -> handleUnsuccessfullyLoggedInUser(exceptionMessage.toString())
+                        else -> handleUnsuccessfullyLoggedInUser(errorCode.toString())
                     }
                 }
             }
         }
     }
 
-    private fun firebaseAuthWithGoogleAccount(account: GoogleSignInAccount) {
+    private fun firebaseAuthenticateWithGoogleAccount(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
@@ -230,6 +223,12 @@ class LoginFragment: Fragment() {
         loginViewModel.loggedUser.removeObservers(viewLifecycleOwner)
         removeViewModelObservers()
         requireActivity().finish()
+        stopSignInAnimation()
+    }
+
+    private fun getErrorFirebaseErrorCodeFromString(value: String?): String? {
+        Log.i("schabik", value?.replace(Regex("[^0-9]"), ""))
+        return value?.replace(Regex("[^0-9]"), "")
     }
 
     private fun removeViewModelObservers() {
@@ -240,9 +239,40 @@ class LoginFragment: Fragment() {
     }
 
     private fun handleUnsuccessfullyLoggedInUser(error: String?) {
+        stopSignInAnimation()
         openSnackBarLong(error.toString())
     }
 
+
+    private fun startSignInAnimation() {
+        showProgressBar()
+        disableAllButtons()
+    }
+
+    private fun stopSignInAnimation() {
+        hideProgressBar()
+        enableAllButtons()
+    }
+
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    private fun enableAllButtons() {
+        binding.buttonSignIn.isEnabled = true
+        binding.buttonSignInWithGoogle.isEnabled = true
+        binding.buttonRegister.isEnabled = true
+    }
+
+    private fun disableAllButtons() {
+        binding.buttonSignIn.isEnabled = false
+        binding.buttonSignInWithGoogle.isEnabled = false
+        binding.buttonRegister.isEnabled = false
+    }
 
     private fun openSnackBarLong(message: String) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
