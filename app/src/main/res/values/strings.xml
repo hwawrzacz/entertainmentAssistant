@@ -10,6 +10,7 @@
     <!--    Actions -->
     <string name="action_back">Back</string>
     <string name="action_cancel">Cancel</string>
+    <string name="action_search">Search hint</string>
     <string name="action_register">Register</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_with_google">Sign in with google</string>

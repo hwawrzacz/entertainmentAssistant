@@ -223,7 +223,6 @@ class LoginFragment: Fragment() {
         loginViewModel.loggedUser.removeObservers(viewLifecycleOwner)
         removeViewModelObservers()
         requireActivity().finish()
-        stopSignInAnimation()
     }
 
     private fun getErrorFirebaseErrorCodeFromString(value: String?): String? {

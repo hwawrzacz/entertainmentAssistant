@@ -1,12 +1,7 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.Icon
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -15,8 +10,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
-import java.io.InputStream
-import java.io.InputStreamReader
 
 class MoviesFragment: Fragment() {
     private lateinit var binding: FragmentMoviesBinding
@@ -40,6 +33,12 @@ class MoviesFragment: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         setUpActionBar()
+        setTabChangeListeners()
+    }
+
+    private fun initializeViewPager() {
+        viewPager = binding.moviesViewPager
+        viewPager.adapter = MoviesViewPagerAdapter(this)
     }
 
     private fun initializeTabLayout() {
@@ -67,13 +66,23 @@ class MoviesFragment: Fragment() {
             ).attach()
     }
 
-    private fun initializeViewPager() {
-        viewPager = binding.moviesViewPager
-        viewPager.adapter = MoviesViewPagerAdapter(this)
+    private fun setTabChangeListeners() {
+        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                hideKeyboard()
+            }
+        })
     }
 
     private fun setUpActionBar() {
         (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_movies))
         (requireActivity() as MainActivity).setActionBarIcon(R.drawable.movies_rounded)
+    }
+
+    private fun hideKeyboard() {
+        (requireActivity() as MainActivity).hideKeyboard()
     }
 }

@@ -24,17 +24,20 @@
             app:layout_constraintTop_toTopOf="parent" >
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_watched"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:text="@string/label_to_watch"/>
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_favourites"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 
                 android:text="@string/label_favourites"/>
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_to_watch"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
 

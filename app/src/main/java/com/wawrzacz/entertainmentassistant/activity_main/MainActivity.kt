@@ -1,26 +1,22 @@
 package com.wawrzacz.entertainmentassistant.activity_main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.account.AccountFragment
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var bottomNavigationMenu: BottomNavigationView
     private lateinit var navController: NavController
-    private lateinit var actionBar: Toolbar
     private val accountFragment = AccountFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,12 +29,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        setupMenuNavigation()
+        setupBottomNavigation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.action_bar_menu, menu)
-        return true
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -50,18 +47,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeBindings() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        bottomNavigationMenu = binding.bottomNavigationView
     }
 
-    private fun setupMenuNavigation() {
+    private fun setupBottomNavigation() {
         navController = findNavController(R.id.main_fragment_container)
-        NavigationUI.setupWithNavController(bottomNavigationMenu, navController)
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
     }
 
     private fun initializeActionBar() {
-        actionBar = binding.appToolbar
-        setSupportActionBar(actionBar)
+        setSupportActionBar(binding.appToolbar)
     }
 
     fun setActionBarTitle(title: String) {
@@ -74,5 +68,10 @@ class MainActivity : AppCompatActivity() {
     
     private fun expandAccountFragment(){
         if (!accountFragment.isAdded) accountFragment.show(supportFragmentManager, accountFragment.tag)
+    }
+
+    fun hideKeyboard() {
+        val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 }
