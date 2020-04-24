@@ -9,7 +9,8 @@
 <!--    Background -->
     <color name="bg_main">#FFFFFF</color>
     <color name="bg_bottom_sheet">#FFFFFF</color>
-    <color name="bg_movies">#CE93D8</color>
+    <color name="bg_movies">#AC7DB5</color>
+    <color name="bg_movie_list_element">#CE93D8</color>
     <color name="bg_books">#FFF59D</color>
     <color name="bg_games">#A5D6A7</color>
 

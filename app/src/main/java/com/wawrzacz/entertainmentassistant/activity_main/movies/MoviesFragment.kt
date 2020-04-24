@@ -9,6 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
+import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesViewPagerAdapter
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 
 class MoviesFragment: Fragment() {
@@ -38,7 +39,10 @@ class MoviesFragment: Fragment() {
 
     private fun initializeViewPager() {
         viewPager = binding.moviesViewPager
-        viewPager.adapter = MoviesViewPagerAdapter(this)
+        viewPager.adapter =
+            MoviesViewPagerAdapter(
+                this
+            )
     }
 
     private fun initializeTabLayout() {
@@ -52,10 +56,10 @@ class MoviesFragment: Fragment() {
                     tab, position -> run {
                         when (position) {
                             0 -> {
-                                tab.text = getString(R.string.label_to_watch)
+                                tab.text = getString(R.string.label_all)
                             }
                             1 -> {
-                                tab.text = getString(R.string.label_favourites)
+                                tab.text = getString(R.string.label_to_watch)
                             }
                             2 ->{
                                 tab.text = getString(R.string.label_watched)
@@ -63,7 +67,7 @@ class MoviesFragment: Fragment() {
                         }
                     }
             }
-            ).attach()
+        ).attach()
     }
 
     private fun setTabChangeListeners() {

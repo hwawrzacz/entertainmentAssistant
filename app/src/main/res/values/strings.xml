@@ -37,7 +37,9 @@
     <string name="label_to_watch">To watch</string>
     <string name="label_to_read">To read</string>
     <string name="label_to_play">To play</string>
+    <string name="label_all">All</string>
     <string name="label_favourites">Favourites</string>
+    <style name="label_duration">%1$s min</style>
 
     <!--    Messages -->
     <string name="message_no_internet_access">No internet access</string>
