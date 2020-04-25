@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,7 +16,7 @@ import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesR
 import com.wawrzacz.entertainmentassistant.data.Movie
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesAllBinding
 
-class MoviesAllFragment: Fragment() {
+class MoviesAllFragment: Fragment(), MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesAllBinding
     private lateinit var recyclerView: RecyclerView
@@ -50,6 +51,10 @@ class MoviesAllFragment: Fragment() {
                 return true
             }
         })
+    }
+
+    override fun openAddMovieDialog() {
+        Toast.makeText(requireContext(), "Open add movie#all dialog", Toast.LENGTH_LONG).show()
     }
 
     private fun initializeRecyclerView() {

@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesToWatchBinding
 
-class MoviesToWatchFragment: Fragment() {
+class MoviesToWatchFragment: Fragment(), MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesToWatchBinding
 
@@ -44,4 +45,9 @@ class MoviesToWatchFragment: Fragment() {
 
         return super.onPrepareOptionsMenu(menu)
     }
+
+    override fun openAddMovieDialog() {
+        Toast.makeText(requireContext(), "Open add movie#toWatch dialog", Toast.LENGTH_LONG).show()
+    }
+
 }
