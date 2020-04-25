@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.repos.AuthRepository
-import com.wawrzacz.entertainmentassistant.data.LoggedUser
+import com.wawrzacz.entertainmentassistant.data.model.LoggedUser
 
 class AccountViewModel : ViewModel() {
     private val authRepository =

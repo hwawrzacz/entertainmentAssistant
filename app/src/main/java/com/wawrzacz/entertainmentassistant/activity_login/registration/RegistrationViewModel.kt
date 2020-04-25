@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.repos.AuthRepository
-import com.wawrzacz.entertainmentassistant.data.RegistrationResult
+import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
 import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
 
 class RegistrationViewModel: ViewModel() {

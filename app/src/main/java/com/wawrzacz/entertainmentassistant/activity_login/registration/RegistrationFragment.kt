@@ -17,7 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
-import com.wawrzacz.entertainmentassistant.data.RegistrationResult
+import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
 import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
 import com.wawrzacz.entertainmentassistant.data.errors.RegistrationError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentRegistrationBinding

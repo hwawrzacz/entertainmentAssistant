@@ -1,7 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies.watched
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -16,7 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesRecyclerViewAdapter
-import com.wawrzacz.entertainmentassistant.data.Movie
+import com.wawrzacz.entertainmentassistant.data.model.Movie
+import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesWatchedBinding
 
 class MoviesWatchedFragment: Fragment(),
@@ -36,7 +36,6 @@ class MoviesWatchedFragment: Fragment(),
         initializeRecyclerView()
         initializeViewModel()
         addViewModelObservers()
-        loadData()
 
         return binding.root
     }
@@ -47,12 +46,13 @@ class MoviesWatchedFragment: Fragment(),
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                moviesViewModel.loadData(newText)
+                if (!newText.isNullOrBlank()){
+                    findMovies(newText)
+                }
                 return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-//                binding.textView.text = "Submitted watched: $query"
                 return false
             }
         })
@@ -80,17 +80,22 @@ class MoviesWatchedFragment: Fragment(),
     }
 
     private fun addViewModelObservers() {
-        moviesViewModel.moviesWatched.observe(viewLifecycleOwner, Observer {
-            Log.i("schab", "datasize: ${it.size}")
-            refreshData(it)
+        moviesViewModel.foundMovies.observe(viewLifecycleOwner, Observer {
+            if (it != null)
+                refreshData(it)
+        })
+
+        moviesViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            if (it) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.GONE
         })
     }
 
-    private fun loadData() {
-        moviesViewModel.loadData("")
+    private fun findMovies(query: String) {
+        moviesViewModel.findMovies(query)
     }
 
-    private fun refreshData(data: List<Movie>) {
+    private fun refreshData(data: List<MovieSimple>) {
         binding.moviesWatchedRecyclerView.adapter = MoviesRecyclerViewAdapter(data)
     }
 }

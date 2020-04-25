@@ -1,6 +1,4 @@
-package com.wawrzacz.entertainmentassistant.data
-
-import android.util.Log
+package com.wawrzacz.entertainmentassistant.data.model
 
 class LoggedUser(
     val email: String,

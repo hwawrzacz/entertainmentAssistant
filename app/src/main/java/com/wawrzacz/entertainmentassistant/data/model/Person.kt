@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.data
+package com.wawrzacz.entertainmentassistant.data.model
 
 class Person (
     var id: Long? = null,

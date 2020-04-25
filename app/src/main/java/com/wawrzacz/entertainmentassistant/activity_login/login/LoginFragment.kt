@@ -1,8 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_login.login
 
 import android.content.Intent
-import android.icu.text.StringPrepParseException
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.data.SignInResult
+import com.wawrzacz.entertainmentassistant.data.model.SignInResult
 import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
 import com.wawrzacz.entertainmentassistant.data.errors.SignInError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentLoginBinding

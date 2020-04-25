@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.repos.AuthRepository
-import com.wawrzacz.entertainmentassistant.data.LoggedUser
-import com.wawrzacz.entertainmentassistant.data.SignInResult
+import com.wawrzacz.entertainmentassistant.data.model.LoggedUser
+import com.wawrzacz.entertainmentassistant.data.model.SignInResult
 import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
 
 class LoginViewModel: ViewModel() {

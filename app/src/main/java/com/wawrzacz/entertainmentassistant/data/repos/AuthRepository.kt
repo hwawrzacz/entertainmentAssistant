@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.wawrzacz.entertainmentassistant.data.LoggedUser
-import com.wawrzacz.entertainmentassistant.data.RegistrationResult
-import com.wawrzacz.entertainmentassistant.data.SignInResult
+import com.wawrzacz.entertainmentassistant.data.model.LoggedUser
+import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
+import com.wawrzacz.entertainmentassistant.data.model.SignInResult
 import com.wawrzacz.entertainmentassistant.data.errors.RegistrationError
 import com.wawrzacz.entertainmentassistant.data.errors.SignInError
 
