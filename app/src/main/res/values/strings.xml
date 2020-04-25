@@ -35,6 +35,7 @@
     <string name="label_read">Read</string>
     <string name="label_played">Played</string>
     <string name="label_to_watch">To watch</string>
+    <string name="label_browse">Browse</string>
     <string name="label_to_read">To read</string>
     <string name="label_to_play">To play</string>
     <string name="label_all">All</string>
@@ -47,6 +48,10 @@
     <string name="message_sing_in_with_google_cancelled">Sign in with Google cancelled</string>
     <string name="message_registered_successfully">User registered successfully</string>
     <string name="confirmation_message_delete_account_alert">This action cannot be undone. Are you sure you want to proceed?</string>
+    <string name="message_no_results">No results</string>
+    <string name="message_action_search_for_movies">Search for movies</string>
+    <string name="message_action_search_for_books">Search for books</string>
+    <string name="message_action_search_for_games">Search for games</string>
 
     <!-- Dialogs, prompts -->
     <string name="title_delete_account">Delete account</string>

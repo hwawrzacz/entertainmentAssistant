@@ -1,13 +1,17 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies.adapters
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
+import java.io.InputStream
+import java.net.URL
 
 class MoviesRecyclerViewAdapter(var data: List<MovieSimple>): RecyclerView.Adapter<MoviesRecyclerViewAdapter.MovieViewHolder>() {
 
@@ -18,6 +22,8 @@ class MoviesRecyclerViewAdapter(var data: List<MovieSimple>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val movie = data[position]
+//        holder.poster.setImageDrawable(getDrawableFromURL(movie.posterURL))
         holder.title.text = data[position].title
         holder.year.text =  data[position].year
         holder.type.text = capitalizeFirstLetter(data[position].type)
@@ -29,10 +35,16 @@ class MoviesRecyclerViewAdapter(var data: List<MovieSimple>): RecyclerView.Adapt
     }
 
     class MovieViewHolder(viewHolder: MaterialCardView): RecyclerView.ViewHolder(viewHolder) {
+        var poster = viewHolder.findViewById<ImageView>(R.id.movie_poster)
         var title = viewHolder.findViewById<TextView>(R.id.movie_title)
         var type = viewHolder.findViewById<TextView>(R.id.movie_category)
         var year = viewHolder.findViewById<TextView>(R.id.movie_year)
         var favourite = viewHolder.findViewById<MaterialCheckBox>(R.id.movie_fav_toggle)
+    }
+
+    private fun getDrawableFromURL(stringURL: String): Drawable {
+        val imageUrl = URL(stringURL).content as InputStream
+        return Drawable.createFromStream(imageUrl,"src")
     }
 
     private fun capitalizeFirstLetter(value: String): String {

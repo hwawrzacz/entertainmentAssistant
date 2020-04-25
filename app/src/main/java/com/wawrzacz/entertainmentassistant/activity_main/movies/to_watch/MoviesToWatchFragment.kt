@@ -35,14 +35,10 @@ class MoviesToWatchFragment: Fragment(),
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                binding.textView.text = "Search to watch: $newText"
                 return true
             }
 
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                binding.textView.text = "Submitted to watch: ${query}"
-                return false
-            }
+            override fun onQueryTextSubmit(query: String?): Boolean { return false }
         })
 
         return super.onPrepareOptionsMenu(menu)
@@ -51,5 +47,6 @@ class MoviesToWatchFragment: Fragment(),
     override fun openAddMovieDialog() {
         Toast.makeText(requireContext(), "Open add movie#toWatch dialog", Toast.LENGTH_LONG).show()
     }
+
 
 }

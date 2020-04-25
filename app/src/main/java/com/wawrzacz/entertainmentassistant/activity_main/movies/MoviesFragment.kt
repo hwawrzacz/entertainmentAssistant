@@ -2,6 +2,7 @@ package com.wawrzacz.entertainmentassistant.activity_main.movies
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -10,6 +11,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesViewPagerAdapter
+import com.wawrzacz.entertainmentassistant.activity_main.movies.browse.MoviesBrowseFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.favourites.MoviesFavouritesFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.to_watch.MoviesToWatchFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.watched.MoviesWatchedFragment
@@ -20,6 +22,7 @@ class MoviesFragment: Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
     private val moviesFragments = listOf<MoviesListFragment>(
+        MoviesBrowseFragment(),
         MoviesToWatchFragment(),
         MoviesWatchedFragment(),
         MoviesFavouritesFragment()
@@ -66,12 +69,15 @@ class MoviesFragment: Fragment() {
                     tab, position -> run {
                         when (position) {
                             0 -> {
-                                tab.text = getString(R.string.label_to_watch)
+                                tab.text = getString(R.string.label_browse)
                             }
                             1 -> {
+                                tab.text = getString(R.string.label_to_watch)
+                            }
+                            2 -> {
                                 tab.text = getString(R.string.label_watched)
                             }
-                            2 ->{
+                            3 ->{
                                 tab.text = getString(R.string.label_favourites)
                             }
                         }
@@ -101,8 +107,23 @@ class MoviesFragment: Fragment() {
                 hideKeyboard()
                 if (currentPosition != null)
                     currentMovieFragment = moviesFragments[currentPosition]
+
+                if (currentPosition == 0) {
+                    hideFab()
+                }
+                else if (!binding.fabAddMovie.isVisible) {
+                    showFab()
+                }
             }
         })
+    }
+
+    private fun hideFab() {
+        binding.fabAddMovie.hide()
+    }
+
+    private fun showFab() {
+        binding.fabAddMovie.show()
     }
 
     private fun hideKeyboard() {

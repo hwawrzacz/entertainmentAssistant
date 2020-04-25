@@ -6,26 +6,25 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.Movie
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
-import com.wawrzacz.entertainmentassistant.data.repos.MoviesRepository
-import com.wawrzacz.entertainmentassistant.data.repos.ResponseMoviesList
+import com.wawrzacz.entertainmentassistant.data.repos.MoviesApiRepository
+import com.wawrzacz.entertainmentassistant.data.repos.MoviesFirebaseRepository
 
 class MoviesWatchedViewModel: ViewModel() {
-    private val moviesRepository = MoviesRepository
+    private val moviesRepository = MoviesFirebaseRepository
 
-    val foundMovies: LiveData<List<MovieSimple>> = Transformations.map(moviesRepository.foundMoviesResponse) {
-        _isLoading.value = false
-        it.movies
-    }
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-//    fun loadData(query: String?) {
-//        _isLoading.value = true
-//        moviesRepository.loadWatchedMovies(query)
-//    }
+    val foundMovies: LiveData<List<MovieSimple>> = Transformations.map(moviesRepository.result) {
+        _isLoading.value = false
+        it
+    }
+
+    fun loadData() {
+        _isLoading.value = true
+    }
 
     fun findMovies(query: String) {
         _isLoading.value = true
-        moviesRepository.findMovies(query)
     }
 }
