@@ -4,8 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -34,6 +36,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.action_bar_menu, menu)
+
+        val accountMenuItem = menu.findItem(R.id.nav_open_account_panel)
+        val searchItem = menu.findItem(R.id.nav_search)
+        val searchView = searchItem?.actionView as SearchView?
+
+        searchView?.setOnSearchClickListener { accountMenuItem.isVisible = false }
+
+        searchView?.setOnCloseListener {
+            accountMenuItem.isVisible = true
+            false
+        }
 
         return super.onCreateOptionsMenu(menu)
     }
