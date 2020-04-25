@@ -10,13 +10,20 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesViewPagerAdapter
+import com.wawrzacz.entertainmentassistant.activity_main.movies.favourites.MoviesFavouritesFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.to_watch.MoviesToWatchFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.watched.MoviesWatchedFragment
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 
 class MoviesFragment: Fragment() {
     private lateinit var binding: FragmentMoviesBinding
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
-    private val moviesFragments = listOf<MoviesListFragment>(MoviesAllFragment(), MoviesWatchedFragment(), MoviesToWatchFragment())
+    private val moviesFragments = listOf<MoviesListFragment>(
+        MoviesToWatchFragment(),
+        MoviesWatchedFragment(),
+        MoviesFavouritesFragment()
+    )
     private var currentMovieFragment: MoviesListFragment = moviesFragments[0]
 
     override fun onCreateView(
@@ -59,13 +66,13 @@ class MoviesFragment: Fragment() {
                     tab, position -> run {
                         when (position) {
                             0 -> {
-                                tab.text = getString(R.string.label_all)
-                            }
-                            1 -> {
                                 tab.text = getString(R.string.label_to_watch)
                             }
-                            2 ->{
+                            1 -> {
                                 tab.text = getString(R.string.label_watched)
+                            }
+                            2 ->{
+                                tab.text = getString(R.string.label_favourites)
                             }
                         }
                     }

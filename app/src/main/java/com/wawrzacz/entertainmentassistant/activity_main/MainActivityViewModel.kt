@@ -1,11 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.AuthRepository
-import com.wawrzacz.entertainmentassistant.data.LoggedUser
 
 class MainActivityViewModel: ViewModel() {
 

@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.AuthRepository
+import com.wawrzacz.entertainmentassistant.data.repos.AuthRepository
 import com.wawrzacz.entertainmentassistant.data.RegistrationResult
 import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
 
 class RegistrationViewModel: ViewModel() {
-    private val authRepository = AuthRepository
+    private val authRepository =
+        AuthRepository
 
     private val _loginError = MutableLiveData<LoginFormError?>(
         LoginFormError.NOT_INITIALIZED)

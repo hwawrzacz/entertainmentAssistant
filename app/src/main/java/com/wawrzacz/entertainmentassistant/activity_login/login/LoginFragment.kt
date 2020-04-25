@@ -72,9 +72,7 @@ class LoginFragment: Fragment() {
     }
 
     private fun initializeViewModel() {
-        loginViewModel = ViewModelProvider(this,
-            LoginViewModelFactory()
-        )
+        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
     }
 
@@ -190,6 +188,7 @@ class LoginFragment: Fragment() {
             task.addOnCompleteListener {
                 if (it.isSuccessful) {
                     firebaseAuthenticateWithGoogleAccount(it.result!!)
+                    startSignInAnimation()
                 }
                 else {
                     when (val errorCode = getErrorFirebaseErrorCodeFromString(it.exception?.message)) {

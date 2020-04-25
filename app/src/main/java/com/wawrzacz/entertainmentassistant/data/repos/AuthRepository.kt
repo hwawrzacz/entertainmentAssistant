@@ -1,9 +1,12 @@
-package com.wawrzacz.entertainmentassistant.data
+package com.wawrzacz.entertainmentassistant.data.repos
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.wawrzacz.entertainmentassistant.data.LoggedUser
+import com.wawrzacz.entertainmentassistant.data.RegistrationResult
+import com.wawrzacz.entertainmentassistant.data.SignInResult
 import com.wawrzacz.entertainmentassistant.data.errors.RegistrationError
 import com.wawrzacz.entertainmentassistant.data.errors.SignInError
 
@@ -17,7 +20,11 @@ object AuthRepository {
             val loggedUser = firebaseAuth.currentUser
             val login = loggedUser!!.email!!
             val displayName = loggedUser.displayName
-            loggedUserLiveData.value = LoggedUser(login, displayName)
+            loggedUserLiveData.value =
+                LoggedUser(
+                    login,
+                    displayName
+                )
         }
 
         return loggedUserLiveData
@@ -25,20 +32,39 @@ object AuthRepository {
 
     fun signIn(username: String, password: String): LiveData<SignInResult> {
         val signInResult = MutableLiveData<SignInResult>(
-            SignInResult(false, SignInError.NOT_INITIALIZED, null)
+            SignInResult(
+                false,
+                SignInError.NOT_INITIALIZED,
+                null
+            )
         )
 
         firebaseAuth.signInWithEmailAndPassword(username, password)
             .addOnCompleteListener {
                 when {
                     it.isSuccessful -> {
-                        signInResult.value = SignInResult(true, null, null)
+                        signInResult.value =
+                            SignInResult(
+                                true,
+                                null,
+                                null
+                            )
                     }
                     it.isCanceled -> {
-                        signInResult.value = SignInResult(false, SignInError.CANCELLED, null)
+                        signInResult.value =
+                            SignInResult(
+                                false,
+                                SignInError.CANCELLED,
+                                null
+                            )
                     }
                     it.isComplete -> {
-                        signInResult.value = SignInResult(false, null, it.exception?.message)
+                        signInResult.value =
+                            SignInResult(
+                                false,
+                                null,
+                                it.exception?.message
+                            )
                         Log.i("schab", "sign in failed with exception: ${it.exception?.message}")
                     }
                 }
@@ -49,20 +75,39 @@ object AuthRepository {
 
     fun register(username: String, password: String): LiveData<RegistrationResult> {
         val registrationResult = MutableLiveData<RegistrationResult>(
-            RegistrationResult(false, RegistrationError.NOT_INITIALIZED, null)
+            RegistrationResult(
+                false,
+                RegistrationError.NOT_INITIALIZED,
+                null
+            )
         )
         firebaseAuth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener {
                 when {
                     it.isSuccessful -> {
 //                        userCreatedSuccessfully()
-                        registrationResult.value = RegistrationResult(true, null, null)
+                        registrationResult.value =
+                            RegistrationResult(
+                                true,
+                                null,
+                                null
+                            )
                     }
                     it.isCanceled -> {
-                        registrationResult.value = RegistrationResult(true, RegistrationError.CANCELLED, null)
+                        registrationResult.value =
+                            RegistrationResult(
+                                true,
+                                RegistrationError.CANCELLED,
+                                null
+                            )
                     }
                     it.isComplete -> {
-                        registrationResult.value = RegistrationResult(false, null, it.exception?.message)
+                        registrationResult.value =
+                            RegistrationResult(
+                                false,
+                                null,
+                                it.exception?.message
+                            )
                         Log.i("schab", "Registration competed with exception: ${it.exception?.message}")
                     }
                 }

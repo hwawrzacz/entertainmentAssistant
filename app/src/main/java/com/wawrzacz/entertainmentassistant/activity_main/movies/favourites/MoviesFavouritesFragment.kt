@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies
+package com.wawrzacz.entertainmentassistant.activity_main.movies.favourites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,13 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesRecyclerViewAdapter
 import com.wawrzacz.entertainmentassistant.data.Movie
-import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesAllBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesFavouritesBinding
 
-class MoviesAllFragment: Fragment(), MoviesListFragment {
+class MoviesFavouritesFragment: Fragment(),
+    MoviesListFragment {
 
-    private lateinit var binding: FragmentMoviesAllBinding
+    private lateinit var binding: FragmentMoviesFavouritesBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var moviesAdapter: MoviesRecyclerViewAdapter
 
@@ -27,7 +29,7 @@ class MoviesAllFragment: Fragment(), MoviesListFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_movies_all, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_movies_favourites, container, false)
 
         setHasOptionsMenu(true)
         initializeRecyclerView()

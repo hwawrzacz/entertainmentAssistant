@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies
+package com.wawrzacz.entertainmentassistant.activity_main.movies.to_watch
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesToWatchBinding
 
-class MoviesToWatchFragment: Fragment(), MoviesListFragment {
+class MoviesToWatchFragment: Fragment(),
+    MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesToWatchBinding
 
