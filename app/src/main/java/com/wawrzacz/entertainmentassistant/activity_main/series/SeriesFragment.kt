@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.books
+package com.wawrzacz.entertainmentassistant.activity_main.series
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBooksBinding
 
-class BooksFragment: Fragment() {
+class SeriesFragment: Fragment() {
     private lateinit var binding: FragmentBooksBinding
 
     override fun onCreateView(
@@ -29,7 +29,7 @@ class BooksFragment: Fragment() {
     }
 
     private fun setUpActionBar() {
-        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_books))
-        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.book)
+        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_series))
+        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.series_24)
     }
 }

@@ -11,7 +11,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesViewPagerAdapter
-import com.wawrzacz.entertainmentassistant.activity_main.movies.browse.MoviesBrowseFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.favourites.MoviesFavouritesFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.to_watch.MoviesToWatchFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.watched.MoviesWatchedFragment
@@ -22,7 +21,6 @@ class MoviesFragment: Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
     private val moviesFragments = listOf<MoviesListFragment>(
-        MoviesBrowseFragment(),
         MoviesToWatchFragment(),
         MoviesWatchedFragment(),
         MoviesFavouritesFragment()
@@ -69,15 +67,12 @@ class MoviesFragment: Fragment() {
                     tab, position -> run {
                         when (position) {
                             0 -> {
-                                tab.text = getString(R.string.label_browse)
-                            }
-                            1 -> {
                                 tab.text = getString(R.string.label_to_watch)
                             }
-                            2 -> {
+                            1 -> {
                                 tab.text = getString(R.string.label_watched)
                             }
-                            3 ->{
+                            2 ->{
                                 tab.text = getString(R.string.label_favourites)
                             }
                         }

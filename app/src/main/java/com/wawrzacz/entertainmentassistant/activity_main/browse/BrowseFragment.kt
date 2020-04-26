@@ -1,11 +1,10 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.browse
+package com.wawrzacz.entertainmentassistant.activity_main.browse
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,23 +12,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
-import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
+import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesRecyclerViewAdapter
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
-import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBrowseBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
 
-class MoviesBrowseFragment: Fragment(),
-    MoviesListFragment {
+class BrowseFragment: Fragment() {
 
-    private lateinit var binding: FragmentMoviesBrowseBinding
-    private lateinit var moviesViewModel: MoviesBrowseViewModel
+    private lateinit var binding: FragmentBrowseBinding
+    private lateinit var moviesViewModel: BrowseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_movies_browse, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_browse, container, false)
 
         setHasOptionsMenu(true)
 
@@ -38,6 +36,12 @@ class MoviesBrowseFragment: Fragment(),
         addViewModelObservers()
 
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_browse))
+        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.browse_24)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -56,10 +60,6 @@ class MoviesBrowseFragment: Fragment(),
         super.onPrepareOptionsMenu(menu)
     }
 
-    override fun openAddMovieDialog() {
-        Toast.makeText(requireContext(), "Open add movie#browse dialog", Toast.LENGTH_LONG).show()
-    }
-
     private fun initializeRecyclerView() {
         val moviesLayoutManager = LinearLayoutManager(context)
         val moviesAdapter = MoviesRecyclerViewAdapter(listOf())
@@ -71,8 +71,8 @@ class MoviesBrowseFragment: Fragment(),
     }
 
     private fun initializeViewModel() {
-        moviesViewModel = ViewModelProvider(this, MoviesBrowseViewModelFactory())
-            .get(MoviesBrowseViewModel::class.java)
+        moviesViewModel = ViewModelProvider(this, BrowseViewModelFactory())
+            .get(BrowseViewModel::class.java)
     }
 
     private fun addViewModelObservers() {
@@ -113,7 +113,7 @@ class MoviesBrowseFragment: Fragment(),
     private fun showHomeBanner() {
         binding.moviesRecyclerView.visibility = View.GONE
         binding.bannerMessage.visibility = View.VISIBLE
-        binding.bannerMessage.text = getString(R.string.message_action_search_for_movies)
+        binding.bannerMessage.text = getString(R.string.message_action_browse)
     }
 
     private fun showNoResultsBanner() {

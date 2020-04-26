@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <item
+        android:id="@+id/nav_browse"
+        android:title="@string/label_browse"
+        android:icon="@drawable/browse_24" />
+    <item
         android:id="@+id/nav_movies"
         android:title="@string/label_movies"
         android:icon="@drawable/movies_rounded" />
     <item
-        android:id="@+id/nav_books"
-        android:title="@string/label_books"
-        android:icon="@drawable/book" />
+        android:id="@+id/nav_series"
+        android:title="@string/label_series"
+        android:icon="@drawable/series_24" />
     <item
         android:id="@+id/nav_games"
         android:title="@string/label_games"

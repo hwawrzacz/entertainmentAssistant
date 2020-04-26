@@ -10,6 +10,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
+import kotlinx.coroutines.coroutineScope
 import java.io.InputStream
 import java.net.URL
 
@@ -22,11 +23,12 @@ class MoviesRecyclerViewAdapter(var data: List<MovieSimple>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+
         val movie = data[position]
 //        holder.poster.setImageDrawable(getDrawableFromURL(movie.posterURL))
         holder.title.text = data[position].title
         holder.year.text =  data[position].year
-        holder.type.text = capitalizeFirstLetter(data[position].type)
+        holder.typeIcon.setImageResource(getTypeDrawable(data[position].type))
         holder.favourite.setButtonDrawable(getIsFavouriteDrawable(data[position].isFavourite))
     }
 
@@ -37,7 +39,7 @@ class MoviesRecyclerViewAdapter(var data: List<MovieSimple>): RecyclerView.Adapt
     class MovieViewHolder(viewHolder: MaterialCardView): RecyclerView.ViewHolder(viewHolder) {
         var poster = viewHolder.findViewById<ImageView>(R.id.movie_poster)
         var title = viewHolder.findViewById<TextView>(R.id.movie_title)
-        var type = viewHolder.findViewById<TextView>(R.id.movie_category)
+        var typeIcon = viewHolder.findViewById<ImageView>(R.id.movie_type_icon)
         var year = viewHolder.findViewById<TextView>(R.id.movie_year)
         var favourite = viewHolder.findViewById<MaterialCheckBox>(R.id.movie_fav_toggle)
     }
@@ -49,6 +51,14 @@ class MoviesRecyclerViewAdapter(var data: List<MovieSimple>): RecyclerView.Adapt
 
     private fun capitalizeFirstLetter(value: String): String {
         return "${value.substring(0, 1).toUpperCase()}${value.substring(1)}"
+    }
+
+    private fun getTypeDrawable(value: String): Int {
+        return when (value.toLowerCase()) {
+            "movie" -> R.drawable.movies_rounded
+            "series" -> R.drawable.series_24
+            else -> R.drawable.gamepad
+        }
     }
 
     private fun getIsFavouriteDrawable(value: Boolean): Int {

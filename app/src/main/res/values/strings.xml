@@ -29,7 +29,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="label_movies">Movies</string>
-    <string name="label_books">Books</string>
+    <string name="label_series">Series</string>
     <string name="label_games">Games</string>
     <string name="label_watched">Watched</string>
     <string name="label_read">Read</string>
@@ -49,8 +49,8 @@
     <string name="message_registered_successfully">User registered successfully</string>
     <string name="confirmation_message_delete_account_alert">This action cannot be undone. Are you sure you want to proceed?</string>
     <string name="message_no_results">No results</string>
-    <string name="message_action_search_for_movies">Search for movies</string>
-    <string name="message_action_search_for_books">Search for books</string>
+    <string name="message_action_browse">Search for movies, TV series and games</string>
+    <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
 
     <!-- Dialogs, prompts -->

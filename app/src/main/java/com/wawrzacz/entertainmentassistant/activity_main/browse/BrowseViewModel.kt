@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.browse
+package com.wawrzacz.entertainmentassistant.activity_main.browse
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
 import com.wawrzacz.entertainmentassistant.data.repos.MoviesApiRepository
 
-class MoviesBrowseViewModel: ViewModel() {
+class BrowseViewModel: ViewModel() {
     private val moviesRepository = MoviesApiRepository
 
     private val _isLoading = MutableLiveData<Boolean>(false)

@@ -3,7 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/nav_movies">
+    app:startDestination="@id/nav_browse">
+
+    <fragment
+        android:id="@+id/nav_browse"
+        android:name="com.wawrzacz.entertainmentassistant.activity_main.browse.BrowseFragment"
+        android:label="MoviesBrowseFragment"
+        tools:layout="@layout/fragment_browse" >
+        <action
+            android:id="@+id/action_moviesBrowseFragment_to_nav_movies"
+            app:destination="@id/nav_movies" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_movies"
@@ -12,23 +22,17 @@
         tools:layout="@layout/fragment_movies" >
         <action
             android:id="@+id/action_nav_movies_to_nav_books"
-            app:destination="@id/nav_books" />
-        <action
-            android:id="@+id/action_nav_movies_to_nav_games"
-            app:destination="@id/nav_games" />
+            app:destination="@id/nav_series" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_books"
-        android:name="com.wawrzacz.entertainmentassistant.activity_main.books.BooksFragment"
+        android:id="@+id/nav_series"
+        android:name="com.wawrzacz.entertainmentassistant.activity_main.series.SeriesFragment"
         android:label="BooksFragment"
         tools:layout="@layout/fragment_books">
         <action
             android:id="@+id/action_nav_books_to_nav_games"
             app:destination="@id/nav_games" />
-        <action
-            android:id="@+id/action_nav_books_to_nav_movies"
-            app:destination="@id/nav_movies" />
     </fragment>
 
     <fragment
@@ -37,10 +41,7 @@
         android:label="GamesFragment"
         tools:layout="@layout/fragment_games">
         <action
-            android:id="@+id/action_nav_games_to_nav_books"
-            app:destination="@id/nav_books" />
-        <action
-            android:id="@+id/action_nav_games_to_nav_movies"
-            app:destination="@id/nav_movies" />
+            android:id="@+id/action_nav_games_to_nav_browse"
+            app:destination="@id/nav_browse" />
     </fragment>
 </navigation>

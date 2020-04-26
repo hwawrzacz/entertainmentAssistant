@@ -28,17 +28,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/movie_category"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/movie_type_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/gamepad"
             android:layout_marginStart="@dimen/margin_regular"
-
-            android:text="movie"
 
             app:layout_constraintStart_toEndOf="@+id/movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/movie_title" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/movie_category"-->
+<!--            style="@style/TextAppearance.MaterialComponents.Body2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/margin_regular"-->
+
+<!--            android:text="movie"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/movie_poster"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/movie_title" />-->
 
         <TextView
             android:id="@+id/movie_year"
@@ -49,8 +58,9 @@
 
             android:text="1994"
 
-            app:layout_constraintStart_toEndOf="@+id/movie_category"
-            app:layout_constraintTop_toBottomOf="@+id/movie_title" />
+            app:layout_constraintBottom_toBottomOf="@+id/movie_type_icon"
+            app:layout_constraintStart_toEndOf="@+id/movie_type_icon"
+            app:layout_constraintTop_toTopOf="@+id/movie_type_icon" />
 
 
         <TextView
