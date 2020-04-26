@@ -11,16 +11,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesRecyclerViewAdapter
-import com.wawrzacz.entertainmentassistant.data.model.Movie
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesWatchedBinding
+import com.wawrzacz.entertainmentassistant.ui.adapters.MovieListAdapter
 
 class MoviesWatchedFragment: Fragment(),
     MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesWatchedBinding
     private lateinit var moviesViewModel: MoviesWatchedViewModel
+    private val moviesAdapter = MovieListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +63,6 @@ class MoviesWatchedFragment: Fragment(),
 
     private fun initializeRecyclerView() {
         val moviesLayoutManager = LinearLayoutManager(context)
-        val moviesAdapter = MoviesRecyclerViewAdapter(listOf())
 
         binding.moviesRecyclerView.apply {
             layoutManager = moviesLayoutManager
@@ -97,6 +96,6 @@ class MoviesWatchedFragment: Fragment(),
     }
 
     private fun refreshData(data: List<MovieSimple>) {
-        binding.moviesRecyclerView.adapter = MoviesRecyclerViewAdapter(data)
+        moviesAdapter.submitList(data)
     }
 }

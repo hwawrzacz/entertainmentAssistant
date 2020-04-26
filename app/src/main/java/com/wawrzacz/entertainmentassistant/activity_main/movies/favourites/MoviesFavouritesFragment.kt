@@ -13,16 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesRecyclerViewAdapter
-import com.wawrzacz.entertainmentassistant.data.model.Movie
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesFavouritesBinding
+import com.wawrzacz.entertainmentassistant.ui.adapters.MovieListAdapter
 
 class MoviesFavouritesFragment: Fragment(),
     MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesFavouritesBinding
     private lateinit var recyclerView: RecyclerView
-    private lateinit var moviesAdapter: MoviesRecyclerViewAdapter
+    private val moviesAdapter = MovieListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +60,6 @@ class MoviesFavouritesFragment: Fragment(),
 
     private fun initializeRecyclerView() {
         val viewManager = LinearLayoutManager(context)
-        moviesAdapter = MoviesRecyclerViewAdapter(listOf())
 
         recyclerView = binding.moviesRecyclerView.apply {
             layoutManager = viewManager
@@ -72,70 +70,5 @@ class MoviesFavouritesFragment: Fragment(),
     private fun loadRecyclerViewMockData() {
 //        val data = getMockData()
 //        moviesAdapter.data = data
-    }
-
-    private fun getMockData(): List<Movie> {
-        return mutableListOf(
-            Movie(
-                null,
-                "Pulp fiction",
-                "asd",
-                "179",
-                "Quentin Tarantino",
-                "USA",
-                1994,
-                true
-            ),
-            Movie(
-                null,
-                "Fast and Furious",
-                "asd",
-                "125",
-                "Jet Lee",
-                "USA",
-                1999,
-                true
-            ),
-            Movie(
-                null,
-                "Enemy",
-                "asd",
-                "142",
-                "Johny Random",
-                "Canada",
-                2007,
-                false
-            ),
-            Movie(
-                null,
-                "Frozen",
-                "asd",
-                "117",
-                "Disney",
-                "USA",
-                2015,
-                false
-            ),
-            Movie(
-                null,
-                "Rambo",
-                "asd",
-                "124",
-                "Nevermind",
-                "USA",
-                1997,
-                false
-            ),
-            Movie(
-                null,
-                "Breaking bad",
-                "asd",
-                "58",
-                "Do not know",
-                "USA",
-                2010,
-                true
-            )
-        )
     }
 }

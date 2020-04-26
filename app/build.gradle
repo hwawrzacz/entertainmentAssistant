@@ -48,6 +48,7 @@ dependencies {
     def material_design_version = "1.1.0"
     def nav_version = "2.3.0-alpha05"
     def retrofit_version = "2.8.1"
+    def picasso_version = "2.71828"
 
 //    Implementations
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -68,6 +69,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
 //    GSON
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+//    Picasso - loading images
+    implementation "com.squareup.picasso:picasso:$picasso_version"
 
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

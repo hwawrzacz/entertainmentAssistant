@@ -1,5 +1,6 @@
 package com.wawrzacz.entertainmentassistant.data.model
 
+import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
 import java.time.Year
 
@@ -9,7 +10,7 @@ class Movie (
     @SerializedName("Title")
     val title: String,
     @SerializedName("Poster")
-    val image: String,
+    val posterURL: String,
     @SerializedName("Runtime")
     val duration: String,
     @SerializedName("Director")
@@ -17,9 +18,12 @@ class Movie (
     @SerializedName("Country")
     val country: String,
     @SerializedName("Year")
-    val year: Int,
+    val year: String,
+    @SerializedName("Type")
+    val type: String,
     val isFavourite: Boolean
 ){
+
     override fun toString(): String {
         return "$title by $director | $country $year $duration min"
     }

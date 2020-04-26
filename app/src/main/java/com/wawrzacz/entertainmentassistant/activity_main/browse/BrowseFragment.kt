@@ -10,17 +10,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.movies.adapters.MoviesRecyclerViewAdapter
 import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
+import com.wawrzacz.entertainmentassistant.ui.adapters.MovieListAdapter
 
 class BrowseFragment: Fragment() {
 
     private lateinit var binding: FragmentBrowseBinding
     private lateinit var moviesViewModel: BrowseViewModel
+    private val moviesAdapter = MovieListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,10 +64,10 @@ class BrowseFragment: Fragment() {
 
     private fun initializeRecyclerView() {
         val moviesLayoutManager = LinearLayoutManager(context)
-        val moviesAdapter = MoviesRecyclerViewAdapter(listOf())
 
         binding.moviesRecyclerView.apply {
             layoutManager = moviesLayoutManager
+            itemAnimator = DefaultItemAnimator()
             adapter = moviesAdapter
         }
     }
@@ -77,8 +79,7 @@ class BrowseFragment: Fragment() {
 
     private fun addViewModelObservers() {
         moviesViewModel.foundMovies.observe(viewLifecycleOwner, Observer {
-            if (it != null)
-                refreshData(it)
+            refreshData(it)
         })
 
         moviesViewModel.isLoading.observe(viewLifecycleOwner, Observer {
@@ -105,8 +106,11 @@ class BrowseFragment: Fragment() {
         moviesViewModel.findMovies(query)
     }
 
-    private fun refreshData(data: List<MovieSimple>) {
-        binding.moviesRecyclerView.adapter = MoviesRecyclerViewAdapter(data)
+    private fun refreshData(data: List<MovieSimple>?) {
+        moviesAdapter.submitList(data)
+    }
+
+    private fun clearData() {
     }
 
     //#region UI changes
