@@ -4,30 +4,37 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
-import com.wawrzacz.entertainmentassistant.data.repos.MoviesApiRepository
+import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
+import com.wawrzacz.entertainmentassistant.data.repos.ApiRepository
 
 class BrowseViewModel: ViewModel() {
-    private val moviesRepository = MoviesApiRepository
+    private val apiRepository = ApiRepository
+
+    private val _selectedItemId = MutableLiveData<UniversalItem>()
+    val selectedItemId: LiveData<UniversalItem> = _selectedItemId
 
     private val _isLoading = MutableLiveData<Boolean>(false)
-    val isLoading: LiveData<Boolean> = _isLoading
+    val isListLoading: LiveData<Boolean> = _isLoading
 
     private val _hasAnyResults = MutableLiveData<Boolean?>()
     val hasAnyResults: LiveData<Boolean?> = _hasAnyResults
 
-    val foundMovies: LiveData<List<MovieSimple>> = Transformations.map(moviesRepository.foundMoviesResponse) {
+    val foundItems: LiveData<List<UniversalItem>> = Transformations.map(apiRepository.foundItemsResponse) {
         _isLoading.value = false
-        _hasAnyResults.value = !it.movies.isNullOrEmpty()
-        it.movies
+        _hasAnyResults.value = !it.items.isNullOrEmpty()
+        it.items
     }
 
-    fun findMovies(query: String?) {
+    fun findItems(query: String?) {
         if (query.isNullOrBlank()){
             _hasAnyResults.value = null
         } else {
             _isLoading.value = true
-            moviesRepository.findMovies(query)
+            apiRepository.findItems(query)
         }
+    }
+
+    fun setSelectedItem(item: UniversalItem) {
+        _selectedItemId.value = item
     }
 }

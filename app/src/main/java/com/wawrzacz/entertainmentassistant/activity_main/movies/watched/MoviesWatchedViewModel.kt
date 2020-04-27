@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.model.Movie
-import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
-import com.wawrzacz.entertainmentassistant.data.repos.MoviesApiRepository
+import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.data.repos.MoviesFirebaseRepository
 
 class MoviesWatchedViewModel: ViewModel() {
@@ -15,7 +13,7 @@ class MoviesWatchedViewModel: ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    val foundMovies: LiveData<List<MovieSimple>> = Transformations.map(moviesRepository.result) {
+    val foundMovies: LiveData<List<UniversalItem>> = Transformations.map(moviesRepository.result) {
         _isLoading.value = false
         it
     }

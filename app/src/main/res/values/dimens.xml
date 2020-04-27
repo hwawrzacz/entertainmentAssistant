@@ -16,6 +16,8 @@
     <dimen name="icon_size">24dp</dimen>
     <dimen name="recycler_view_image_size">56dp</dimen>
     <dimen name="movie_item_height">88dp</dimen>
+    <dimen name="details_image_width">100dp</dimen>
+    <dimen name="details_image_height">150dp</dimen>
 
     <!--    Fonts -->
     <dimen name="font_button_regular">18sp</dimen>

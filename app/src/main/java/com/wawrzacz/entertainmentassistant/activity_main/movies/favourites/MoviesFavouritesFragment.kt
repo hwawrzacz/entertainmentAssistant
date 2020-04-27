@@ -9,19 +9,22 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.browse.BrowseViewModel
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesFavouritesBinding
-import com.wawrzacz.entertainmentassistant.ui.adapters.MovieListAdapter
+import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
 
 class MoviesFavouritesFragment: Fragment(),
     MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesFavouritesBinding
     private lateinit var recyclerView: RecyclerView
-    private val moviesAdapter = MovieListAdapter()
+    // TODO: replaec browse view model
+    private val moviesAdapter = BrowseListAdapter(BrowseViewModel())
 
     override fun onCreateView(
         inflater: LayoutInflater,

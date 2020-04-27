@@ -9,6 +9,8 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -86,5 +88,16 @@ class MainActivity : AppCompatActivity() {
     fun hideKeyboard() {
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    fun hideBottomNavbar() {
+        binding.bottomNavigationView.visibility = View.GONE
+    }
+
+    fun openDetailsFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.main_fragment_container, fragment)
+            addToBackStack(fragment.tag)
+        }.commit()
     }
 }

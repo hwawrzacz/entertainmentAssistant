@@ -10,17 +10,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.browse.BrowseViewModel
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
-import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
+import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesWatchedBinding
-import com.wawrzacz.entertainmentassistant.ui.adapters.MovieListAdapter
+import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
 
 class MoviesWatchedFragment: Fragment(),
     MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesWatchedBinding
     private lateinit var moviesViewModel: MoviesWatchedViewModel
-    private val moviesAdapter = MovieListAdapter()
+    // TODO: replaec browse view model
+    private val moviesAdapter = BrowseListAdapter(BrowseViewModel())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,7 +97,7 @@ class MoviesWatchedFragment: Fragment(),
         moviesViewModel.loadData()
     }
 
-    private fun refreshData(data: List<MovieSimple>) {
+    private fun refreshData(data: List<UniversalItem>) {
         moviesAdapter.submitList(data)
     }
 }

@@ -1,10 +1,8 @@
 package com.wawrzacz.entertainmentassistant.activity_main.browse
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,15 +12,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.data.model.MovieSimple
+import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsFragment
+import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
-import com.wawrzacz.entertainmentassistant.ui.adapters.MovieListAdapter
+import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
 
 class BrowseFragment: Fragment() {
 
     private lateinit var binding: FragmentBrowseBinding
-    private lateinit var moviesViewModel: BrowseViewModel
-    private val moviesAdapter = MovieListAdapter()
+    private lateinit var browseViewModel: BrowseViewModel
+    private lateinit var moviesAdapter: BrowseListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +32,8 @@ class BrowseFragment: Fragment() {
 
         setHasOptionsMenu(true)
 
-        initializeRecyclerView()
         initializeViewModel()
+        initializeRecyclerView()
         addViewModelObservers()
 
         return binding.root
@@ -63,6 +62,7 @@ class BrowseFragment: Fragment() {
     }
 
     private fun initializeRecyclerView() {
+        moviesAdapter = BrowseListAdapter(browseViewModel)
         val moviesLayoutManager = LinearLayoutManager(context)
 
         binding.moviesRecyclerView.apply {
@@ -73,21 +73,21 @@ class BrowseFragment: Fragment() {
     }
 
     private fun initializeViewModel() {
-        moviesViewModel = ViewModelProvider(this, BrowseViewModelFactory())
+        browseViewModel = ViewModelProvider(this, BrowseViewModelFactory())
             .get(BrowseViewModel::class.java)
     }
 
     private fun addViewModelObservers() {
-        moviesViewModel.foundMovies.observe(viewLifecycleOwner, Observer {
+        browseViewModel.foundItems.observe(viewLifecycleOwner, Observer {
             refreshData(it)
         })
 
-        moviesViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+        browseViewModel.isListLoading.observe(viewLifecycleOwner, Observer {
             if (it) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.GONE
         })
 
-        moviesViewModel.hasAnyResults.observe(viewLifecycleOwner, Observer {
+        browseViewModel.hasAnyResults.observe(viewLifecycleOwner, Observer {
             when (it) {
                 null -> {
                     showHomeBanner()
@@ -100,17 +100,30 @@ class BrowseFragment: Fragment() {
                 }
             }
         })
+
+        browseViewModel.selectedItemId.observe(viewLifecycleOwner, Observer {
+            openDetailsFragment(it)
+        })
     }
 
     private fun findMovies(query: String?) {
-        moviesViewModel.findMovies(query)
+        browseViewModel.findItems(query)
     }
 
-    private fun refreshData(data: List<MovieSimple>?) {
+    private fun refreshData(data: List<UniversalItem>?) {
         moviesAdapter.submitList(data)
     }
 
     private fun clearData() {
+    }
+
+    private fun openDetailsFragment(item: UniversalItem) {
+        val fragment = DetailsFragment(item)
+
+        fragment.show(parentFragmentManager, "Dialog fragment")
+//        (requireActivity() as MainActivity).openDetailsFragment(fragment)
+//        (requireActivity() as MainActivity).hideBottomNavbar()
+        Toast.makeText(context, "New ${item.type} detail fragment", Toast.LENGTH_LONG).show()
     }
 
     //#region UI changes
