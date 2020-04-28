@@ -45,7 +45,7 @@ class MoviesToWatchFragment: Fragment(),
     }
 
     override fun openAddMovieDialog() {
-        Toast.makeText(requireContext(), "Open add movie#toWatch dialog", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Open add movie_24#toWatch dialog", Toast.LENGTH_LONG).show()
     }
 
 

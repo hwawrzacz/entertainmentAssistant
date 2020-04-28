@@ -58,7 +58,7 @@ class MoviesFavouritesFragment: Fragment(),
     }
 
     override fun openAddMovieDialog() {
-        Toast.makeText(requireContext(), "Open add movie#favourites dialog", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Open add movie_24#favourites dialog", Toast.LENGTH_LONG).show()
     }
 
     private fun initializeRecyclerView() {

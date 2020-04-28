@@ -60,7 +60,7 @@ class MoviesWatchedFragment: Fragment(),
     }
 
     override fun openAddMovieDialog() {
-        Toast.makeText(requireContext(), "Open add movie#watched dialog", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), "Open add movie_24#watched dialog", Toast.LENGTH_LONG).show()
     }
 
     private fun initializeRecyclerView() {

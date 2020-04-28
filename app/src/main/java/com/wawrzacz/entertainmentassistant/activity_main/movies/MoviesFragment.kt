@@ -89,7 +89,7 @@ class MoviesFragment: Fragment() {
 
     private fun setUpActionBar() {
         (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_movies))
-        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.movies_rounded)
+        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.movie_24)
     }
 
     private fun setTabChangeListeners() {

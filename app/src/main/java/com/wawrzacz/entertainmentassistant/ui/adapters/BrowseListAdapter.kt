@@ -17,30 +17,38 @@ import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import java.util.*
 
 // idDedicated field determines whether or not favourite heart should be displayed. In Browse view it should'n be displayed
-class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<UniversalItem, BrowseListAdapter.MovieViewHolder>(MovieDiffCallback()) {
+class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<UniversalItem, BrowseListAdapter.UniversalItemViewHolder>(MovieDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UniversalItemViewHolder {
         val view = LayoutInflater.from(parent.context)
-        .inflate(R.layout.movie_recycler_view_element, parent, false) as MaterialCardView
+        .inflate(R.layout.universal_list_view_element, parent, false) as MaterialCardView
 
-        return MovieViewHolder(view)
+        return UniversalItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UniversalItemViewHolder, position: Int) {
         val item = getItem(position)
-        Picasso.get().load(item.posterURL).into(holder.poster )
+        setPosterBasedOnUrl(item, holder)
+        if (item.posterURL == "N/A") {
+                val imageResource: Int = when (item.type) {
+                    "series" -> R.mipmap.poster_default_series
+                    "game" -> R.mipmap.poster_default_game
+                    else -> R.mipmap.poster_default_movie
+                }
+                holder.poster.setImageResource(imageResource)
+        } else Picasso.get().load(item.posterURL).into(holder.poster)
         holder.title.text = item.title
         holder.year.text =  item.year
         holder.typeIcon.setImageResource(getTypeDrawable(item.type))
         holder.favourite.visibility = View.GONE
-//        (getIsFavouriteDrawable(movie.isFavourite))
+//        (getIsFavouriteDrawable(movie_24.isFavourite))
 
         holder.itemView.setOnClickListener{
             viewModel.setSelectedItem(item)
         }
     }
 
-    class MovieViewHolder(viewHolder: MaterialCardView): RecyclerView.ViewHolder(viewHolder) {
+    class UniversalItemViewHolder(viewHolder: MaterialCardView): RecyclerView.ViewHolder(viewHolder) {
         var poster: ImageView = viewHolder.findViewById(R.id.movie_poster)
         var title: TextView = viewHolder.findViewById(R.id.movie_title)
         var typeIcon: ImageView = viewHolder.findViewById(R.id.movie_type_icon)
@@ -48,9 +56,20 @@ class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<Uni
         var favourite: MaterialCheckBox = viewHolder.findViewById(R.id.movie_fav_toggle)
     }
 
+    private fun setPosterBasedOnUrl(item: UniversalItem, holder: UniversalItemViewHolder) {
+        if (item.posterURL == "N/A") {
+            val imageResource: Int = when (item.type) {
+                "series" -> R.mipmap.poster_default_series
+                "game" -> R.mipmap.poster_default_game
+                else -> R.mipmap.poster_default_movie
+            }
+            holder.poster.setImageResource(imageResource)
+        } else Picasso.get().load(item.posterURL).into(holder.poster)
+    }
+
     private fun getTypeDrawable(value: String): Int {
         return when (value.toLowerCase(Locale.getDefault())) {
-            "movie" -> R.drawable.movies_rounded
+            "movie" -> R.drawable.movie_24
             "series" -> R.drawable.series_24
             else -> R.drawable.gamepad
         }
