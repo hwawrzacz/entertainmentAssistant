@@ -55,7 +55,7 @@ class BrowseFragment: Fragment() {
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                findMovies(newText)
+                findItems(newText)
                 return true
             }
 
@@ -124,7 +124,7 @@ class BrowseFragment: Fragment() {
         })
     }
 
-    private fun findMovies(query: String?) {
+    private fun findItems(query: String?) {
         browseViewModel.findItems(query)
     }
 

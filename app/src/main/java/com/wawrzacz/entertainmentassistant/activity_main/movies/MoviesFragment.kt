@@ -102,13 +102,6 @@ class MoviesFragment: Fragment() {
                 hideKeyboard()
                 if (currentPosition != null)
                     currentMovieFragment = moviesFragments[currentPosition]
-
-                if (currentPosition == 0) {
-                    hideFab()
-                }
-                else if (!binding.fabAddMovie.isVisible) {
-                    showFab()
-                }
             }
         })
     }
