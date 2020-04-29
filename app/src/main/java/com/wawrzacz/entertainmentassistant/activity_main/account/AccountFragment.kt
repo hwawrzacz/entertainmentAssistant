@@ -1,5 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main.account
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,15 +10,25 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_login.LoginActivity
 import com.wawrzacz.entertainmentassistant.databinding.FragmentAccountBinding
 
 
-class AccountFragment: MyBottomSheetDialogFragment() {
+class AccountFragment: BottomSheetDialogFragment() {
     private lateinit var binding: FragmentAccountBinding
     private lateinit var viewModel: AccountViewModel
+
+    override fun getTheme(): Int {
+        return R.style.AccountBottomSheetDialogTheme
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return BottomSheetDialog(requireContext(), theme)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

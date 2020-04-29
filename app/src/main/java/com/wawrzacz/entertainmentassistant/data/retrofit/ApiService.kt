@@ -1,7 +1,7 @@
 package com.wawrzacz.entertainmentassistant.data.retrofit
 
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.repos.ResponseUniversalItemsList
+import com.wawrzacz.entertainmentassistant.data.responses.ResponseUniversalItemsList
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

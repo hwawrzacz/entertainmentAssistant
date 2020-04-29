@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
+import com.wawrzacz.entertainmentassistant.data.responses.ResponseUniversalItemsList
 import com.wawrzacz.entertainmentassistant.data.retrofit.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,8 +19,8 @@ object ApiRepository {
     private val BASE_URL = "http://www.omdbapi.com" //Resources.getSystem().getString(R.string.retrofit_base_url)
     private val API_KEY = "373cac09" //Resources.getSystem().getString(R.string.retrofit_api_key)
 
-    private val _searchedItemsResponse = MutableLiveData<ResponseUniversalItemsList>()
-    val foundItemsResponse: LiveData<ResponseUniversalItemsList> = _searchedItemsResponse
+    private val _searchedItemsResponse = MutableLiveData<ResponseUniversalItemsList?>()
+    val foundItemsResponse: LiveData<ResponseUniversalItemsList?> = _searchedItemsResponse
 
     init {
         retrofit = Retrofit.Builder()
@@ -60,15 +61,14 @@ object ApiRepository {
                 override fun onResponse(call: Call<ResponseUniversalItemsList>, response: Response<ResponseUniversalItemsList>) {
                     if (response.isSuccessful) {
                         _searchedItemsResponse.value = response.body()
-                        Log.i("schab success", "a ${response.body()?.items.toString()}")
                     }
                     else {
-                        Log.i("schab not success", response.message())
+                        _searchedItemsResponse.value = null
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseUniversalItemsList>, t: Throwable) {
-                    Log.i("schab fail", t.message)
+                    _searchedItemsResponse.value = null
                 }
             })
     }

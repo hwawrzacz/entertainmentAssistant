@@ -16,22 +16,29 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
-    <!-- Bottom sheet dialog fragment theme -->
-    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+    <!-- Account bottom sheet dialog theme -->
+    <style name="AccountBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
-        <item name="bottomSheetStyle">@style/BottomSheet</item>
-        <item name="android:layout_marginLeft">@dimen/margin_small</item>
-        <item name="android:layout_marginRight">@dimen/margin_small</item>
-        <item name="android:layout_marginBottom">0dp</item>
+        <item name="bottomSheetStyle">@style/AccountBottomSheet</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/bg_bottom_sheet</item>
     </style>
-
-    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+    <style name="AccountBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_marginLeft">@dimen/margin_big</item>
+        <item name="android:layout_marginRight">@dimen/margin_big</item>
+        <item name="android:layout_marginBottom">0dp</item>
     </style>
+    <style name="AccountBottomSheetDialogTheme" parent="AccountBottomSheetDialog" />
 
-    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+    <!-- Full screen dialog fragment -->
+    <style name="AppTheme.FullScreenDialogFragment" parent="Theme.AppCompat.DayNight.DialogWhenLarge">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:toolbarStyle">@style/ThemeOverlay.MaterialComponents.Toolbar.Primary</item>
+    </style>
 
     <!-- Light icon on action bar -->
     <style name="MyOverflowButtonStyle" parent="Widget.AppCompat.ActionButton.Overflow">

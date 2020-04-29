@@ -90,6 +90,10 @@ class MainActivity : AppCompatActivity() {
         inputManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
+    fun cleanToolbar() {
+        binding.appToolbar.clearFocus()
+    }
+
     fun hideBottomNavbar() {
         binding.bottomNavigationView.visibility = View.GONE
     }

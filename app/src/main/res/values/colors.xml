@@ -4,7 +4,10 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    
+    <color name="colorPrimaryTransparent">#ee6200EE</color>
+    <color name="colorPrimaryDarkTransparent">#ee3700B3</color>
+    <color name="colorAccentTransparent">#ee03DAC5</color>
+
 <!--    Background -->
     <color name="bg_main">#FFFFFF</color>
     <color name="bg_bottom_sheet">#FFFFFF</color>
@@ -12,6 +15,7 @@
     <color name="bg_movie_list_element">#CE93D8</color>
     <color name="bg_books">#FFF59D</color>
     <color name="bg_games">#A5D6A7</color>
+    <color name="bg_darker">#22000000</color>
 
 <!--    Text -->
     <color name="text_on_primary">#FFFFFF</color>

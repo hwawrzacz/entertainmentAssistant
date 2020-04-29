@@ -29,7 +29,7 @@
         android:id="@+id/nav_series"
         android:name="com.wawrzacz.entertainmentassistant.activity_main.series.SeriesFragment"
         android:label="BooksFragment"
-        tools:layout="@layout/fragment_books">
+        tools:layout="@layout/fragment_series">
         <action
             android:id="@+id/action_nav_books_to_nav_games"
             app:destination="@id/nav_games" />

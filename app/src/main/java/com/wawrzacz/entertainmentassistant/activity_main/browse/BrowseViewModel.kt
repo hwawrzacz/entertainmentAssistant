@@ -14,20 +14,27 @@ class BrowseViewModel: ViewModel() {
     val selectedItemId: LiveData<UniversalItem> = _selectedItemId
 
     private val _isLoading = MutableLiveData<Boolean>(false)
-    val isListLoading: LiveData<Boolean> = _isLoading
+    val isLoading: LiveData<Boolean> = _isLoading
 
     private val _hasAnyResults = MutableLiveData<Boolean?>()
     val hasAnyResults: LiveData<Boolean?> = _hasAnyResults
 
-    val foundItems: LiveData<List<UniversalItem>> = Transformations.map(apiRepository.foundItemsResponse) {
+    private val _isSuccessful = MutableLiveData<Boolean?>()
+    val isSuccessful: LiveData<Boolean?> = _isSuccessful
+
+    val foundItems: LiveData<List<UniversalItem>?> = Transformations.map(apiRepository.foundItemsResponse) {
         _isLoading.value = false
-        _hasAnyResults.value = !it.items.isNullOrEmpty()
-        it.items
+        if (it == null) {
+            _isSuccessful.value = false
+        } else {
+            _hasAnyResults.value = it.response
+        }
+        it?.items
     }
 
     fun findItems(query: String?) {
         if (query.isNullOrBlank()){
-            _hasAnyResults.value = null
+            _isSuccessful.value = null
         } else {
             _isLoading.value = true
             apiRepository.findItems(query)

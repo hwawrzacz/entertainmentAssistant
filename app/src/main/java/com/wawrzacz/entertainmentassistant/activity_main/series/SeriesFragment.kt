@@ -8,17 +8,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.databinding.FragmentBooksBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentSeriesBinding
 
 class SeriesFragment: Fragment() {
-    private lateinit var binding: FragmentBooksBinding
+    private lateinit var binding: FragmentSeriesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_books, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_series, container, false)
 
         return binding.root
     }

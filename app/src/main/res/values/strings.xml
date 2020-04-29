@@ -40,7 +40,11 @@
     <string name="label_to_play">To play</string>
     <string name="label_all">All</string>
     <string name="label_favourites">Favourites</string>
-    <style name="label_duration">%1$s min</style>
+    <string name="label_duration">%1$s min</string>
+    <string name="label_director">Director</string>
+    <string name="label_writer">Writer</string>
+    <string name="label_plot">Plot</string>
+    <string name="label_genre">Genre</string>
 
     <!--    Messages -->
     <string name="message_no_internet_access">No internet access</string>
@@ -52,6 +56,10 @@
     <string name="message_action_browse">Search for movies, TV series and games</string>
     <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
+
+    <!-- Errors -->
+    <string name="error_general">An error occurred</string>
+    <string name="error_getting_data">An error occurred while getting data</string>
 
     <!-- Dialogs, prompts -->
     <string name="title_delete_account">Delete account</string>

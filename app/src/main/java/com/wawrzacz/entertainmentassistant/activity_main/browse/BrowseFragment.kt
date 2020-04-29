@@ -2,10 +2,11 @@ package com.wawrzacz.entertainmentassistant.activity_main.browse
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -41,8 +42,11 @@ class BrowseFragment: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_browse))
-        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.browse_24)
+
+        val activity = (requireActivity() as AppCompatActivity)
+        val actionBar = activity.supportActionBar
+        actionBar?.title = getString(R.string.label_browse)
+        actionBar?.setIcon(R.drawable.browse_24)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -82,22 +86,36 @@ class BrowseFragment: Fragment() {
             refreshData(it)
         })
 
-        browseViewModel.isListLoading.observe(viewLifecycleOwner, Observer {
+        browseViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.GONE
+            else {
+                binding.progressBar.visibility = View.GONE
+            }
         })
 
         browseViewModel.hasAnyResults.observe(viewLifecycleOwner, Observer {
             when (it) {
                 null -> {
-                    showHomeBanner()
+                    showBanner(getString(R.string.message_action_browse))
+                    hideResults()
+                    hideProgressBar()
                 }
                 false -> {
-                    showNoResultsBanner()
+                    showBanner(getString(R.string.message_no_results))
+                    hideResults()
+                    hideProgressBar()
                 }
                 true -> {
+                    hideBanner()
+                    hideProgressBar()
                     showResults()
                 }
+            }
+        })
+
+        browseViewModel.isSuccessful.observe(viewLifecycleOwner, Observer {
+            if (it !== null) {
+                showBanner(getString(R.string.error_getting_data))
             }
         })
 
@@ -118,31 +136,43 @@ class BrowseFragment: Fragment() {
     }
 
     private fun openDetailsFragment(item: UniversalItem) {
-        val fragment = DetailsFragment(item)
+        val activity = (requireActivity() as MainActivity)
+        activity.hideKeyboard()
 
-        fragment.show(parentFragmentManager, "Dialog fragment")
-//        (requireActivity() as MainActivity).openDetailsFragment(fragment)
-//        (requireActivity() as MainActivity).hideBottomNavbar()
-        Toast.makeText(context, "New ${item.type} detail fragment", Toast.LENGTH_LONG).show()
+
+        var fragmentManager = requireActivity().supportFragmentManager
+        val fragment = DetailsFragment(item)
+        fragmentManager.beginTransaction().apply {
+            setTransition(FragmentTransaction.TRANSIT_NONE)
+            add(android.R.id.content, fragment)
+            addToBackStack(fragment.tag)
+        }.commit()
     }
 
     //#region UI changes
-    private fun showHomeBanner() {
-        binding.moviesRecyclerView.visibility = View.GONE
-        binding.bannerMessage.visibility = View.VISIBLE
-        binding.bannerMessage.text = getString(R.string.message_action_browse)
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun showNoResultsBanner() {
-        binding.moviesRecyclerView.visibility = View.GONE
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    private fun showBanner(string: String) {
         binding.bannerMessage.visibility = View.VISIBLE
-        binding.bannerMessage.text = getString(R.string.message_no_results)
+        binding.bannerMessage.text = string
+    }
+
+    private fun hideBanner() {
+        binding.bannerMessage.visibility = View.GONE
     }
 
     private fun showResults() {
         binding.moviesRecyclerView.visibility = View.VISIBLE
-        binding.bannerMessage.visibility = View.GONE
-        binding.bannerMessage.text = null
+    }
+
+    private fun hideResults() {
+        binding.moviesRecyclerView.visibility = View.GONE
     }
     //#endregion
 }

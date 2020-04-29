@@ -1,199 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:fitsSystemWindows="true">
 
-    <ScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/details_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_fragment_regular"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@color/bg_movies">
 
-            android:background="@color/bg_movies"
-            android:clickable="true"
-            android:elevation="100dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_regular"
+                android:indeterminate="true"
+                app:layout_constraintBottom_toBottomOf="@+id/details_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
-
-                <ImageView
-                    android:id="@+id/poster"
-                    android:layout_width="@dimen/details_image_width"
-                    android:layout_height="@dimen/details_image_height"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:src="@color/poster_default_game_background" />
-
-                <TextView
-                    android:id="@+id/title"
-                    style="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:layout_width="0dp"
-
-                    android:layout_height="wrap_content"
-                    android:text="Dziki Dżony z Arizony"
-                    android:layout_marginStart="@dimen/margin_regular"
-                    android:layout_marginEnd="@dimen/margin_regular"
-
-                    android:maxLines="3"
-                    android:ellipsize="end"
-
-                    app:layout_constraintEnd_toStartOf="@+id/favourite_toggle"
-                    app:layout_constraintStart_toEndOf="@+id/poster"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"/>
-
-                <CheckBox
-                    android:id="@+id/favourite_toggle"
-                    android:layout_width="@dimen/icon_size"
-                    android:layout_height="@dimen/icon_size"
-
-                    android:button="@drawable/heart_border_24"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/production"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="@dimen/margin_regular"
-                    android:text="Universal Pictures"
-                    android:ellipsize="end"
-
-                    app:layout_constraintEnd_toEndOf="@+id/title"
-                    app:layout_constraintStart_toEndOf="@+id/poster"
-                    app:layout_constraintTop_toBottomOf="@+id/title"
-                    app:layout_constraintHorizontal_bias="0.0"/>
-
-                <ImageView
-                    android:id="@+id/icon"
-                    android:layout_width="@dimen/icon_size"
-                    android:layout_height="@dimen/icon_size"
-                    android:layout_marginStart="@dimen/margin_regular"
-                    android:src="@drawable/movie_24"
-
-                    app:layout_constraintStart_toEndOf="@+id/poster"
-                    app:layout_constraintTop_toBottomOf="@+id/production" />
-
-                <TextView
-                    android:id="@+id/year"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginStart="@dimen/margin_regular"
-                    android:text="1923"
-
-                    app:layout_constraintBottom_toBottomOf="@+id/icon"
-                    app:layout_constraintStart_toEndOf="@+id/icon"
-                    app:layout_constraintTop_toBottomOf="@+id/production" />
-
-                <TextView
-                    android:id="@+id/runtime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_regular"
-
-                    android:text="143 min"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-
-                    app:layout_constraintStart_toEndOf="@+id/year"
-                    app:layout_constraintTop_toTopOf="@+id/year"
-                    app:layout_constraintBottom_toBottomOf="@+id/year" />
-
-                <TextView
-                    android:id="@+id/seasons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_regular"
-
-                    android:text="6 seasons"
-                    style="@style/TextAppearance.MaterialComponents.Body1"
-
-                    app:layout_constraintStart_toEndOf="@+id/runtime"
-                    app:layout_constraintTop_toTopOf="@+id/year"
-                    app:layout_constraintBottom_toBottomOf="@+id/year"  />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.16000003" />
 
             <TextView
-                android:id="@+id/label_director"
+                android:id="@+id/message"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_regular"
+                android:text="@string/error_getting_data"
+                android:textAlignment="center"
+                android:visibility="gone"
 
-                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25" />
 
-                android:text="Director" />
-
-            <TextView
-                android:id="@+id/director"
+            <ScrollView
+                android:id="@+id/details_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                android:text="Johny z arizony"
-                style="@style/TextAppearance.MaterialComponents.Body1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:elevation="100dp"
 
-            <TextView
-                android:id="@+id/label_writer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_regular"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_fragment_regular">
 
-                style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                android:text="Writer" />
+                        <ImageView
+                            android:id="@+id/poster"
+                            android:layout_width="@dimen/details_image_width"
+                            android:layout_height="@dimen/details_image_height"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/writer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                        <TextView
+                            android:id="@+id/title"
+                            style="@style/TextAppearance.MaterialComponents.Headline4"
+                            android:layout_width="0dp"
 
-                android:text="Johny z arizony"
-                style="@style/TextAppearance.MaterialComponents.Body1" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_regular"
+                            android:layout_marginEnd="@dimen/margin_regular"
 
-            <TextView
-                android:id="@+id/label_genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_regular"
+                            android:ellipsize="end"
+                            android:maxLines="3"
 
-                android:text="Genre"
-                style="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                            app:layout_constraintEnd_toStartOf="@+id/favourite_toggle"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/poster"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                        <CheckBox
+                            android:id="@+id/favourite_toggle"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
 
-                android:text="Comedy, drama"
-                style="@style/TextAppearance.MaterialComponents.Body1" />
+                            android:button="@drawable/heart_border_24"
 
-            <TextView
-                android:id="@+id/label_plot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_regular"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                android:text="Plot"
-                style="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                        <TextView
+                            android:id="@+id/production"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/plot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_regular"
+                            android:ellipsize="end"
 
-                android:text="Dziki Dźony z Arizony idzie do lasu"
-                style="@style/TextAppearance.MaterialComponents.Body1" />
-        </LinearLayout>
-    </ScrollView>
+                            app:layout_constraintEnd_toEndOf="@+id/title"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/poster"
+                            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                        <ImageView
+                            android:id="@+id/icon"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginStart="@dimen/margin_regular"
+
+                            app:layout_constraintStart_toEndOf="@+id/poster"
+                            app:layout_constraintTop_toBottomOf="@+id/production" />
+
+                        <TextView
+                            android:id="@+id/year"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="@dimen/margin_regular"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/icon"
+                            app:layout_constraintStart_toEndOf="@+id/icon"
+                            app:layout_constraintTop_toBottomOf="@+id/production" />
+
+                        <TextView
+                            android:id="@+id/runtime"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="@dimen/margin_regular"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/year"
+                            app:layout_constraintStart_toEndOf="@+id/year"
+                            app:layout_constraintTop_toTopOf="@+id/year" />
+
+                        <TextView
+                            android:id="@+id/seasons"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginStart="@dimen/margin_regular"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/year"
+                            app:layout_constraintStart_toEndOf="@+id/runtime"
+                            app:layout_constraintTop_toTopOf="@+id/year" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/label_director"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="@dimen/margin_regular"
+
+                        android:text="@string/label_director" />
+
+                    <TextView
+                        android:id="@+id/director"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/label_writer"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="@dimen/margin_regular"
+                        android:text="@string/label_writer" />
+
+                    <TextView
+                        android:id="@+id/writer"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/label_genre"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="@dimen/margin_regular"
+                        android:text="@string/label_genre" />
+
+                    <TextView
+                        android:id="@+id/genre"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/label_plot"
+                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="@dimen/margin_regular"
+                        android:text="@string/label_plot" />
+
+                    <TextView
+                        android:id="@+id/plot"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
