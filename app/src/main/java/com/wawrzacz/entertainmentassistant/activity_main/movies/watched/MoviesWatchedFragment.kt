@@ -45,15 +45,14 @@ class MoviesWatchedFragment: Fragment(),
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrBlank()){
-                    findMovies(newText)
-                }
+                binding.search.text = "Search: favourites: $newText"
+//                if (!newText.isNullOrBlank()){
+//                    findMovies(newText)
+//                }
                 return true
             }
 
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextSubmit(query: String?): Boolean { return false }
         })
 
         super.onPrepareOptionsMenu(menu)

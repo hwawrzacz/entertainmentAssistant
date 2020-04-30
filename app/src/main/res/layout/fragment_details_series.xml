@@ -111,20 +111,6 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/production"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-
-                            android:layout_marginStart="@dimen/margin_regular"
-                            android:ellipsize="end"
-
-                            app:layout_constraintEnd_toEndOf="@+id/title"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/poster"
-                            app:layout_constraintTop_toBottomOf="@+id/title" />
-
                         <ImageView
                             android:id="@+id/icon"
                             android:layout_width="@dimen/icon_size"
@@ -132,7 +118,7 @@
                             android:layout_marginStart="@dimen/margin_regular"
 
                             app:layout_constraintStart_toEndOf="@+id/poster"
-                            app:layout_constraintTop_toBottomOf="@+id/production" />
+                            app:layout_constraintTop_toBottomOf="@+id/title" />
 
                         <TextView
                             android:id="@+id/year"
@@ -144,19 +130,7 @@
 
                             app:layout_constraintBottom_toBottomOf="@+id/icon"
                             app:layout_constraintStart_toEndOf="@+id/icon"
-                            app:layout_constraintTop_toBottomOf="@+id/production" />
-
-                        <TextView
-                            android:id="@+id/runtime"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:layout_marginStart="@dimen/margin_regular"
-
-                            app:layout_constraintBottom_toBottomOf="@+id/year"
-                            app:layout_constraintStart_toEndOf="@+id/year"
-                            app:layout_constraintTop_toTopOf="@+id/year" />
+                            app:layout_constraintTop_toBottomOf="@+id/title" />
 
                         <TextView
                             android:id="@+id/seasons"
@@ -167,26 +141,9 @@
                             android:layout_marginStart="@dimen/margin_regular"
 
                             app:layout_constraintBottom_toBottomOf="@+id/year"
-                            app:layout_constraintStart_toEndOf="@+id/runtime"
+                            app:layout_constraintStart_toEndOf="@+id/year"
                             app:layout_constraintTop_toTopOf="@+id/year" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/label_director"
-                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginTop="@dimen/margin_regular"
-
-                        android:text="@string/label_director" />
-
-                    <TextView
-                        android:id="@+id/director"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="match_parent"
-
-                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/label_writer"

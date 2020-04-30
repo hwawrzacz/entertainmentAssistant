@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
     }
 
-    private fun initializeActionBar() {
+    fun initializeActionBar() {
         setSupportActionBar(binding.appToolbar)
     }
 

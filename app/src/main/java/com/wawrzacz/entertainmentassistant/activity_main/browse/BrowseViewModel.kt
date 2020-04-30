@@ -10,8 +10,8 @@ import com.wawrzacz.entertainmentassistant.data.repos.ApiRepository
 class BrowseViewModel: ViewModel() {
     private val apiRepository = ApiRepository
 
-    private val _selectedItemId = MutableLiveData<UniversalItem>()
-    val selectedItemId: LiveData<UniversalItem> = _selectedItemId
+    private val _selectedItem = MutableLiveData<UniversalItem?>()
+    val selectedItem: LiveData<UniversalItem?> = _selectedItem
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -41,7 +41,7 @@ class BrowseViewModel: ViewModel() {
         }
     }
 
-    fun setSelectedItem(item: UniversalItem) {
-        _selectedItemId.value = item
+    fun setSelectedItem(item: UniversalItem?) {
+        _selectedItem.value = item
     }
 }

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.details.MovieDetailsFragment
 import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
@@ -119,8 +119,20 @@ class BrowseFragment: Fragment() {
             }
         })
 
-        browseViewModel.selectedItemId.observe(viewLifecycleOwner, Observer {
-            openDetailsFragment(it)
+        browseViewModel.selectedItem.observe(viewLifecycleOwner, Observer {
+            if (it !== null) {
+                when (it.type){
+                    "movie" -> {
+                        openMovieDetailsFragment(it.id)
+                    }
+                    "series" -> {
+                        openSeriesDetailsFragment(it.id)
+                    }
+                    "game" -> {
+                        openGameDetailsFragment(it.id)
+                    }
+                }
+            }
         })
     }
 
@@ -132,19 +144,29 @@ class BrowseFragment: Fragment() {
         moviesAdapter.submitList(data)
     }
 
-    private fun clearData() {
+    private fun openMovieDetailsFragment(id: String) {
+        val movieDetailsFragment = MovieDetailsFragment(id)
+        openDetailsFragment(movieDetailsFragment)
     }
 
-    private fun openDetailsFragment(item: UniversalItem) {
+    private fun openSeriesDetailsFragment(id: String) {
+        val movieDetailsFragment = MovieDetailsFragment(id)
+        openDetailsFragment(movieDetailsFragment)
+    }
+
+    private fun openGameDetailsFragment(id: String) {
+        val movieDetailsFragment = MovieDetailsFragment(id)
+        openDetailsFragment(movieDetailsFragment)
+    }
+
+    private fun openDetailsFragment(fragment: Fragment) {
         val activity = (requireActivity() as MainActivity)
         activity.hideKeyboard()
 
-
-        var fragmentManager = requireActivity().supportFragmentManager
-        val fragment = DetailsFragment(item)
+        val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().apply {
-            setTransition(FragmentTransaction.TRANSIT_NONE)
-            add(android.R.id.content, fragment)
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            replace(android.R.id.content, fragment)
             addToBackStack(fragment.tag)
         }.commit()
     }

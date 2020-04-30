@@ -41,10 +41,19 @@ class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<Uni
         holder.year.text =  item.year
         holder.typeIcon.setImageResource(getTypeDrawable(item.type))
         holder.favourite.visibility = View.GONE
-//        (getIsFavouriteDrawable(movie_24.isFavourite))
 
         holder.itemView.setOnClickListener{
             viewModel.setSelectedItem(item)
+            viewModel.setSelectedItem(null)
+            /*  TODO: Improve above
+                Yep, that's kind of barbarian solution, but let me explain.
+                When the item is set, observer from BrowseFragment automatically reacts for change
+                and shows details fragment. It happens every time the BrowseFragment fragment is reopened.
+                To avoid this, item is immediately being nulled, and that is handled in BrowseFragment:
+                When null value comes from viewModel, then details fragment won't be shown
+
+                I believe, there's much better solution, and I'll fix it, but not today.
+             */
         }
     }
 

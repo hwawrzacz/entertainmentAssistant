@@ -35,6 +35,7 @@ class MoviesToWatchFragment: Fragment(),
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+                binding.search.text = "Search: favourites: $newText"
                 return true
             }
 

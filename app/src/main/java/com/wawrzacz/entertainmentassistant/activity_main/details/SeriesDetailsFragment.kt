@@ -13,12 +13,12 @@ import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
-import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsSeriesBinding
 import java.util.*
 
-class DetailsFragment(private val item: UniversalItem): DialogFragment() {
+class SeriesDetailsFragment(private val item: UniversalItem): DialogFragment() {
 
-    private lateinit var binding: FragmentDetailsBinding
+    private lateinit var binding: FragmentDetailsSeriesBinding
     private lateinit var detailsViewModel: DetailsViewModel
 
     override fun onCreateView(
@@ -26,9 +26,8 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_movie, container, false)
 
-        setViewsVisibilityBasedOnItemType()
         initializeViewModel()
         setButtonListeners()
         observeViewModelChanges()
@@ -50,6 +49,7 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
         when (item.itemId) {
             android.R.id.home -> {
                 dismiss()
+                (requireActivity() as MainActivity).initializeActionBar()
                 (requireActivity() as MainActivity).hideBottomNavbar()
                 (requireActivity() as MainActivity).showBottomNavbar()
             }
@@ -70,29 +70,6 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun setViewsVisibilityBasedOnItemType() {
-        when (item.type.toLowerCase()) {
-            "game" -> {
-                binding.production.visibility = View.GONE
-                binding.runtime.visibility = View.GONE
-                binding.seasons.visibility = View.GONE
-                binding.labelWriter.visibility = View.GONE
-                binding.writer.visibility = View.GONE
-            }
-            "movie" -> {
-                binding.seasons.visibility = View.GONE
-                binding.labelWriter.visibility = View.GONE
-                binding.writer.visibility = View.GONE
-            }
-            "series" -> {
-                binding.production.visibility = View.GONE
-                binding.runtime.visibility = View.GONE
-                binding.labelDirector.visibility = View.GONE
-                binding.director.visibility = View.GONE
-            }
-        }
-    }
-
     private fun initializeViewModel() {
         detailsViewModel = ViewModelProvider(viewModelStore, DetailsViewModelFactory())
             .get(DetailsViewModel::class.java)
@@ -109,13 +86,10 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
             if (it != null) {
                 setPosterBasedOnUrl(it, binding.poster)
                 binding.title.text = it.title
-                binding.production.text = it.production
                 binding.icon.setImageResource(getTypeDrawable(it.type))
                 binding.year.text = it.year
-                binding.runtime.text = it.runtime
                 binding.seasons.text = adjustSeasonsText(it.totalSeasons)
                 binding.genre.text = it.genre
-                binding.director.text = it.director
                 binding.writer.text = it.writer
                 binding.plot.text = it.plot
             }
