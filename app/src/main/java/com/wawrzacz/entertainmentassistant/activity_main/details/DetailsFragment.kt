@@ -1,24 +1,19 @@
 package com.wawrzacz.entertainmentassistant.activity_main.details
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsBinding
-import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
 import java.util.*
 
 class DetailsFragment(private val item: UniversalItem): DialogFragment() {
@@ -35,6 +30,7 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
 
         setViewsVisibilityBasedOnItemType()
         initializeViewModel()
+        setButtonListeners()
         observeViewModelChanges()
 
         return binding.root
@@ -45,12 +41,6 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        return dialog
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         super.onCreateOptionsMenu(menu, inflater)
@@ -59,9 +49,9 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                Toast.makeText(context, "Back pressed", Toast.LENGTH_LONG).show()
                 dismiss()
-                activity?.onBackPressed()
+                (requireActivity() as MainActivity).hideBottomNavbar()
+                (requireActivity() as MainActivity).showBottomNavbar()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -108,8 +98,14 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
             .get(DetailsViewModel::class.java)
     }
 
+    private fun setButtonListeners() {
+        binding.favouriteToggle.setOnClickListener {
+            detailsViewModel.addItemToFirebaseDatabase()
+        }
+    }
+
     private fun observeViewModelChanges() {
-        detailsViewModel.getItem(item.id).observe(viewLifecycleOwner, Observer {
+        detailsViewModel.getDetailedItem(item.id).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 setPosterBasedOnUrl(it, binding.poster)
                 binding.title.text = it.title
@@ -145,14 +141,14 @@ class DetailsFragment(private val item: UniversalItem): DialogFragment() {
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
-        if (item.posterURL == "N/A") {
+        if (item.posterUrl == "N/A") {
             val imageResource: Int = when (item.type) {
                 "movie" -> R.mipmap.poster_default_movie
                 "series" -> R.mipmap.poster_default_series
                 else -> R.mipmap.poster_default_game
             }
             view.setImageResource(imageResource)
-        } else Picasso.get().load(item.posterURL).into(view)
+        } else Picasso.get().load(item.posterUrl).into(view)
     }
 
     private fun adjustSeasonsText(text: String?): String {

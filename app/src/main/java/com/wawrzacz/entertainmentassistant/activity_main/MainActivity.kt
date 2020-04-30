@@ -98,6 +98,14 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.GONE
     }
 
+    fun showBottomNavbar() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun requestFocusOnNavbar() {
+        binding.bottomNavigationView.requestFocus()
+    }
+
     fun openDetailsFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.main_fragment_container, fragment)

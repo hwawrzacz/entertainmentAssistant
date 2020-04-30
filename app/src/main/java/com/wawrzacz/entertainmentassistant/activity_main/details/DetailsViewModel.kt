@@ -6,12 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.data.repos.ApiRepository
+import com.wawrzacz.entertainmentassistant.data.repos.MoviesFirebaseRepository
 
 class DetailsViewModel: ViewModel() {
 
     private val apiRepository = ApiRepository
+    private val firebaseRepository = MoviesFirebaseRepository
 
     private val _itemId = MutableLiveData<String>()
 
@@ -24,14 +25,23 @@ class DetailsViewModel: ViewModel() {
     private val _isSuccessful = MutableLiveData<Boolean>()
     val isSuccessful: LiveData<Boolean> = _isSuccessful
 
-    fun getItem(id: String): LiveData<DetailedItem> {
+    fun getDetailedItem(id: String): LiveData<DetailedItem> {
         _isLoading.value = true
         return Transformations.map(apiRepository.getItem(id)){
+            Log.i("schab", "tranformation")
             if (it === null) _isSuccessful.value = false
             else if (it.response.toBoolean()) _isSuccessful.value = it.response.toBoolean()
 
             _isLoading.value = false
+            _selectedItem.value = it
             it
+        }
+    }
+
+    fun addItemToFirebaseDatabase() {
+        if (_selectedItem.value != null){
+            Log.i("schab", "add item ${_selectedItem.value}")
+            firebaseRepository.addMovieToCurrentUsersFavourite(_selectedItem.value)
         }
     }
 }
