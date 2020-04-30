@@ -122,6 +122,7 @@ class BrowseFragment: Fragment() {
         browseViewModel.selectedItem.observe(viewLifecycleOwner, Observer {
             if (it !== null) {
                 (requireActivity() as MainActivity).clearFocusFromSearchView()
+                (requireActivity() as MainActivity).initializeActionBar()
                 when (it.type){
                     "movie" -> {
                         openMovieDetailsFragment(it.id)

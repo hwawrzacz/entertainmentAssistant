@@ -104,18 +104,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
-    fun requestFocusOnNavbar() {
-        binding.bottomNavigationView.requestFocus()
-    }
-
-    fun openDetailsFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.main_fragment_container, fragment)
-            addToBackStack(fragment.tag)
-        }.commit()
-    }
-
     fun clearFocusFromSearchView() {
         searchView?.clearFocus()
+        initializeActionBar()
     }
 }
