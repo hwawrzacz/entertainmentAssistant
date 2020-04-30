@@ -121,6 +121,7 @@ class BrowseFragment: Fragment() {
 
         browseViewModel.selectedItem.observe(viewLifecycleOwner, Observer {
             if (it !== null) {
+                (requireActivity() as MainActivity).clearFocusFromSearchView()
                 when (it.type){
                     "movie" -> {
                         openMovieDetailsFragment(it.id)
@@ -166,8 +167,8 @@ class BrowseFragment: Fragment() {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            replace(android.R.id.content, fragment)
-            addToBackStack(fragment.tag)
+            add(android.R.id.content, fragment)
+            addToBackStack("DETAILS_FRAGMENT")
         }.commit()
     }
 

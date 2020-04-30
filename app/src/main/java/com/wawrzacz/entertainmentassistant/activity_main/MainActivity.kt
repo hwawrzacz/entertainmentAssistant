@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val accountFragment = AccountFragment()
+    private var searchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val accountMenuItem = menu.findItem(R.id.nav_open_account_panel)
         val searchItem = menu.findItem(R.id.nav_search)
-        val searchView = searchItem?.actionView as SearchView?
+        searchView = searchItem?.actionView as SearchView?
 
         searchView?.setOnSearchClickListener { accountMenuItem.isVisible = false }
 
@@ -111,5 +113,9 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.main_fragment_container, fragment)
             addToBackStack(fragment.tag)
         }.commit()
+    }
+
+    fun clearFocusFromSearchView() {
+        searchView?.clearFocus()
     }
 }
