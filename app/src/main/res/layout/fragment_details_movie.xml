@@ -189,22 +189,6 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/label_writer"
-                        style="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginTop="@dimen/margin_regular"
-                        android:text="@string/label_writer" />
-
-                    <TextView
-                        android:id="@+id/writer"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="match_parent"
-
-                        android:layout_height="wrap_content" />
-
-                    <TextView
                         android:id="@+id/label_genre"
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"

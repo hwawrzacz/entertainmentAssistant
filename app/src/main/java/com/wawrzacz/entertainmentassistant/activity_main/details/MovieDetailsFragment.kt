@@ -1,6 +1,5 @@
 package com.wawrzacz.entertainmentassistant.activity_main.details
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -48,7 +47,8 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                dismiss()
+                requireActivity().onBackPressed()
+                (requireActivity() as MainActivity).initializeActionBar()
             }
         }
         return super.onOptionsItemSelected(item)
