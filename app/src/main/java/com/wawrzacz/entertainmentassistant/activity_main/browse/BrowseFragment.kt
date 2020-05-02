@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.details.MovieDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.games.GameDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.MovieDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.SeriesDetailsFragment
 import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
@@ -147,18 +149,22 @@ class BrowseFragment: Fragment() {
     }
 
     private fun openMovieDetailsFragment(id: String) {
-        val movieDetailsFragment = MovieDetailsFragment(id)
+        val movieDetailsFragment =
+            MovieDetailsFragment(
+                id
+            )
         openDetailsFragment(movieDetailsFragment)
     }
 
     private fun openSeriesDetailsFragment(id: String) {
-        val movieDetailsFragment = MovieDetailsFragment(id)
-        openDetailsFragment(movieDetailsFragment)
+        val seriesDetailsFragment =
+            SeriesDetailsFragment(id)
+        openDetailsFragment(seriesDetailsFragment)
     }
 
     private fun openGameDetailsFragment(id: String) {
-        val movieDetailsFragment = MovieDetailsFragment(id)
-        openDetailsFragment(movieDetailsFragment)
+        val gamesDetailsFragment = GameDetailsFragment(id)
+        openDetailsFragment(gamesDetailsFragment)
     }
 
     private fun openDetailsFragment(fragment: Fragment) {

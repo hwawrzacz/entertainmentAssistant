@@ -14,10 +14,7 @@ class DetailsViewModel: ViewModel() {
     private val apiRepository = ApiRepository
     private val firebaseRepository = MoviesFirebaseRepository
 
-    private val _itemId = MutableLiveData<String>()
-
-    private val _selectedItem = MutableLiveData<DetailedItem?>()
-    val selectedItem: LiveData<DetailedItem?> = _selectedItem
+    private val _currentItem = MutableLiveData<DetailedItem?>()
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -33,15 +30,14 @@ class DetailsViewModel: ViewModel() {
             else if (it.response.toBoolean()) _isSuccessful.value = it.response.toBoolean()
 
             _isLoading.value = false
-            _selectedItem.value = it
             it
         }
     }
 
     fun addItemToFirebaseDatabase() {
-        if (_selectedItem.value != null){
-            Log.i("schab", "add item ${_selectedItem.value}")
-            firebaseRepository.addMovieToCurrentUsersFavourite(_selectedItem.value)
+        if (_currentItem.value != null){
+            Log.i("schab", "add item ${_currentItem.value}")
+            firebaseRepository.addMovieToCurrentUserFavourites(_currentItem.value)
         }
     }
 }

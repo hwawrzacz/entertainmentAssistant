@@ -17,7 +17,7 @@ import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import java.util.*
 
 // idDedicated field determines whether or not favourite heart should be displayed. In Browse view it should'n be displayed
-class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<UniversalItem, BrowseListAdapter.UniversalItemViewHolder>(MovieDiffCallback()) {
+class BrowseListAdapter(private val browseViewModel: BrowseViewModel): ListAdapter<UniversalItem, BrowseListAdapter.UniversalItemViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UniversalItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -29,22 +29,14 @@ class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<Uni
     override fun onBindViewHolder(holder: UniversalItemViewHolder, position: Int) {
         val item = getItem(position)
         setPosterBasedOnUrl(item, holder)
-        if (item.posterURL == "N/A") {
-                val imageResource: Int = when (item.type) {
-                    "series" -> R.mipmap.poster_default_series
-                    "game" -> R.mipmap.poster_default_game
-                    else -> R.mipmap.poster_default_movie
-                }
-                holder.poster.setImageResource(imageResource)
-        } else Picasso.get().load(item.posterURL).into(holder.poster)
         holder.title.text = item.title
         holder.year.text =  item.year
         holder.typeIcon.setImageResource(getTypeDrawable(item.type))
         holder.favourite.visibility = View.GONE
 
         holder.itemView.setOnClickListener{
-            viewModel.setSelectedItem(item)
-            viewModel.setSelectedItem(null)
+            browseViewModel.setSelectedItem(item)
+            browseViewModel.setSelectedItem(null)
             /*  TODO: Improve above
                 Yep, that's kind of barbarian solution, but let me explain.
                 When the item is set, observer from BrowseFragment automatically reacts for change
@@ -66,7 +58,7 @@ class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<Uni
     }
 
     private fun setPosterBasedOnUrl(item: UniversalItem, holder: UniversalItemViewHolder) {
-        if (item.posterURL == "N/A") {
+        if (item.posterURL == "N/A" || item.posterURL.isEmpty()) {
             val imageResource: Int = when (item.type) {
                 "series" -> R.mipmap.poster_default_series
                 "game" -> R.mipmap.poster_default_game
@@ -80,22 +72,7 @@ class BrowseListAdapter(private val viewModel: BrowseViewModel): ListAdapter<Uni
         return when (value.toLowerCase(Locale.getDefault())) {
             "movie" -> R.drawable.movie_24
             "series" -> R.drawable.series_24
-            else -> R.drawable.gamepad
+            else -> R.drawable.gamepad_filled
         }
-    }
-
-//    private fun getIsFavouriteDrawable(value: Boolean): Int {
-//        return when (value) {
-//            true -> R.drawable.heart_filled_24
-//            else -> R.drawable.heart_border_24
-//        }
-//    }
-
-    private fun openDetailsFragment(id: String) {
-        Log.i("schab", "show details for: $id")
-    }
-
-    private fun toggleFavourites(id: String) {
-        Log.i("schab", "toggle: $id")
     }
 }

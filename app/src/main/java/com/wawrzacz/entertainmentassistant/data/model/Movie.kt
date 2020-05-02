@@ -6,22 +6,22 @@ import java.time.Year
 
 class Movie (
     @SerializedName("imdbID")
-    var id: Long?,
+    var id: String = "",
     @SerializedName("Title")
-    val title: String,
+    val title: String = "",
     @SerializedName("Poster")
-    val posterURL: String,
+    val posterURL: String = "",
     @SerializedName("Runtime")
-    val duration: String,
+    val duration: String = "",
     @SerializedName("Director")
-    val director: String,
+    val director: String = "",
     @SerializedName("Country")
-    val country: String,
+    val country: String = "",
     @SerializedName("Year")
-    val year: String,
+    val year: String = "",
     @SerializedName("Type")
-    val type: String,
-    val isFavourite: Boolean
+    val type: String = "",
+    val isFavourite: Boolean = false
 ){
 
     override fun toString(): String {

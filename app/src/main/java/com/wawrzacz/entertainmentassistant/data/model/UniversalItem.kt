@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName
 
 class UniversalItem(
     @SerializedName("imdbID")
-    val id: String,
+    val id: String = "",
     @SerializedName("Title")
-    val title: String,
+    val title: String = "",
     @SerializedName("Year")
-    val year: String,
+    val year: String = "",
     @SerializedName("Type")
-    val type: String,
+    val type: String = "",
     @SerializedName("Poster")
-    val posterURL: String,
-    val isFavourite: Boolean
+    val posterURL: String = "",
+    val isFavourite: Boolean = false
 ) {
     override fun toString(): String {
         return "$title $year"

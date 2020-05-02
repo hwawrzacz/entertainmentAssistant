@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/add_to_watched"
+        android:title="@string/label_add_to_watched"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/eye_outlined_24"/>
+
+    <item
+        android:id="@+id/add_to_to_watch"
+        android:title="@string/label_add_to_to_watch"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/bookmark_outlined_24"/>
+
+    <item
+        android:id="@+id/add_to_favourites"
+        android:title="@string/label_add_to_favourites"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/heart_border_24" />
+</menu>

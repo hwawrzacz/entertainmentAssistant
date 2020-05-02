@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:windowTranslucentStatus="false">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/bg_movies">
 
             <ProgressBar
@@ -79,6 +81,9 @@
                             android:id="@+id/poster"
                             android:layout_width="@dimen/details_image_width"
                             android:layout_height="@dimen/details_image_height"
+
+                            android:src="@mipmap/poster_default_game"
+
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,26 +99,18 @@
                             android:ellipsize="end"
                             android:maxLines="3"
 
-                            app:layout_constraintEnd_toStartOf="@+id/favourite_toggle"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/poster"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <CheckBox
-                            android:id="@+id/favourite_toggle"
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-
-                            android:button="@drawable/heart_border_24"
-
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
                             android:id="@+id/icon"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
                             android:layout_marginStart="@dimen/margin_regular"
+                            android:foregroundTint="@android:color/white"
 
                             app:layout_constraintStart_toEndOf="@+id/poster"
                             app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -133,7 +130,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/label_director"
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -150,7 +146,6 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/label_genre"
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -166,7 +161,6 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/label_plot"
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -1,9 +1,9 @@
-package com.wawrzacz.entertainmentassistant.activity_main.details
+package com.wawrzacz.entertainmentassistant.activity_main.games
 
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
@@ -11,44 +11,57 @@ import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
+import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
+import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
-import java.util.*
+import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsGameBinding
 
-class MovieDetailsFragment(private val movieId: String): DialogFragment() {
+class GameDetailsFragment(private val id: String): DialogFragment() {
 
-    private lateinit var binding: FragmentDetailsMovieBinding
+    private lateinit var binding: FragmentDetailsGameBinding
     private lateinit var detailsViewModel: DetailsViewModel
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_movie, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_game, container, false)
 
         initializeViewModel()
-        setButtonListeners()
         observeViewModelChanges()
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        initializeActionBar()
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+        mainActivity = requireActivity() as MainActivity
+        initializeActionBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+        inflater.inflate(R.menu.menu_details_playable, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                requireActivity().onBackPressed()
-                (requireActivity() as MainActivity).initializeActionBar()
+                mainActivity.onBackPressed()
+                mainActivity.initializeActionBar()
+            }
+            R.id.add_to_played -> {
+                makeToastLong("Add to played")
+            }
+            R.id.add_to_to_play -> {
+                makeToastLong("Add to to play")
+            }
+            R.id.add_to_favourites -> {
+                makeToastLong("Add to favourites")
             }
         }
         return super.onOptionsItemSelected(item)
@@ -56,9 +69,9 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
     private fun initializeActionBar() {
         val toolbar = binding.detailsToolbar
-        val activity = requireActivity() as AppCompatActivity
-        activity.setSupportActionBar(toolbar)
-        val actionBar = activity.supportActionBar
+
+        mainActivity.setSupportActionBar(toolbar)
+        val actionBar = mainActivity.supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.arrow_back_24)
@@ -68,25 +81,19 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun initializeViewModel() {
-        detailsViewModel = ViewModelProvider(viewModelStore, DetailsViewModelFactory())
+        detailsViewModel = ViewModelProvider(viewModelStore,
+            DetailsViewModelFactory()
+        )
             .get(DetailsViewModel::class.java)
     }
 
-    private fun setButtonListeners() {
-        binding.favouriteToggle.setOnClickListener {
-            detailsViewModel.addItemToFirebaseDatabase()
-        }
-    }
-
     private fun observeViewModelChanges() {
-        detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer {
+        detailsViewModel.getDetailedItem(id).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 setPosterBasedOnUrl(it, binding.poster)
                 binding.title.text = it.title
-                binding.production.text = it.production
-                binding.icon.setImageResource(getTypeDrawable(it.type))
+                binding.icon.setImageResource(R.drawable.gamepad_filled)
                 binding.year.text = it.year
-                binding.runtime.text = it.runtime
                 binding.genre.text = it.genre
                 binding.director.text = it.director
                 binding.plot.text = it.plot
@@ -113,21 +120,11 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
-        if (item.posterUrl == "N/A") {
-            val imageResource: Int = when (item.type) {
-                "movie" -> R.mipmap.poster_default_movie
-                "series" -> R.mipmap.poster_default_series
-                else -> R.mipmap.poster_default_game
-            }
-            view.setImageResource(imageResource)
-        } else Picasso.get().load(item.posterUrl).into(view)
+        if (item.posterUrl != "N/A")
+            Picasso.get().load(item.posterUrl).into(view)
     }
 
-    private fun getTypeDrawable(value: String): Int {
-        return when (value.toLowerCase(Locale.getDefault())) {
-            "movie" -> R.drawable.movie_24
-            "series" -> R.drawable.series_24
-            else -> R.drawable.gamepad
-        }
+    private fun makeToastLong(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

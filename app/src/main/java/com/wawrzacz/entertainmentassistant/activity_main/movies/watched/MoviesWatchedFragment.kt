@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.browse.BrowseViewModel
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesListFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesViewModel
+import com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesViewModelFactory
 import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesWatchedBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
@@ -20,7 +22,7 @@ class MoviesWatchedFragment: Fragment(),
     MoviesListFragment {
 
     private lateinit var binding: FragmentMoviesWatchedBinding
-    private lateinit var moviesViewModel: MoviesWatchedViewModel
+    private lateinit var moviesViewModel: MoviesViewModel
     // TODO: replaec browse view model
     private val moviesAdapter = BrowseListAdapter(BrowseViewModel())
 
@@ -35,6 +37,7 @@ class MoviesWatchedFragment: Fragment(),
         initializeRecyclerView()
         initializeViewModel()
         addViewModelObservers()
+        findMovies("")
 
         return binding.root
     }
@@ -72,19 +75,19 @@ class MoviesWatchedFragment: Fragment(),
     }
 
     private fun initializeViewModel() {
-        moviesViewModel = ViewModelProvider(this, MoviesWatchedViewModelFactory())
-            .get(MoviesWatchedViewModel::class.java)
+        moviesViewModel = ViewModelProvider(this, MoviesViewModelFactory())
+            .get(MoviesViewModel::class.java)
     }
 
     private fun addViewModelObservers() {
-        moviesViewModel.foundMovies.observe(viewLifecycleOwner, Observer {
-            if (it != null)
-                refreshData(it)
-        })
-
         moviesViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) binding.progressBar.visibility = View.VISIBLE
             else binding.progressBar.visibility = View.GONE
+        })
+
+        moviesViewModel.foundMovies.observe(viewLifecycleOwner, Observer {
+            if (it != null)
+                refreshData(it)
         })
     }
 

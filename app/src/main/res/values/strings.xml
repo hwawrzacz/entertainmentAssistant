@@ -41,10 +41,18 @@
     <string name="label_all">All</string>
     <string name="label_favourites">Favourites</string>
     <string name="label_duration">%1$s min</string>
+    <string name="label_production">Production</string>
     <string name="label_director">Director</string>
     <string name="label_writer">Writer</string>
     <string name="label_plot">Plot</string>
     <string name="label_genre">Genre</string>
+
+    <!-- Menu labels -->
+    <string name="label_add_to_watched">Add to watched</string>
+    <string name="label_add_to_to_watch">Add to to watch</string>
+    <string name="label_add_to_played">Add to played</string>
+    <string name="label_add_to_to_play">Add to to play</string>
+    <string name="label_add_to_favourites">Add to favourites</string>
 
     <!--    Messages -->
     <string name="message_no_internet_access">No internet access</string>

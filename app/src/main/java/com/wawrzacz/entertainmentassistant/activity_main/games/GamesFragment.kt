@@ -30,6 +30,6 @@ class GamesFragment: Fragment() {
 
     private fun setUpActionBar() {
         (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_games))
-        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.gamepad)
+        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.gamepad_filled)
     }
 }

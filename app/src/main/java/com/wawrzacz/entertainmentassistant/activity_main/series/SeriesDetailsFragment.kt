@@ -1,8 +1,9 @@
-package com.wawrzacz.entertainmentassistant.activity_main.details
+package com.wawrzacz.entertainmentassistant.activity_main.series
 
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -11,47 +12,57 @@ import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
+import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
+import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsSeriesBinding
-import java.util.*
 
-class SeriesDetailsFragment(private val item: UniversalItem): DialogFragment() {
+class SeriesDetailsFragment(private val id: String): DialogFragment() {
 
     private lateinit var binding: FragmentDetailsSeriesBinding
     private lateinit var detailsViewModel: DetailsViewModel
+    private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_movie, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_series, container, false)
 
         initializeViewModel()
-        setButtonListeners()
         observeViewModelChanges()
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        initializeActionBar()
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+        mainActivity = requireActivity() as MainActivity
+        initializeActionBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+        inflater.inflate(R.menu.menu_details_watchable, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                dismiss()
-                (requireActivity() as MainActivity).initializeActionBar()
-                (requireActivity() as MainActivity).hideBottomNavbar()
-                (requireActivity() as MainActivity).showBottomNavbar()
+                mainActivity.onBackPressed()
+                mainActivity.initializeActionBar()
+            }
+            R.id.add_to_watched -> {
+                makeToastLong("Add to watched")
+            }
+            R.id.add_to_to_watch -> {
+                makeToastLong("Add to to watch")
+            }
+            R.id.add_to_favourites -> {
+                makeToastLong("Add to favourites")
             }
         }
         return super.onOptionsItemSelected(item)
@@ -71,22 +82,18 @@ class SeriesDetailsFragment(private val item: UniversalItem): DialogFragment() {
     }
 
     private fun initializeViewModel() {
-        detailsViewModel = ViewModelProvider(viewModelStore, DetailsViewModelFactory())
+        detailsViewModel = ViewModelProvider(viewModelStore,
+            DetailsViewModelFactory()
+        )
             .get(DetailsViewModel::class.java)
     }
 
-    private fun setButtonListeners() {
-        binding.favouriteToggle.setOnClickListener {
-            detailsViewModel.addItemToFirebaseDatabase()
-        }
-    }
-
     private fun observeViewModelChanges() {
-        detailsViewModel.getDetailedItem(item.id).observe(viewLifecycleOwner, Observer {
+        detailsViewModel.getDetailedItem(id).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 setPosterBasedOnUrl(it, binding.poster)
                 binding.title.text = it.title
-                binding.icon.setImageResource(getTypeDrawable(it.type))
+                binding.icon.setImageResource(R.drawable.series_24)
                 binding.year.text = it.year
                 binding.seasons.text = adjustSeasonsText(it.totalSeasons)
                 binding.genre.text = it.genre
@@ -115,14 +122,8 @@ class SeriesDetailsFragment(private val item: UniversalItem): DialogFragment() {
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
-        if (item.posterUrl == "N/A") {
-            val imageResource: Int = when (item.type) {
-                "movie" -> R.mipmap.poster_default_movie
-                "series" -> R.mipmap.poster_default_series
-                else -> R.mipmap.poster_default_game
-            }
-            view.setImageResource(imageResource)
-        } else Picasso.get().load(item.posterUrl).into(view)
+        if (item.posterUrl != "N/A")
+            Picasso.get().load(item.posterUrl).into(view)
     }
 
     private fun adjustSeasonsText(text: String?): String {
@@ -133,11 +134,7 @@ class SeriesDetailsFragment(private val item: UniversalItem): DialogFragment() {
         return result
     }
 
-    private fun getTypeDrawable(value: String): Int {
-        return when (value.toLowerCase(Locale.getDefault())) {
-            "movie" -> R.drawable.movie_24
-            "series" -> R.drawable.series_24
-            else -> R.drawable.gamepad
-        }
+    private fun makeToastLong(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

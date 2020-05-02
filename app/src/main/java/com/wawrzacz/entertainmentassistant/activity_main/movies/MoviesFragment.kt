@@ -5,6 +5,10 @@ import android.view.*
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -18,7 +22,7 @@ import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 
 class MoviesFragment: Fragment() {
     private lateinit var binding: FragmentMoviesBinding
-    private lateinit var tabLayout: TabLayout
+
     private lateinit var viewPager: ViewPager2
     private val moviesFragments = listOf<MoviesListFragment>(
         MoviesToWatchFragment(),
@@ -50,14 +54,11 @@ class MoviesFragment: Fragment() {
 
     private fun initializeViewPager() {
         viewPager = binding.moviesViewPager
-        viewPager.adapter =
-            MoviesViewPagerAdapter(
-                this, moviesFragments
-            )
+        viewPager.adapter = MoviesViewPagerAdapter(this, moviesFragments)
     }
 
     private fun initializeTabLayout() {
-        tabLayout = binding.tabLayout
+        val tabLayout = binding.tabLayout
 
         TabLayoutMediator(
             tabLayout,
