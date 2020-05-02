@@ -1,6 +1,5 @@
 package com.wawrzacz.entertainmentassistant.ui.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,14 +57,14 @@ class BrowseListAdapter(private val browseViewModel: BrowseViewModel): ListAdapt
     }
 
     private fun setPosterBasedOnUrl(item: UniversalItem, holder: UniversalItemViewHolder) {
-        if (item.posterURL == "N/A" || item.posterURL.isEmpty()) {
+        if (item.posterUrl == "N/A" || item.posterUrl.isEmpty()) {
             val imageResource: Int = when (item.type) {
                 "series" -> R.mipmap.poster_default_series
                 "game" -> R.mipmap.poster_default_game
                 else -> R.mipmap.poster_default_movie
             }
             holder.poster.setImageResource(imageResource)
-        } else Picasso.get().load(item.posterURL).into(holder.poster)
+        } else Picasso.get().load(item.posterUrl).into(holder.poster)
     }
 
     private fun getTypeDrawable(value: String): Int {

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.model.Movie
 import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
 
 object MoviesFirebaseRepository {
@@ -30,25 +29,71 @@ object MoviesFirebaseRepository {
     private val _result = MutableLiveData<List<UniversalItem>>()
     val result: LiveData<List<UniversalItem>> = _result
 
-    private val _foundMovies = MutableLiveData<List<UniversalItem>>()
-    val foundMovies: LiveData<List<UniversalItem>> = _foundMovies
+    private val _foundToWatchMovies = MutableLiveData<List<UniversalItem>>()
+    val foundToWatchMovies: LiveData<List<UniversalItem>> = _foundToWatchMovies
 
-    fun getAllItems() {
-        val list = mutableListOf<UniversalItem>()
+    private val _foundWatchedMovies = MutableLiveData<List<UniversalItem>>()
+    val foundWatchedMovies: LiveData<List<UniversalItem>> = _foundWatchedMovies
 
-        moviesReference.addValueEventListener(object: ValueEventListener{
+    private val _foundFavouritesMovies = MutableLiveData<List<UniversalItem>>()
+    val foundFavouritesMovies: LiveData<List<UniversalItem>> = _foundFavouritesMovies
+
+    fun getAllWatchedMovies(section: String) {
+        val userId = firebaseAuth.currentUser?.uid
+        val moviesIds = mutableListOf<String>()
+        var sectionPath: String
+        var targetLiveData: MutableLiveData<List<UniversalItem>>
+
+        when (section) {
+            "to_watch" -> {
+                sectionPath = Path.TO_WATCH
+                targetLiveData = _foundToWatchMovies
+            }
+            "watched" -> {
+                sectionPath = Path.WATCHED
+                targetLiveData = _foundWatchedMovies
+            }
+            else -> {
+                sectionPath = Path.FAVOURITES
+                targetLiveData = _foundFavouritesMovies
+            }
+        }
+
+        Log.i("schab", "Looking for movies $section")
+        Log.i("schab", "Path: ${userId}/${Path.MOVIES}/$sectionPath")
+
+        usersReference.child("${userId}/${Path.MOVIES}/$sectionPath").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (row in dataSnapshot.children){
-                    val item = row.getValue(UniversalItem::class.java)
-                    if (item != null) {
-                        list.add(item)
-                        Log.i("schab", "Data changed: ${item}")
-                    }
-                }
-                _foundMovies.value = list
+                for (row in dataSnapshot.children)
+                    if (row.value != null && row.key != null)
+                        moviesIds.add(row.key!!)
+
+                getMoviesBasedOnIds(moviesIds, targetLiveData)
             }
             override fun onCancelled(p0: DatabaseError) {
                 Log.i("schab", "Change cancelled")
+            }
+        })
+    }
+
+    private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<UniversalItem>>) {
+        val foundMovies = mutableListOf<UniversalItem>()
+        moviesReference.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (movieId in moviesIds) {
+                    val movies = dataSnapshot.children
+                    for (movie in movies) {
+                        if (movie.key == movieId) {
+                            val movie = movie.getValue(UniversalItem::class.java)
+                            if (movie != null) foundMovies.add(movie)
+                        }
+                    }
+                }
+                targetLiveData.value = foundMovies
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
     }

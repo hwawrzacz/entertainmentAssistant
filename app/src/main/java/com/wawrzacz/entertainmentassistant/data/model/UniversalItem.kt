@@ -13,8 +13,7 @@ class UniversalItem(
     @SerializedName("Type")
     val type: String = "",
     @SerializedName("Poster")
-    val posterURL: String = "",
-    val isFavourite: Boolean = false
+    val posterUrl: String = ""
 ) {
     override fun toString(): String {
         return "$title $year"

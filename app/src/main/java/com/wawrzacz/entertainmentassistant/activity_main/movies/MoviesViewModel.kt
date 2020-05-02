@@ -13,7 +13,15 @@ class MoviesViewModel: ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    val foundMovies: LiveData<List<UniversalItem>> = Transformations.map(moviesRepository.foundMovies) {
+    val foundToWatchMovies: LiveData<List<UniversalItem>> = Transformations.map(moviesRepository.foundToWatchMovies) {
+        _isLoading.value = false
+        it
+    }
+    val foundWatchedMovies: LiveData<List<UniversalItem>> = Transformations.map(moviesRepository.foundWatchedMovies) {
+        _isLoading.value = false
+        it
+    }
+    val foundFavouritesMovies: LiveData<List<UniversalItem>> = Transformations.map(moviesRepository.foundFavouritesMovies) {
         _isLoading.value = false
         it
     }
@@ -22,8 +30,8 @@ class MoviesViewModel: ViewModel() {
         _isLoading.value = true
     }
 
-    fun findMovies(query: String) {
+    fun findMovies(section: String, query: String) {
         _isLoading.value = true
-        moviesRepository.getAllItems()
+        moviesRepository.getAllWatchedMovies(section)
     }
 }

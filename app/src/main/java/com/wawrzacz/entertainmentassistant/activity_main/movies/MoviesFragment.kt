@@ -2,32 +2,30 @@ package com.wawrzacz.entertainmentassistant.activity_main.movies
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.ui.adapters.MoviesViewPagerAdapter
-import com.wawrzacz.entertainmentassistant.activity_main.movies.favourites.MoviesFavouritesFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.to_watch.MoviesToWatchFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.watched.MoviesWatchedFragment
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 
 class MoviesFragment: Fragment() {
     private lateinit var binding: FragmentMoviesBinding
 
     private lateinit var viewPager: ViewPager2
-    private val moviesFragments = listOf<MoviesListFragment>(
-        MoviesToWatchFragment(),
-        MoviesWatchedFragment(),
-        MoviesFavouritesFragment()
+    private val moviesFragments = listOf(
+        MoviesListFragment(
+            "to_watch"
+        ),
+        MoviesListFragment(
+            "watched"
+        ),
+        MoviesListFragment(
+            "favourites"
+        )
     )
     private var currentMovieFragment: MoviesListFragment = moviesFragments[0]
 
