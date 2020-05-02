@@ -1,5 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView

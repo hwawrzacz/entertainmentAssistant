@@ -1,11 +1,11 @@
 package com.wawrzacz.entertainmentassistant.data.responses
 
 import com.google.gson.annotations.SerializedName
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
+import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 
 class ResponseUniversalItemsList (
     @SerializedName("Search")
-    val items: List<UniversalItem>,
+    val items: List<CommonListItem>,
     @SerializedName("totalResults")
     val totalResults: String,
     @SerializedName("Response")

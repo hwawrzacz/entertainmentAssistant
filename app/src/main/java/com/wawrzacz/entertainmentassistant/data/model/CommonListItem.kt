@@ -3,7 +3,7 @@ package com.wawrzacz.entertainmentassistant.data.model
 import android.icu.text.CaseMap
 import com.google.gson.annotations.SerializedName
 
-class UniversalItem(
+class CommonListItem(
     @SerializedName("imdbID")
     val id: String = "",
     @SerializedName("Title")

@@ -16,15 +16,15 @@ import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.games.GameDetailsFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MovieDetailsFragment
 import com.wawrzacz.entertainmentassistant.activity_main.series.SeriesDetailsFragment
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
+import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
-import com.wawrzacz.entertainmentassistant.ui.adapters.BrowseListAdapter
+import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
 class BrowseFragment: Fragment() {
 
     private lateinit var binding: FragmentBrowseBinding
     private lateinit var browseViewModel: BrowseViewModel
-    private lateinit var moviesAdapter: BrowseListAdapter
+    private lateinit var moviesAdapter: CommonListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +68,7 @@ class BrowseFragment: Fragment() {
     }
 
     private fun initializeRecyclerView() {
-        moviesAdapter = BrowseListAdapter(browseViewModel)
+        moviesAdapter = CommonListAdapter(browseViewModel)
         val moviesLayoutManager = LinearLayoutManager(context)
 
         binding.moviesRecyclerView.apply {
@@ -123,8 +123,10 @@ class BrowseFragment: Fragment() {
 
         browseViewModel.selectedItem.observe(viewLifecycleOwner, Observer {
             if (it !== null) {
-                (requireActivity() as MainActivity).clearFocusFromSearchView()
-                (requireActivity() as MainActivity).initializeActionBar()
+                val activity = requireActivity() as MainActivity
+                activity.clearFocusFromSearchView()
+                activity.initializeActionBar()
+
                 when (it.type){
                     "movie" -> {
                         openMovieDetailsFragment(it.id)
@@ -144,21 +146,17 @@ class BrowseFragment: Fragment() {
         browseViewModel.findItems(query)
     }
 
-    private fun refreshData(data: List<UniversalItem>?) {
+    private fun refreshData(data: List<CommonListItem>?) {
         moviesAdapter.submitList(data)
     }
 
     private fun openMovieDetailsFragment(id: String) {
-        val movieDetailsFragment =
-            MovieDetailsFragment(
-                id
-            )
+        val movieDetailsFragment = MovieDetailsFragment(id)
         openDetailsFragment(movieDetailsFragment)
     }
 
     private fun openSeriesDetailsFragment(id: String) {
-        val seriesDetailsFragment =
-            SeriesDetailsFragment(id)
+        val seriesDetailsFragment = SeriesDetailsFragment(id)
         openDetailsFragment(seriesDetailsFragment)
     }
 
@@ -168,13 +166,13 @@ class BrowseFragment: Fragment() {
     }
 
     private fun openDetailsFragment(fragment: Fragment) {
-        val activity = (requireActivity() as MainActivity)
-        activity.hideKeyboard()
-
+        val activity = requireActivity() as MainActivity
         val fragmentManager = requireActivity().supportFragmentManager
+
+        activity.hideKeyboard()
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            add(android.R.id.content, fragment)
+            replace(android.R.id.content, fragment)
             addToBackStack("DETAILS_FRAGMENT")
         }.commit()
     }

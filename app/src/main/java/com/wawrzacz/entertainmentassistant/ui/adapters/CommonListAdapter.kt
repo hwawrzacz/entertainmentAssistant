@@ -11,21 +11,21 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
-import com.wawrzacz.entertainmentassistant.activity_main.browse.BrowseViewModel
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
+import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import java.util.*
 
 // idDedicated field determines whether or not favourite heart should be displayed. In Browse view it should'n be displayed
-class BrowseListAdapter(private val browseViewModel: BrowseViewModel): ListAdapter<UniversalItem, BrowseListAdapter.UniversalItemViewHolder>(MovieDiffCallback()) {
+class CommonListAdapter(private val browseViewModel: TransitViewModel):
+    ListAdapter<CommonListItem, CommonListAdapter.CommonListItemViewHolder>(MovieDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UniversalItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonListItemViewHolder {
         val view = LayoutInflater.from(parent.context)
         .inflate(R.layout.universal_list_view_element, parent, false) as MaterialCardView
 
-        return UniversalItemViewHolder(view)
+        return CommonListItemViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: UniversalItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CommonListItemViewHolder, position: Int) {
         val item = getItem(position)
         setPosterBasedOnUrl(item, holder)
         holder.title.text = item.title
@@ -48,15 +48,7 @@ class BrowseListAdapter(private val browseViewModel: BrowseViewModel): ListAdapt
         }
     }
 
-    class UniversalItemViewHolder(viewHolder: MaterialCardView): RecyclerView.ViewHolder(viewHolder) {
-        var poster: ImageView = viewHolder.findViewById(R.id.movie_poster)
-        var title: TextView = viewHolder.findViewById(R.id.movie_title)
-        var typeIcon: ImageView = viewHolder.findViewById(R.id.movie_type_icon)
-        var year: TextView = viewHolder.findViewById(R.id.movie_year)
-        var favourite: MaterialCheckBox = viewHolder.findViewById(R.id.movie_fav_toggle)
-    }
-
-    private fun setPosterBasedOnUrl(item: UniversalItem, holder: UniversalItemViewHolder) {
+    private fun setPosterBasedOnUrl(item: CommonListItem, holder: CommonListItemViewHolder) {
         if (item.posterUrl == "N/A" || item.posterUrl.isEmpty()) {
             val imageResource: Int = when (item.type) {
                 "series" -> R.mipmap.poster_default_series
@@ -73,5 +65,13 @@ class BrowseListAdapter(private val browseViewModel: BrowseViewModel): ListAdapt
             "series" -> R.drawable.series_24
             else -> R.drawable.gamepad_filled
         }
+    }
+
+    class CommonListItemViewHolder(viewHolder: MaterialCardView): RecyclerView.ViewHolder(viewHolder) {
+        var poster: ImageView = viewHolder.findViewById(R.id.movie_poster)
+        var title: TextView = viewHolder.findViewById(R.id.movie_title)
+        var typeIcon: ImageView = viewHolder.findViewById(R.id.movie_type_icon)
+        var year: TextView = viewHolder.findViewById(R.id.movie_year)
+        var favourite: MaterialCheckBox = viewHolder.findViewById(R.id.movie_fav_toggle)
     }
 }

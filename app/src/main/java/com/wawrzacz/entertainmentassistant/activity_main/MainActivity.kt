@@ -2,6 +2,7 @@ package com.wawrzacz.entertainmentassistant.activity_main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
@@ -92,20 +94,17 @@ class MainActivity : AppCompatActivity() {
         inputManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
-    fun cleanToolbar() {
-        binding.appToolbar.clearFocus()
-    }
-
-    fun hideBottomNavbar() {
-        binding.bottomNavigationView.visibility = View.GONE
-    }
-
-    fun showBottomNavbar() {
-        binding.bottomNavigationView.visibility = View.VISIBLE
-    }
-
     fun clearFocusFromSearchView() {
         searchView?.clearFocus()
-        initializeActionBar()
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag("DETAILS_FRAGMENT") as? DialogFragment
+        if (fragment != null && (fragment.isInLayout || fragment.isAdded || fragment.isVisible)) {
+            fragment.dismiss()
+        }
+        else {
+            super.onBackPressed()
+        }
     }
 }

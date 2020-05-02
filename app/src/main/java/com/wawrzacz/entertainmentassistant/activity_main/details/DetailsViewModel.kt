@@ -34,10 +34,10 @@ class DetailsViewModel: ViewModel() {
         }
     }
 
-    fun addItemToFirebaseDatabase() {
+    fun addItemToFirebaseDatabase(section: String) {
         if (_currentItem.value != null){
             Log.i("schab", "add item ${_currentItem.value}")
-            firebaseRepository.addMovieToCurrentUserFavourites(_currentItem.value)
+            firebaseRepository.addMovieToCurrentUser(section, _currentItem.value)
         }
     }
 }

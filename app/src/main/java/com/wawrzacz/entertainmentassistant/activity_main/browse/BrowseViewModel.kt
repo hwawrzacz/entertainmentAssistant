@@ -4,14 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
+import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.repos.ApiRepository
+import com.wawrzacz.entertainmentassistant.ui.adapters.TransitViewModel
 
-class BrowseViewModel: ViewModel() {
+class BrowseViewModel: ViewModel(), TransitViewModel {
     private val apiRepository = ApiRepository
 
-    private val _selectedItem = MutableLiveData<UniversalItem?>()
-    val selectedItem: LiveData<UniversalItem?> = _selectedItem
+    private val _selectedItem = MutableLiveData<CommonListItem?>()
+    override val selectedItem: LiveData<CommonListItem?> = _selectedItem
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -22,7 +23,7 @@ class BrowseViewModel: ViewModel() {
     private val _isSuccessful = MutableLiveData<Boolean?>()
     val isSuccessful: LiveData<Boolean?> = _isSuccessful
 
-    val foundItems: LiveData<List<UniversalItem>?> = Transformations.map(apiRepository.foundItemsResponse) {
+    val foundItems: LiveData<List<CommonListItem>?> = Transformations.map(apiRepository.foundItemsResponse) {
         _isLoading.value = false
         if (it == null) {
             _isSuccessful.value = false
@@ -41,7 +42,7 @@ class BrowseViewModel: ViewModel() {
         }
     }
 
-    fun setSelectedItem(item: UniversalItem?) {
+    override fun setSelectedItem(item: CommonListItem?) {
         _selectedItem.value = item
     }
 }

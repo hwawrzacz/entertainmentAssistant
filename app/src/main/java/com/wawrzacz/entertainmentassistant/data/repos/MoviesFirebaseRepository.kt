@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.model.UniversalItem
+import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -26,23 +26,23 @@ object MoviesFirebaseRepository {
         const val FAVOURITES = "favourites"
     }
 
-    private val _result = MutableLiveData<List<UniversalItem>>()
-    val result: LiveData<List<UniversalItem>> = _result
+    private val _result = MutableLiveData<List<CommonListItem>>()
+    val result: LiveData<List<CommonListItem>> = _result
 
-    private val _foundToWatchMovies = MutableLiveData<List<UniversalItem>>()
-    val foundToWatchMovies: LiveData<List<UniversalItem>> = _foundToWatchMovies
+    private val _foundToWatchMovies = MutableLiveData<List<CommonListItem>>()
+    val foundToWatchMovies: LiveData<List<CommonListItem>> = _foundToWatchMovies
 
-    private val _foundWatchedMovies = MutableLiveData<List<UniversalItem>>()
-    val foundWatchedMovies: LiveData<List<UniversalItem>> = _foundWatchedMovies
+    private val _foundWatchedMovies = MutableLiveData<List<CommonListItem>>()
+    val foundWatchedMovies: LiveData<List<CommonListItem>> = _foundWatchedMovies
 
-    private val _foundFavouritesMovies = MutableLiveData<List<UniversalItem>>()
-    val foundFavouritesMovies: LiveData<List<UniversalItem>> = _foundFavouritesMovies
+    private val _foundFavouritesMovies = MutableLiveData<List<CommonListItem>>()
+    val foundFavouritesMovies: LiveData<List<CommonListItem>> = _foundFavouritesMovies
 
     fun getAllWatchedMovies(section: String) {
         val userId = firebaseAuth.currentUser?.uid
         val moviesIds = mutableListOf<String>()
         var sectionPath: String
-        var targetLiveData: MutableLiveData<List<UniversalItem>>
+        var targetLiveData: MutableLiveData<List<CommonListItem>>
 
         when (section) {
             "to_watch" -> {
@@ -76,15 +76,15 @@ object MoviesFirebaseRepository {
         })
     }
 
-    private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<UniversalItem>>) {
-        val foundMovies = mutableListOf<UniversalItem>()
+    private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<CommonListItem>>) {
+        val foundMovies = mutableListOf<CommonListItem>()
         moviesReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (movieId in moviesIds) {
                     val movies = dataSnapshot.children
                     for (movie in movies) {
                         if (movie.key == movieId) {
-                            val movie = movie.getValue(UniversalItem::class.java)
+                            val movie = movie.getValue(CommonListItem::class.java)
                             if (movie != null) foundMovies.add(movie)
                         }
                     }
@@ -98,7 +98,7 @@ object MoviesFirebaseRepository {
         })
     }
 
-    fun addMovieToCurrentUserFavourites(movie: DetailedItem?) {
+    fun addMovieToCurrentUser(section: String, movie: DetailedItem?) {
         val currentUserId = firebaseAuth.currentUser?.uid
         when {
             movie == null -> {
