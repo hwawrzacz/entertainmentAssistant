@@ -1,7 +1,5 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -17,6 +15,7 @@ import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
+import com.wawrzacz.entertainmentassistant.data.enums.Section
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
 
 class MovieDetailsFragment(private val movieId: String): DialogFragment() {
@@ -59,15 +58,15 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
             }
             R.id.add_to_watched -> {
                 makeToastLong("Add to watched")
-                detailsViewModel.addItemToFirebaseDatabase("watched")
+                detailsViewModel.addItemToFirebaseDatabase(Section.WATCHED)
             }
             R.id.add_to_to_watch -> {
                 makeToastLong("Add to to watch")
-                detailsViewModel.addItemToFirebaseDatabase("to_watch")
+                detailsViewModel.addItemToFirebaseDatabase(Section.TO_WATCH)
             }
             R.id.add_to_favourites -> {
                 makeToastLong("Add to favourites")
-                detailsViewModel.addItemToFirebaseDatabase("favourites")
+                detailsViewModel.addItemToFirebaseDatabase(Section.FAVOURITES)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -107,22 +106,21 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         })
 
         detailsViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.progressBar.visibility = View.VISIBLE
-                binding.detailsContainer.visibility = View.GONE
-            } else {
-                binding.progressBar.visibility = View.GONE
-                binding.detailsContainer.visibility = View.VISIBLE
-            }
+            if (it) binding.progressBar.visibility = View.VISIBLE
+            else binding.progressBar.visibility = View.GONE
         })
 
         detailsViewModel.isSuccessful.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.message.visibility = View.GONE
-            } else {
+                binding.detailsContainer.visibility = View.VISIBLE
+            }
+            else {
                 binding.message.visibility = View.VISIBLE
+                binding.detailsContainer.visibility = View.GONE
             }
         })
+
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {

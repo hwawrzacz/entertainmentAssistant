@@ -6,8 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.model.SearchResult
-import com.wawrzacz.entertainmentassistant.data.model.Section
-import com.wawrzacz.entertainmentassistant.data.repos.MoviesFirebaseRepository
+import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 import com.wawrzacz.entertainmentassistant.ui.adapters.TransitViewModel
 
 class MoviesViewModel: ViewModel(), TransitViewModel {

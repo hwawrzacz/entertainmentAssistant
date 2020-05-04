@@ -1,31 +1,20 @@
-package com.wawrzacz.entertainmentassistant.data.repos
+package com.wawrzacz.entertainmentassistant.data.repositories
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.wawrzacz.entertainmentassistant.data.enums.Path
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.data.model.Section
+import com.wawrzacz.entertainmentassistant.data.enums.Section
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDatabase = FirebaseDatabase.getInstance()
     private val usersReference = firebaseDatabase.getReference("users")
-    private val moviesReference = firebaseDatabase.getReference("movies")
-
-    object Path {
-        const val MOVIES = "movies"
-        const val SERIES = "series"
-        const val GAMES = "games"
-
-        const val WATCHED = "watched"
-        const val TO_WATCH = "to_watch"
-        const val PLAYED = "played"
-        const val TO_PLAY = "to_play"
-        const val FAVOURITES = "favourites"
-    }
+    private val moviesReference = firebaseDatabase.getReference(Path.MOVIES.value)
 
     private val _foundToWatchMovies = MutableLiveData<List<CommonListItem>>()
     val foundToWatchMovies: LiveData<List<CommonListItem>> = _foundToWatchMovies
@@ -38,27 +27,13 @@ object MoviesFirebaseRepository {
 
     fun getAllMovies(section: Section) {
         val userId = firebaseAuth.currentUser?.uid
-        var sectionPath: String
-        var targetLiveData: MutableLiveData<List<CommonListItem>>
-
-        Log.i("schab","getting $section movies")
-
-        when (section) {
-            Section.TO_WATCH-> {
-                sectionPath = Path.TO_WATCH
-                targetLiveData = _foundToWatchMovies
-            }
-            Section.WATCHED -> {
-                sectionPath = Path.WATCHED
-                targetLiveData = _foundWatchedMovies
-            }
-            else -> {
-                sectionPath = Path.FAVOURITES
-                targetLiveData = _foundFavouritesMovies
-            }
+        val targetLiveData: MutableLiveData<List<CommonListItem>> = when (section) {
+            Section.TO_WATCH-> _foundToWatchMovies
+            Section.WATCHED -> _foundWatchedMovies
+            else -> _foundFavouritesMovies
         }
 
-        usersReference.child("${userId}/${Path.MOVIES}/$sectionPath").addValueEventListener(object: ValueEventListener {
+        usersReference.child("${userId}/${Path.MOVIES.value}/${section.value}").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val moviesIds = mutableListOf<String>()
                 for (row in dataSnapshot.children)
@@ -86,7 +61,6 @@ object MoviesFirebaseRepository {
                         }
                     }
                 }
-                Log.i("schab", "${foundMovies.size}")
                 targetLiveData.value = foundMovies
             }
 
@@ -96,8 +70,7 @@ object MoviesFirebaseRepository {
         })
     }
 
-    fun addMovieToCurrentUser(section: String, movie: DetailedItem?) {
-        Log.i("schab", "addMovieToCurrentUser")
+    fun addMovieToCurrentUser(section: Section, movie: DetailedItem?) {
         val currentUserId = firebaseAuth.currentUser?.uid
         when {
             movie == null -> {
@@ -117,9 +90,8 @@ object MoviesFirebaseRepository {
     private fun addMovieToDatabaseAndAssignToUser(
         userId: String,
         movie: DetailedItem,
-        section: String
+        section: Section
     ) {
-        Log.i("schab", "addMovieToDatabaseAndAssignToUser")
         moviesReference.child(movie.id)
             .setValue(movie)
             .addOnCompleteListener {
@@ -138,14 +110,8 @@ object MoviesFirebaseRepository {
             }
     }
 
-    private fun assignMovieToUser(userId: String, movie: DetailedItem, section: String) {
-        val selectedSection = when (section) {
-            "watched" -> Path.WATCHED
-            "to_watch" -> Path.TO_WATCH
-            else -> Path.FAVOURITES
-        }
-
-        usersReference.child("$userId/${Path.MOVIES}/$selectedSection/${movie.id}")
+    private fun assignMovieToUser(userId: String, movie: DetailedItem, section: Section) {
+        usersReference.child("$userId/${Path.MOVIES.value}/${section.value}/${movie.id}")
             .setValue(true)
                 .addOnCompleteListener {
                     when {

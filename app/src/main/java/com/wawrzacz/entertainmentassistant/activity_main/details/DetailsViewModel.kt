@@ -6,8 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.repos.ApiRepository
-import com.wawrzacz.entertainmentassistant.data.repos.MoviesFirebaseRepository
+import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.repositories.ApiRepository
+import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 
 class DetailsViewModel: ViewModel() {
 
@@ -35,7 +36,7 @@ class DetailsViewModel: ViewModel() {
         }
     }
 
-    fun addItemToFirebaseDatabase(section: String) {
+    fun addItemToFirebaseDatabase(section: Section) {
         if (_currentItem.value != null){
             Log.i("schab", "add item ${_currentItem.value}")
             firebaseRepository.addMovieToCurrentUser(section, _currentItem.value)

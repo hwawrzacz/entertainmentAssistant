@@ -134,16 +134,6 @@
                             app:layout_constraintStart_toEndOf="@+id/year"
                             app:layout_constraintTop_toTopOf="@+id/year" />
 
-                        <TextView
-                            android:id="@+id/seasons"
-                            style="@style/TextAppearance.MaterialComponents.Body1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_regular"
-
-                            app:layout_constraintBottom_toBottomOf="@+id/year"
-                            app:layout_constraintStart_toEndOf="@+id/runtime"
-                            app:layout_constraintTop_toTopOf="@+id/year" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView

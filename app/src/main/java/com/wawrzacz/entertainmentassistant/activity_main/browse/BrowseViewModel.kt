@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.data.repos.ApiRepository
+import com.wawrzacz.entertainmentassistant.data.repositories.ApiRepository
 import com.wawrzacz.entertainmentassistant.ui.adapters.TransitViewModel
 
 class BrowseViewModel: ViewModel(), TransitViewModel {

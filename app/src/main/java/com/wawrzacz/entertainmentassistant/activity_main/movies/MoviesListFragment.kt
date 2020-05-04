@@ -14,7 +14,7 @@ import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.model.SearchResult
-import com.wawrzacz.entertainmentassistant.data.model.Section
+import com.wawrzacz.entertainmentassistant.data.enums.Section
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
