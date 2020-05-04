@@ -14,10 +14,11 @@ import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.model.SearchResult
+import com.wawrzacz.entertainmentassistant.data.model.Section
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
-class MoviesListFragment(private val section: String): Fragment(),
+class MoviesListFragment(private val section: Section): Fragment(),
     MoviesFABFragment {
 
     private lateinit var binding: FragmentMoviesListBinding
@@ -100,15 +101,15 @@ class MoviesListFragment(private val section: String): Fragment(),
         })
 
         when (section) {
-            "to_watch" -> moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
+            Section.TO_WATCH -> moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })
-            "watched" -> moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
+            Section.WATCHED -> moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })
-            "favourites" -> moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
+            Section.FAVOURITES -> moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })

@@ -61,6 +61,7 @@ class AccountFragment: BottomSheetDialogFragment() {
         viewModel.loggedUser.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 binding.username.text = it.displayName
+                binding.email.text = it.email
             }
         })
     }

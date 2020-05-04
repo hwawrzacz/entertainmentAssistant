@@ -21,4 +21,7 @@
     <color name="text_on_primary">#FFFFFF</color>
     <color name="text_lighter">#CCFFFFFF</color>
     <color name="text_darker">#66000000</color>
+    <color name="text_high_emphasis">#dd000000</color>
+    <color name="text_medium_emphasis">#99000000</color>
+    <color name="text_disabled">#5e000000</color>
 </resources>

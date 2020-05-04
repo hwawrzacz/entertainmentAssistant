@@ -26,11 +26,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_regular"
 
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/text_high_emphasis"
                 android:text="User"
-                android:textSize="@dimen/font_button_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/account_image" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+
+                android:text="User"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/text_medium_emphasis"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/username" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.781"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username"
+                app:layout_constraintTop_toBottomOf="@+id/email"
                 app:layout_constraintVertical_bias="0.0">
 
                 <Button

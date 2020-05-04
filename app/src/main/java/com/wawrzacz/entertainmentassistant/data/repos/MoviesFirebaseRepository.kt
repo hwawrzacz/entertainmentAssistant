@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
+import com.wawrzacz.entertainmentassistant.data.model.Section
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -26,9 +27,6 @@ object MoviesFirebaseRepository {
         const val FAVOURITES = "favourites"
     }
 
-    private val _result = MutableLiveData<List<CommonListItem>>()
-    val result: LiveData<List<CommonListItem>> = _result
-
     private val _foundToWatchMovies = MutableLiveData<List<CommonListItem>>()
     val foundToWatchMovies: LiveData<List<CommonListItem>> = _foundToWatchMovies
 
@@ -38,20 +36,19 @@ object MoviesFirebaseRepository {
     private val _foundFavouritesMovies = MutableLiveData<List<CommonListItem>>()
     val foundFavouritesMovies: LiveData<List<CommonListItem>> = _foundFavouritesMovies
 
-    fun getAllMovies(section: String) {
+    fun getAllMovies(section: Section) {
         val userId = firebaseAuth.currentUser?.uid
-        val moviesIds = mutableListOf<String>()
         var sectionPath: String
         var targetLiveData: MutableLiveData<List<CommonListItem>>
 
         Log.i("schab","getting $section movies")
 
         when (section) {
-            "to_watch" -> {
+            Section.TO_WATCH-> {
                 sectionPath = Path.TO_WATCH
                 targetLiveData = _foundToWatchMovies
             }
-            "watched" -> {
+            Section.WATCHED -> {
                 sectionPath = Path.WATCHED
                 targetLiveData = _foundWatchedMovies
             }
@@ -63,6 +60,7 @@ object MoviesFirebaseRepository {
 
         usersReference.child("${userId}/${Path.MOVIES}/$sectionPath").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val moviesIds = mutableListOf<String>()
                 for (row in dataSnapshot.children)
                     if (row.value != null && row.key != null)
                         moviesIds.add(row.key!!)
@@ -76,9 +74,9 @@ object MoviesFirebaseRepository {
     }
 
     private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<CommonListItem>>) {
-        val foundMovies = mutableListOf<CommonListItem>()
         moviesReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val foundMovies = mutableListOf<CommonListItem>()
                 for (movieId in moviesIds) {
                     val movies = dataSnapshot.children
                     for (movieRow in movies) {
@@ -88,6 +86,7 @@ object MoviesFirebaseRepository {
                         }
                     }
                 }
+                Log.i("schab", "${foundMovies.size}")
                 targetLiveData.value = foundMovies
             }
 
