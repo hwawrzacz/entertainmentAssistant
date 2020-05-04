@@ -107,4 +107,9 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
+    override fun onDestroy() {
+        viewModelStore.clear()
+        super.onDestroy()
+    }
 }

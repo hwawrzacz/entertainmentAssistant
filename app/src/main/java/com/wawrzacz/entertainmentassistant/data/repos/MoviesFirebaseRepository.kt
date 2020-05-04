@@ -38,11 +38,13 @@ object MoviesFirebaseRepository {
     private val _foundFavouritesMovies = MutableLiveData<List<CommonListItem>>()
     val foundFavouritesMovies: LiveData<List<CommonListItem>> = _foundFavouritesMovies
 
-    fun getAllWatchedMovies(section: String) {
+    fun getAllMovies(section: String) {
         val userId = firebaseAuth.currentUser?.uid
         val moviesIds = mutableListOf<String>()
         var sectionPath: String
         var targetLiveData: MutableLiveData<List<CommonListItem>>
+
+        Log.i("schab","getting $section movies")
 
         when (section) {
             "to_watch" -> {
@@ -58,9 +60,6 @@ object MoviesFirebaseRepository {
                 targetLiveData = _foundFavouritesMovies
             }
         }
-
-        Log.i("schab", "Looking for movies $section")
-        Log.i("schab", "Path: ${userId}/${Path.MOVIES}/$sectionPath")
 
         usersReference.child("${userId}/${Path.MOVIES}/$sectionPath").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -82,9 +81,9 @@ object MoviesFirebaseRepository {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (movieId in moviesIds) {
                     val movies = dataSnapshot.children
-                    for (movie in movies) {
-                        if (movie.key == movieId) {
-                            val movie = movie.getValue(CommonListItem::class.java)
+                    for (movieRow in movies) {
+                        if (movieRow.key == movieId) {
+                            val movie = movieRow.getValue(CommonListItem::class.java)
                             if (movie != null) foundMovies.add(movie)
                         }
                     }
@@ -99,6 +98,7 @@ object MoviesFirebaseRepository {
     }
 
     fun addMovieToCurrentUser(section: String, movie: DetailedItem?) {
+        Log.i("schab", "addMovieToCurrentUser")
         val currentUserId = firebaseAuth.currentUser?.uid
         when {
             movie == null -> {
@@ -110,7 +110,7 @@ object MoviesFirebaseRepository {
                 Log.i("schab", "empty user")
             }
             else -> {
-                addMovieToDatabaseAndAssignToUser(currentUserId, movie, Path.MOVIES)
+                addMovieToDatabaseAndAssignToUser(currentUserId, movie, section)
             }
         }
     }
@@ -118,14 +118,16 @@ object MoviesFirebaseRepository {
     private fun addMovieToDatabaseAndAssignToUser(
         userId: String,
         movie: DetailedItem,
-        userTargetPath: String
+        section: String
     ) {
+        Log.i("schab", "addMovieToDatabaseAndAssignToUser")
         moviesReference.child(movie.id)
             .setValue(movie)
             .addOnCompleteListener {
                 when {
                     it.isSuccessful -> {
-                        assignMovieToUser(userId, userTargetPath, movie)
+                        assignMovieToUser(userId, movie, section)
+                        Log.i("schab", "Added to general movies")
                     }
                     it.isComplete -> {
                         Log.i("schab", it.exception?.message.toString())
@@ -137,9 +139,15 @@ object MoviesFirebaseRepository {
             }
     }
 
-    private fun assignMovieToUser(userId: String, path: String, movieId: DetailedItem) {
-        usersReference.child("$userId/${Path.MOVIES}/$movieId/${Path.FAVOURITES}").apply {
-            child(Path.FAVOURITES).setValue(true)
+    private fun assignMovieToUser(userId: String, movie: DetailedItem, section: String) {
+        val selectedSection = when (section) {
+            "watched" -> Path.WATCHED
+            "to_watch" -> Path.TO_WATCH
+            else -> Path.FAVOURITES
+        }
+
+        usersReference.child("$userId/${Path.MOVIES}/$selectedSection/${movie.id}")
+            .setValue(true)
                 .addOnCompleteListener {
                     when {
                         it.isSuccessful -> {
@@ -153,6 +161,5 @@ object MoviesFirebaseRepository {
                         }
                     }
                 }
-        }
     }
 }

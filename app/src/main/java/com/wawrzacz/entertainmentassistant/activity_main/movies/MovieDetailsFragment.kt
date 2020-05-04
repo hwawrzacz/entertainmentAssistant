@@ -1,6 +1,7 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -58,12 +59,15 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
             }
             R.id.add_to_watched -> {
                 makeToastLong("Add to watched")
+                detailsViewModel.addItemToFirebaseDatabase("watched")
             }
             R.id.add_to_to_watch -> {
                 makeToastLong("Add to to watch")
+                detailsViewModel.addItemToFirebaseDatabase("to_watch")
             }
             R.id.add_to_favourites -> {
                 makeToastLong("Add to favourites")
+                detailsViewModel.addItemToFirebaseDatabase("favourites")
             }
         }
         return super.onOptionsItemSelected(item)
@@ -83,7 +87,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun initializeViewModel() {
-        detailsViewModel = ViewModelProvider(viewModelStore, DetailsViewModelFactory())
+        detailsViewModel = ViewModelProvider(requireActivity().viewModelStore, DetailsViewModelFactory())
             .get(DetailsViewModel::class.java)
     }
 

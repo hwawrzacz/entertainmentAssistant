@@ -79,7 +79,7 @@ class BrowseFragment: Fragment() {
     }
 
     private fun initializeViewModel() {
-        browseViewModel = ViewModelProvider(this, BrowseViewModelFactory())
+        browseViewModel = ViewModelProvider(viewModelStore, BrowseViewModelFactory())
             .get(BrowseViewModel::class.java)
     }
 

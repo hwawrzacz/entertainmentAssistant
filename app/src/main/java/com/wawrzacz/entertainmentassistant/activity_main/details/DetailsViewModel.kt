@@ -29,6 +29,7 @@ class DetailsViewModel: ViewModel() {
             if (it === null) _isSuccessful.value = false
             else if (it.response.toBoolean()) _isSuccessful.value = it.response.toBoolean()
 
+            _currentItem.value = it
             _isLoading.value = false
             it
         }

@@ -70,7 +70,7 @@ class LoginFragment: Fragment() {
     }
 
     private fun initializeViewModel() {
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+        loginViewModel = ViewModelProvider(requireActivity().viewModelStore, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
     }
 

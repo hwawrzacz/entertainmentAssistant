@@ -1,7 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
 import android.os.Bundle
-import android.transition.Transition
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -14,13 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesWatchedBinding
+import com.wawrzacz.entertainmentassistant.data.model.SearchResult
+import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
 class MoviesListFragment(private val section: String): Fragment(),
     MoviesFABFragment {
 
-    private lateinit var binding: FragmentMoviesWatchedBinding
+    private lateinit var binding: FragmentMoviesListBinding
     private lateinit var moviesViewModel: MoviesViewModel
     private lateinit var moviesAdapter: CommonListAdapter
 
@@ -29,13 +29,13 @@ class MoviesListFragment(private val section: String): Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_movies_watched, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_movies_list, container, false)
 
         setHasOptionsMenu(true)
         initializeViewModel()
         initializeRecyclerView()
         addViewModelObservers()
-        loadData()
+        findMovies()
 
         return binding.root
     }
@@ -50,8 +50,7 @@ class MoviesListFragment(private val section: String): Fragment(),
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                binding.search.text = "Search watched: $newText"
-
+                // TODO: Handle query search
                 return true
             }
             override fun onQueryTextSubmit(query: String?): Boolean { return false }
@@ -71,7 +70,7 @@ class MoviesListFragment(private val section: String): Fragment(),
     }
 
     private fun initializeViewModel() {
-        moviesViewModel = ViewModelProvider(this, MoviesViewModelFactory())
+        moviesViewModel = ViewModelProvider(requireActivity().viewModelStore, MoviesViewModelFactory())
             .get(MoviesViewModel::class.java)
     }
 
@@ -81,14 +80,33 @@ class MoviesListFragment(private val section: String): Fragment(),
             else binding.progressBar.visibility = View.GONE
         })
 
+        moviesViewModel.hasAnyResult.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                SearchResult.NOT_INITIALIZED -> {
+                    binding.bannerMessage.text = getString(R.string.message_action_search_for_movies)
+                }
+                SearchResult.ERROR_GETTING_DATA -> {
+                    binding.bannerMessage.text = getString(R.string.error_getting_data)
+                }
+                SearchResult.NO_RESULTS -> {
+                    binding.bannerMessage.text = getString(R.string.message_no_results)
+                    binding.bannerMessage.visibility = View.VISIBLE
+                }
+                SearchResult.SUCCESS -> {
+                    binding.bannerMessage.visibility = View.GONE
+                }
+
+            }
+        })
+
         when (section) {
             "to_watch" -> moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })
             "watched" -> moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
-                if (it != null)
-                    refreshData(it)
+                    if (it != null)
+                        refreshData(it)
                 })
             "favourites" -> moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
@@ -108,11 +126,7 @@ class MoviesListFragment(private val section: String): Fragment(),
 
     }
 
-    private fun findMovies(query: String) {
-        moviesViewModel.findMovies(section, query)
-    }
-
-    private fun loadData() {
+    private fun findMovies() {
         moviesViewModel.findMovies(section, "")
     }
 

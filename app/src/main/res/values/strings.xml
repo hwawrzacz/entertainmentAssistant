@@ -62,6 +62,7 @@
     <string name="confirmation_message_delete_account_alert">This action cannot be undone. Are you sure you want to proceed?</string>
     <string name="message_no_results">No results</string>
     <string name="message_action_browse">Search for movies, TV series and games</string>
+    <string name="message_action_search_for_movies">Search for movies</string>
     <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
 
