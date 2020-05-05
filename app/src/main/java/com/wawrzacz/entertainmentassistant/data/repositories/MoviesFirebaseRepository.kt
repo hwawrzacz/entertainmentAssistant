@@ -13,21 +13,45 @@ import com.wawrzacz.entertainmentassistant.data.enums.Section
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDatabase = FirebaseDatabase.getInstance()
-    private val usersReference = firebaseDatabase.getReference("users")
-    private val moviesReference = firebaseDatabase.getReference(Path.MOVIES.value)
+    private val usersReference: DatabaseReference
+    private val moviesReference: DatabaseReference
 
-    private val _foundToWatchMovies = MutableLiveData<List<CommonListItem>>()
-    val foundToWatchMovies: LiveData<List<CommonListItem>> = _foundToWatchMovies
+    init {
+        firebaseDatabase.setPersistenceEnabled(true)
 
-    private val _foundWatchedMovies = MutableLiveData<List<CommonListItem>>()
-    val foundWatchedMovies: LiveData<List<CommonListItem>> = _foundWatchedMovies
+        usersReference = firebaseDatabase.getReference(Path.USERS.value)
+        moviesReference = firebaseDatabase.getReference(Path.MOVIES.value)
+        moviesReference.keepSynced(true)
+    }
 
-    private val _foundFavouritesMovies = MutableLiveData<List<CommonListItem>>()
-    val foundFavouritesMovies: LiveData<List<CommonListItem>> = _foundFavouritesMovies
+    private val _foundToWatchMovies = MutableLiveData<List<CommonListItem>?>()
+    val foundToWatchMovies: LiveData<List<CommonListItem>?> = _foundToWatchMovies
+
+    private val _foundWatchedMovies = MutableLiveData<List<CommonListItem>?>()
+    val foundWatchedMovies: LiveData<List<CommonListItem>?> = _foundWatchedMovies
+
+    private val _foundFavouritesMovies = MutableLiveData<List<CommonListItem>?>()
+    val foundFavouritesMovies: LiveData<List<CommonListItem>?> = _foundFavouritesMovies
+
+    fun getMovie(id: String): LiveData<DetailedItem?> {
+        val result = MutableLiveData<DetailedItem?>()
+
+        moviesReference.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val movie: DetailedItem? = snapshot.getValue(DetailedItem::class.java)
+                result.value = movie
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+                result.value = null
+            }
+        })
+        return result
+    }
 
     fun getAllMovies(section: Section) {
         val userId = firebaseAuth.currentUser?.uid
-        val targetLiveData: MutableLiveData<List<CommonListItem>> = when (section) {
+        val targetLiveData: MutableLiveData<List<CommonListItem>?> = when (section) {
             Section.TO_WATCH-> _foundToWatchMovies
             Section.WATCHED -> _foundWatchedMovies
             else -> _foundFavouritesMovies
@@ -48,7 +72,7 @@ object MoviesFirebaseRepository {
         })
     }
 
-    private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<CommonListItem>>) {
+    private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<CommonListItem>?>) {
         moviesReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val foundMovies = mutableListOf<CommonListItem>()

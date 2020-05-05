@@ -124,7 +124,6 @@ class MoviesListFragment(private val section: Section): Fragment(),
                 openMovieDetailsFragment(it.id)
             }
         })
-
     }
 
     private fun findMovies() {
@@ -144,7 +143,6 @@ class MoviesListFragment(private val section: Section): Fragment(),
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "DETAILS_FRAGMENT")
-            addToBackStack("DETAILS_FRAGMENT")
         }.commit()
     }
 }

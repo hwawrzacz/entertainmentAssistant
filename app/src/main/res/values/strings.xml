@@ -65,6 +65,7 @@
     <string name="message_action_search_for_movies">Search for movies</string>
     <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
+    <string name="message_loading_data">Loading data</string>
 
     <!-- Errors -->
     <string name="error_general">An error occurred</string>

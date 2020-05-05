@@ -99,9 +99,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        // Handle details DialogFragment close
         val fragment = supportFragmentManager.findFragmentByTag("DETAILS_FRAGMENT") as? DialogFragment
         if (fragment != null && (fragment.isInLayout || fragment.isAdded || fragment.isVisible)) {
             fragment.dismiss()
+            initializeActionBar()
         }
         else {
             super.onBackPressed()

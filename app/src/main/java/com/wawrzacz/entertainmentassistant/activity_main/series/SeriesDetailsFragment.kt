@@ -31,7 +31,7 @@ class SeriesDetailsFragment(private val id: String): DialogFragment() {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_series, container, false)
 
         initializeViewModel()
-        observeViewModelChanges()
+//        observeViewModelChanges()
 
         return binding.root
     }
@@ -89,19 +89,6 @@ class SeriesDetailsFragment(private val id: String): DialogFragment() {
     }
 
     private fun observeViewModelChanges() {
-        detailsViewModel.getDetailedItem(id).observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                setPosterBasedOnUrl(it, binding.poster)
-                binding.title.text = it.title
-                binding.icon.setImageResource(R.drawable.series_24)
-                binding.year.text = it.year
-                binding.seasons.text = adjustSeasonsText(it.totalSeasons)
-                binding.genre.text = it.genre
-                binding.writer.text = it.writer
-                binding.plot.text = it.plot
-            }
-        })
-
         detailsViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.progressBar.visibility = View.VISIBLE

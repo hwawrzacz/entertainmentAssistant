@@ -1,21 +1,16 @@
 package com.wawrzacz.entertainmentassistant.activity_main.details
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.Section
-import com.wawrzacz.entertainmentassistant.data.repositories.ApiRepository
-import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
+import com.wawrzacz.entertainmentassistant.data.repositories.DetailedMovieRepository
 
 class DetailsViewModel: ViewModel() {
 
-    private val apiRepository = ApiRepository
-    private val firebaseRepository = MoviesFirebaseRepository
-
-    private val _currentItem = MutableLiveData<DetailedItem?>()
+    private val repository = DetailedMovieRepository
 
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -23,23 +18,22 @@ class DetailsViewModel: ViewModel() {
     private val _isSuccessful = MutableLiveData<Boolean>()
     val isSuccessful: LiveData<Boolean> = _isSuccessful
 
-    fun getDetailedItem(id: String): LiveData<DetailedItem> {
-        _isLoading.value = true
-        return Transformations.map(apiRepository.getItem(id)){
-            Log.i("schab", "tranformation")
-            if (it === null) _isSuccessful.value = false
-            else if (it.response.toBoolean()) _isSuccessful.value = it.response.toBoolean()
+    private val _currentItem = MutableLiveData<DetailedItem?>()
 
-            _currentItem.value = it
+    fun getDetailedItem(id: String): LiveData<DetailedItem?> {
+        _isLoading.value = true
+
+        return Transformations.map(repository.getDetailedItem(id)) {
             _isLoading.value = false
+            _isSuccessful.value = it != null
+            _currentItem.value = it
             it
         }
     }
 
     fun addItemToFirebaseDatabase(section: Section) {
         if (_currentItem.value != null){
-            Log.i("schab", "add item ${_currentItem.value}")
-            firebaseRepository.addMovieToCurrentUser(section, _currentItem.value)
+            repository.addMovieToCurrentUser(section, _currentItem.value!!)
         }
     }
 }

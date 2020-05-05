@@ -15,11 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiRepository {
     private val retrofit: Retrofit
     private val service: ApiService
-    private val BASE_URL = "http://www.omdbapi.com" //Resources.getSystem().getString(R.string.retrofit_base_url)
-    private val API_KEY = "373cac09" //Resources.getSystem().getString(R.string.retrofit_api_key)
+    private const val BASE_URL = "http://www.omdbapi.com" //Resources.getSystem().getString(R.string.retrofit_base_url)
+    private const val API_KEY = "373cac09" //Resources.getSystem().getString(R.string.retrofit_api_key)
 
-    private val _searchedItemsResponse = MutableLiveData<ResponseUniversalItemsList?>()
-    val foundItemsResponse: LiveData<ResponseUniversalItemsList?> = _searchedItemsResponse
+    private val _foundItemsResponse = MutableLiveData<ResponseUniversalItemsList?>()
+    val foundItemsResponse: LiveData<ResponseUniversalItemsList?> = _foundItemsResponse
 
     init {
         retrofit = Retrofit.Builder()
@@ -34,40 +34,34 @@ object ApiRepository {
         service = retrofit.create(ApiService::class.java)
     }
 
-    fun getItem(id: String): LiveData<DetailedItem> {
-        val itemResult = MutableLiveData<DetailedItem>()
+    fun getItem(id: String): LiveData<DetailedItem?> {
+        val result = MutableLiveData<DetailedItem?>()
 
-        service.getMovieById(id, API_KEY).enqueue(object: Callback<DetailedItem>{
-            override fun onResponse(call: Call<DetailedItem>, response: Response<DetailedItem>) {
-                if (response.isSuccessful) {
-                    itemResult.value = response.body()
-                } else {
-                    itemResult.value = null
-                }
+        service.getMovieById(id, API_KEY).enqueue(object: Callback<DetailedItem?>{
+            override fun onResponse(call: Call<DetailedItem?>, response: Response<DetailedItem?>) {
+                if (response.isSuccessful)
+                    result.value = response.body()
+                else
+                    result.value = null
             }
-
-            override fun onFailure(call: Call<DetailedItem>, t: Throwable) {
-                itemResult.value = null
+            override fun onFailure(call: Call<DetailedItem?>, t: Throwable) {
+                result.value = null
             }
         })
-
-        return itemResult
+        return result
     }
 
     fun findItems(query: String) {
         service.findItems(query, API_KEY)
             .enqueue(object: Callback<ResponseUniversalItemsList> {
                 override fun onResponse(call: Call<ResponseUniversalItemsList>, response: Response<ResponseUniversalItemsList>) {
-                    if (response.isSuccessful) {
-                        _searchedItemsResponse.value = response.body()
-                    }
-                    else {
-                        _searchedItemsResponse.value = null
-                    }
+                    if (response.isSuccessful)
+                        _foundItemsResponse.value = response.body()
+                    else
+                        _foundItemsResponse.value = null
                 }
-
                 override fun onFailure(call: Call<ResponseUniversalItemsList>, t: Throwable) {
-                    _searchedItemsResponse.value = null
+                    _foundItemsResponse.value = null
                 }
             })
     }

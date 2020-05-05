@@ -172,8 +172,7 @@ class BrowseFragment: Fragment() {
         activity.hideKeyboard()
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            replace(android.R.id.content, fragment)
-            addToBackStack("DETAILS_FRAGMENT")
+            replace(android.R.id.content, fragment, "DETAILS_FRAGMENT")
         }.commit()
     }
 

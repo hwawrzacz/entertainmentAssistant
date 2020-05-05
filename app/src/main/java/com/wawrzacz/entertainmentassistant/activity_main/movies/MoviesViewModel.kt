@@ -13,7 +13,6 @@ import com.wawrzacz.entertainmentassistant.ui.adapters.TransitViewModel
 class MoviesViewModel: ViewModel(), TransitViewModel {
     private val moviesRepository = MoviesFirebaseRepository
 
-
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -23,17 +22,17 @@ class MoviesViewModel: ViewModel(), TransitViewModel {
     private val _selectedItem = MutableLiveData<CommonListItem?>()
     override val selectedItem: LiveData<CommonListItem?> = _selectedItem
 
-    val foundToWatchMovies: LiveData<List<CommonListItem>> = Transformations.map(moviesRepository.foundToWatchMovies) {
+    val foundToWatchMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundToWatchMovies) {
         _isLoading.value = false
         determineResultState(it)
         it
     }
-    val foundWatchedMovies: LiveData<List<CommonListItem>> = Transformations.map(moviesRepository.foundWatchedMovies) {
+    val foundWatchedMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundWatchedMovies) {
         _isLoading.value = false
         determineResultState(it)
         it
     }
-    val foundFavouritesMovies: LiveData<List<CommonListItem>> = Transformations.map(moviesRepository.foundFavouritesMovies) {
+    val foundFavouritesMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundFavouritesMovies) {
         _isLoading.value = false
         determineResultState(it)
         it

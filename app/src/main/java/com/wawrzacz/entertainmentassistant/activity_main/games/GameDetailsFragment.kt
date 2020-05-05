@@ -30,7 +30,7 @@ class GameDetailsFragment(private val id: String): DialogFragment() {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_game, container, false)
 
         initializeViewModel()
-        observeViewModelChanges()
+//        observeViewModelChanges()
 
         return binding.root
     }
@@ -88,18 +88,6 @@ class GameDetailsFragment(private val id: String): DialogFragment() {
     }
 
     private fun observeViewModelChanges() {
-        detailsViewModel.getDetailedItem(id).observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                setPosterBasedOnUrl(it, binding.poster)
-                binding.title.text = it.title
-                binding.icon.setImageResource(R.drawable.gamepad_filled)
-                binding.year.text = it.year
-                binding.genre.text = it.genre
-                binding.director.text = it.director
-                binding.plot.text = it.plot
-            }
-        })
-
         detailsViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             if (it) {
                 binding.progressBar.visibility = View.VISIBLE

@@ -4,31 +4,31 @@ import com.google.gson.annotations.SerializedName
 
 class DetailedItem(
     @SerializedName("imdbID")
-    val id: String,
+    val id: String = "",
     @SerializedName("Title")
-    val title: String,
+    val title: String = "",
     @SerializedName("Production")
-    val production: String,
+    val production: String = "",
     @SerializedName("Type")
-    val type: String,
+    val type: String = "",
     @SerializedName("Year")
-    val year: String,
+    val year: String = "",
     @SerializedName("Runtime")
-    val runtime: String,
+    val runtime: String = "",
     @SerializedName("totalSeasons")
-    val totalSeasons: String?,
+    val totalSeasons: String? = "",
     @SerializedName("Genre")
-    val genre: String,
+    val genre: String = "",
     @SerializedName("Poster")
-    val posterUrl: String,
+    val posterUrl: String = "",
     @SerializedName("Director")
-    val director: String,
+    val director: String = "",
     @SerializedName("Writer")
-    val writer: String,
+    val writer: String = "",
     @SerializedName("Plot")
-    val plot: String,
+    val plot: String = "",
     @SerializedName("Response")
-    val response: String
+    val response: String = "false"
 ){
 
     override fun toString(): String {

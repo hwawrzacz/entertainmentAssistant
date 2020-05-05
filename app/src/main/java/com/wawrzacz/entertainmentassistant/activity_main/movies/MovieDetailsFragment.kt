@@ -1,5 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -37,6 +38,11 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        hideDetailsContent()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
@@ -54,7 +60,6 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         when (item.itemId) {
             android.R.id.home -> {
                 mainActivity.onBackPressed()
-                mainActivity.initializeActionBar()
             }
             R.id.add_to_watched -> {
                 makeToastLong("Add to watched")
@@ -91,18 +96,9 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun observeViewModelChanges() {
-        detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                setPosterBasedOnUrl(it, binding.poster)
-                binding.title.text = it.title
-                binding.production.text = it.production
-                binding.icon.setImageResource(R.drawable.movie_24)
-                binding.year.text = it.year
-                binding.runtime.text = it.runtime
-                binding.genre.text = it.genre
-                binding.director.text = it.director
-                binding.plot.text = it.plot
-            }
+        detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer { firebaseMovie ->
+            if (firebaseMovie != null)
+                populateViewWithData(firebaseMovie)
         })
 
         detailsViewModel.isLoading.observe(viewLifecycleOwner, Observer {
@@ -120,7 +116,18 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
                 binding.detailsContainer.visibility = View.GONE
             }
         })
-
+    }
+    
+    private fun populateViewWithData(movie: DetailedItem) {
+        setPosterBasedOnUrl(movie, binding.poster)
+        binding.title.text = movie.title
+        binding.production.text = movie.production
+        binding.icon.setImageResource(R.drawable.movie_24)
+        binding.year.text = movie.year
+        binding.runtime.text = movie.runtime
+        binding.genre.text = movie.genre
+        binding.director.text = movie.director
+        binding.plot.text = movie.plot
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
@@ -128,7 +135,23 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
             Picasso.get().load(item.posterUrl).into(view)
     }
 
+    private fun hideDetailsContent() {
+        binding.detailsContainer.visibility = View.GONE
+    }
+
     private fun makeToastLong(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun removeObservers() {
+//        detailsViewModel.detailedItem.removeObservers(viewLifecycleOwner)
+        detailsViewModel.isSuccessful.removeObservers(viewLifecycleOwner)
+        detailsViewModel.isLoading.removeObservers(viewLifecycleOwner)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        removeObservers()
+        removeObservers()
+        super.onDismiss(dialog)
     }
 }
