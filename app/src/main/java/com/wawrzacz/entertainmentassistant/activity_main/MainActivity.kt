@@ -100,14 +100,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         // Handle details DialogFragment close
-        val fragment = supportFragmentManager.findFragmentByTag("DETAILS_FRAGMENT") as? DialogFragment
-        if (fragment != null && (fragment.isInLayout || fragment.isAdded || fragment.isVisible)) {
-            fragment.dismiss()
-            initializeActionBar()
+        var dialogFragmentClosed = false
+        for (fragmentTag in listOf("DETAILS_FRAGMENT", "CREATION_FRAGMENT")) {
+            val fragment = supportFragmentManager.findFragmentByTag(fragmentTag) as? DialogFragment
+            if (fragment != null && (fragment.isInLayout || fragment.isAdded || fragment.isVisible)) {
+                dialogFragmentClosed = true
+                fragment.dismiss()
+                initializeActionBar()
+            }
         }
-        else {
-            super.onBackPressed()
-        }
+        if (!dialogFragmentClosed)  super.onBackPressed()
     }
 
     override fun onDestroy() {

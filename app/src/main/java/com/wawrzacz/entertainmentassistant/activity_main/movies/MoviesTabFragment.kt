@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
+import com.wawrzacz.entertainmentassistant.activity_main.movies.new_movie.MovieCreationFragment
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.ui.adapters.MoviesViewPagerAdapter
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 
-class MoviesFragment: Fragment() {
+class MoviesTabFragment: Fragment() {
     private lateinit var binding: FragmentMoviesBinding
 
     private lateinit var viewPager: ViewPager2
@@ -83,8 +85,17 @@ class MoviesFragment: Fragment() {
 
     private fun addButtonsListener() {
         binding.fabAddMovie.setOnClickListener {
-            currentMovieFragment.openAddMovieDialog()
+            openMovieCreationFragment()
         }
+    }
+
+    private fun openMovieCreationFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragment = MovieCreationFragment()
+        fragmentManager.beginTransaction().apply {
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
+        }.commit()
     }
 
     private fun setUpActionBar() {

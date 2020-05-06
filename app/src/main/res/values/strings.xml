@@ -23,6 +23,10 @@
     <!--    Labels -->
     <string name="label_or">or</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_details">Details</string>
+    <string name="title_create_movie">Create movie</string>
+    <string name="title_create_series">Create series</string>
+    <string name="title_create_game">Create game</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -40,8 +44,11 @@
     <string name="label_to_read">To read</string>
     <string name="label_to_play">To play</string>
     <string name="label_all">All</string>
+    <string name="label_also_add_to">Also add to</string>
     <string name="label_favourites">Favourites</string>
-    <string name="label_duration">%1$s min</string>
+    <string name="label_title">Title</string>
+    <string name="label_year">Year</string>
+    <string name="label_duration">Duration</string>
     <string name="label_production">Production</string>
     <string name="label_director">Director</string>
     <string name="label_writer">Writer</string>
@@ -50,9 +57,9 @@
 
     <!-- Menu labels -->
     <string name="label_add_to_watched">Add to watched</string>
-    <string name="label_add_to_to_watch">Add to to watch</string>
+    <string name="label_add_to_to_watch">Add to "to watch"</string>
     <string name="label_add_to_played">Add to played</string>
-    <string name="label_add_to_to_play">Add to to play</string>
+    <string name="label_add_to_to_play">Add to "to play"</string>
     <string name="label_add_to_favourites">Add to favourites</string>
 
     <!--    Messages -->
@@ -60,21 +67,22 @@
     <string name="message_check_internet_access">Check your internet access</string>
     <string name="message_sing_in_with_google_cancelled">Sign in with Google cancelled</string>
     <string name="message_registered_successfully">User registered successfully</string>
-    <string name="confirmation_message_delete_account_alert">This action cannot be undone. Are you sure you want to proceed?</string>
+    <string name="confirmation_message_delete_account_alert">This action cannot be undone. </string>
+    <string name="confirmation_message_dismiss_unsaved_changes">You will loose all unsaved changes. Are you sure you want to proceed?</string>
     <string name="message_no_results">No results</string>
     <string name="message_action_browse">Search for movies, TV series and games</string>
     <string name="message_action_search_for_movies">Search for movies</string>
     <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
     <string name="message_loading_data">Loading data</string>
-    <string name="action_message_added_to_to_watch">Added to `to watch`</string>
+    <string name="action_message_added_to_to_watch">Added to "to watch"</string>
     <string name="action_message_added_to_watched">Added to watched</string>
-    <string name="action_message_added_to_to_play">Added to `to play`</string>
+    <string name="action_message_added_to_to_play">Added to "to play"</string>
     <string name="action_message_added_to_played">Added to played</string>
     <string name="action_message_added_to_favourites">Added to favourites</string>
-    <string name="action_message_removed_from_to_watch">Removed from `to watch`</string>
+    <string name="action_message_removed_from_to_watch">Removed from "to watch"</string>
     <string name="action_message_removed_from_watched">Removed from watched</string>
-    <string name="action_message_removed_from_to_play">Removed from `to play`</string>
+    <string name="action_message_removed_from_to_play">Removed from "to play"</string>
     <string name="action_message_removed_from_played">Removed from played</string>
     <string name="action_message_removed_from_favourites">Removed from favourites</string>
 
@@ -84,6 +92,10 @@
 
     <!-- Dialogs, prompts -->
     <string name="title_delete_account">Delete account</string>
+    <string name="title_unsaved_changes">Unsaved changes</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
+
+    <!-- Suffixes and prefixes -->
+    <string name="suffix_minutes">min</string>
 </resources>

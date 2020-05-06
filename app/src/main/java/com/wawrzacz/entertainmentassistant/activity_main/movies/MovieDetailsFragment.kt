@@ -83,7 +83,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.arrow_back_24)
-        actionBar?.title = "Details"
+        actionBar?.title = getString(R.string.title_details)
 
         setHasOptionsMenu(true)
     }
