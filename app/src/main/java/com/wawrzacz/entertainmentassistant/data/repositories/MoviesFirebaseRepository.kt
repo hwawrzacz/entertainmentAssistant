@@ -34,7 +34,7 @@ object MoviesFirebaseRepository {
     private val _foundFavouritesMovies = MutableLiveData<List<CommonListItem>?>()
     val foundFavouritesMovies: LiveData<List<CommonListItem>?> = _foundFavouritesMovies
 
-    fun getMovie(id: String): LiveData<DetailedItem?> {
+    fun getSingleMovie(id: String): LiveData<DetailedItem?> {
         val result = MutableLiveData<DetailedItem?>()
 
         moviesReference.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -42,7 +42,6 @@ object MoviesFirebaseRepository {
                 val movie: DetailedItem? = snapshot.getValue(DetailedItem::class.java)
                 result.value = movie
             }
-
             override fun onCancelled(p0: DatabaseError) {
                 result.value = null
             }
@@ -50,7 +49,7 @@ object MoviesFirebaseRepository {
         return result
     }
 
-    fun checkIfMovieInSection(movieId: String?, section: WatchableSection): LiveData<Boolean> {
+    fun getMovieSectionValue(movieId: String?, section: WatchableSection): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
 
         if (currentUser != null && movieId != null) {
@@ -78,42 +77,78 @@ object MoviesFirebaseRepository {
             else -> _foundFavouritesMovies
         }
 
-        usersReference.child("${userId}/${Path.MOVIES.value}/${section.value}").addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val moviesIds = mutableListOf<String>()
-                for (row in dataSnapshot.children)
-                    if (row.value != null && row.key != null)
-                        moviesIds.add(row.key!!)
+        // Child listener must be added before value listener because otherwise, result can be empty
+        usersReference.child("${userId}/${Path.MOVIES.value}/${section.value}")
+            .addChildEventListener(object: ChildEventListener {
+                    override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
+                        val moviesIds: List<String> = populateMoviesIds(snapshot)
+                        getMoviesBasedOnIds(moviesIds, targetLiveData)
+                    }
+                    override fun onChildChanged(snapshot: DataSnapshot, p1: String?) {
+                        Log.i("schab", "child changed $snapshot")
+                        val moviesIds: List<String> = populateMoviesIds(snapshot)
+                        getMoviesBasedOnIds(moviesIds, targetLiveData)
+                    }
+                    override fun onChildMoved(snapshot: DataSnapshot, p1: String?) {
+                        val moviesIds: List<String> = populateMoviesIds(snapshot)
+                        getMoviesBasedOnIds(moviesIds, targetLiveData)
+                    }
+                    override fun onChildRemoved(snapshot: DataSnapshot) {
+                        val moviesIds: List<String> = populateMoviesIds(snapshot)
+                        getMoviesBasedOnIds(moviesIds, targetLiveData)
+                    }
+                    override fun onCancelled(snapshot: DatabaseError) {
+//                        targetLiveData.value = null
+                    }
+                })
 
-                getMoviesBasedOnIds(moviesIds, targetLiveData)
-            }
-            override fun onCancelled(p0: DatabaseError) {
-                Log.i("schab", "Change cancelled")
-            }
-        })
+        usersReference.child("${userId}/${Path.MOVIES.value}/${section.value}")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val moviesIds: List<String> = populateMoviesIds(snapshot)
+                    getMoviesBasedOnIds(moviesIds, targetLiveData)
+                }
+                override fun onCancelled(p0: DatabaseError) {
+                    Log.i("schab", "Change cancelled")
+                }
+            })
+    }
+
+    private fun populateMoviesIds(snapshot: DataSnapshot): List<String> {
+        val moviesIds = mutableListOf<String>()
+        for (row in snapshot.children)
+            if (row.key != null && row.value != null && row.value != false)
+                moviesIds.add(row.key!!)
+        return moviesIds
     }
 
     private fun getMoviesBasedOnIds(moviesIds: List<String>, targetLiveData: MutableLiveData<List<CommonListItem>?>) {
         moviesReference.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val foundMovies = mutableListOf<CommonListItem>()
-                for (movieId in moviesIds) {
-                    val movies = dataSnapshot.children
-                    for (movieRow in movies) {
-                        if (movieRow.key == movieId) {
-                            val movie = movieRow.getValue(CommonListItem::class.java)
-                            if (movie != null) foundMovies.add(movie)
-                        }
-                    }
-                }
-                targetLiveData.value = foundMovies
+            override fun onDataChange(snapshot: DataSnapshot) {
+                refreshMoviesListFromSnapshot(moviesIds, snapshot, targetLiveData)
             }
-
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//                targetLiveData.value = null
             }
         })
     }
+
+    private fun refreshMoviesListFromSnapshot(
+        moviesIds: List<String>,
+        dataSnapshot: DataSnapshot,
+        targetLiveData: MutableLiveData<List<CommonListItem>?>) {
+
+        val foundMovies = mutableListOf<CommonListItem>()
+        for (movieId in moviesIds) {
+            val movies = dataSnapshot.children
+            for (movieRow in movies) {
+                if (movieRow.key == movieId) {
+                    val movie = movieRow.getValue(CommonListItem::class.java)
+                    if (movie != null) foundMovies.add(movie)
+                }
+            }
+        }
+        targetLiveData.value = foundMovies}
 
     fun toggleMovieSection(section: WatchableSection, movie: DetailedItem?) {
         val currentUserId = firebaseAuth.currentUser?.uid

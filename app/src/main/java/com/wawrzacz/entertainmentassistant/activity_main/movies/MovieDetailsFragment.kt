@@ -27,7 +27,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     private var toWatchIconInitialized = false
     private var watchedIconInitialized = false
     private var favIconInitialized = false
-    
+
     private object DetailsMenu {
         lateinit var toWatch: MenuItem
         lateinit var watched: MenuItem

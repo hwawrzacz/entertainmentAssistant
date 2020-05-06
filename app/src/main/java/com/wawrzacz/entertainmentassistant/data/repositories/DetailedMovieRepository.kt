@@ -14,7 +14,7 @@ object DetailedMovieRepository {
     private val apiRepository = ApiRepository
 
     fun isMovieInSection(id: String?, section: WatchableSection): LiveData<Boolean> {
-        return firebaseRepository.checkIfMovieInSection(id, section)
+        return firebaseRepository.getMovieSectionValue(id, section)
     }
 
     fun getDetailedItem(id: String): LiveData<DetailedItem?> {
@@ -33,7 +33,7 @@ object DetailedMovieRepository {
                 }
             }
 
-            addSource(firebaseRepository.getMovie(id)) {
+            addSource(firebaseRepository.getSingleMovie(id)) {
                 if (it == null) firebaseItemResult.response = Response.NO_RESULT
                 else firebaseItemResult.response = Response.SUCCESS
 
