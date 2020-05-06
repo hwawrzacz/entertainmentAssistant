@@ -9,7 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.ui.adapters.MoviesViewPagerAdapter
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
 
@@ -19,13 +19,13 @@ class MoviesFragment: Fragment() {
     private lateinit var viewPager: ViewPager2
     private val moviesFragments = listOf(
         MoviesListFragment(
-            Section.TO_WATCH
+            WatchableSection.TO_WATCH
         ),
         MoviesListFragment(
-            Section.WATCHED
+            WatchableSection.WATCHED
         ),
         MoviesListFragment(
-            Section.FAVOURITES
+            WatchableSection.FAVOURITES
         )
     )
     private var currentMovieFragment: MoviesListFragment = moviesFragments[0]

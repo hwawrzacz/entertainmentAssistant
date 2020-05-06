@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.model.SearchResult
-import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 import com.wawrzacz.entertainmentassistant.ui.adapters.TransitViewModel
 
@@ -42,7 +42,7 @@ class MoviesViewModel: ViewModel(), TransitViewModel {
         _selectedItem.value = item
     }
 
-    fun findMovies(section: Section, query: String) {
+    fun findMovies(section: WatchableSection, query: String) {
         _isLoading.value = true
         moviesRepository.getAllMovies(section)
     }

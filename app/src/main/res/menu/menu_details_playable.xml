@@ -19,5 +19,5 @@
         android:id="@+id/add_to_favourites"
         android:title="@string/label_add_to_favourites"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/heart_border_24" />
+        android:icon="@drawable/heart_outlined_24" />
 </menu>

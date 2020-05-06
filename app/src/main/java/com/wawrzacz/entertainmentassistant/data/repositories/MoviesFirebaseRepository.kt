@@ -8,11 +8,12 @@ import com.google.firebase.database.*
 import com.wawrzacz.entertainmentassistant.data.enums.Path
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDatabase = FirebaseDatabase.getInstance()
+    private val currentUser = firebaseAuth.currentUser
     private val usersReference: DatabaseReference
     private val moviesReference: DatabaseReference
 
@@ -49,11 +50,31 @@ object MoviesFirebaseRepository {
         return result
     }
 
-    fun getAllMovies(section: Section) {
+    fun checkIfMovieInSection(movieId: String?, section: WatchableSection): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
+        if (currentUser != null && movieId != null) {
+            val path = "${currentUser.uid}/${Path.MOVIES.value}/${section.value}/$movieId"
+
+            usersReference.child(path).addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val value = snapshot.getValue(Boolean::class.java)
+                    result.value = value
+                }
+                override fun onCancelled(snapshot: DatabaseError) {
+                    result.value = null
+                }
+            })
+        }
+
+        return result
+    }
+
+    fun getAllMovies(section: WatchableSection) {
         val userId = firebaseAuth.currentUser?.uid
         val targetLiveData: MutableLiveData<List<CommonListItem>?> = when (section) {
-            Section.TO_WATCH-> _foundToWatchMovies
-            Section.WATCHED -> _foundWatchedMovies
+            WatchableSection.TO_WATCH-> _foundToWatchMovies
+            WatchableSection.WATCHED -> _foundWatchedMovies
             else -> _foundFavouritesMovies
         }
 
@@ -94,34 +115,28 @@ object MoviesFirebaseRepository {
         })
     }
 
-    fun addMovieToCurrentUser(section: Section, movie: DetailedItem?) {
+    fun toggleMovieSection(section: WatchableSection, movie: DetailedItem?) {
         val currentUserId = firebaseAuth.currentUser?.uid
         when {
-            movie == null -> {
-                // TODO: Handle null item
-                Log.i("schab", "empty movie")
-            }
-            currentUserId == null -> {
-                // TODO: Handle null user
-                Log.i("schab", "empty user")
-            }
-            else -> {
-                addMovieToDatabaseAndAssignToUser(currentUserId, movie, section)
-            }
+            // TODO: Handle null item
+            movie == null -> Log.i("schab", "empty movie")
+            // TODO: Handle null user
+            currentUserId == null -> Log.i("schab", "empty user")
+            else -> addMovieToDatabaseAndAssignToUser(currentUserId, movie, section)
         }
     }
 
     private fun addMovieToDatabaseAndAssignToUser(
         userId: String,
         movie: DetailedItem,
-        section: Section
+        section: WatchableSection
     ) {
         moviesReference.child(movie.id)
             .setValue(movie)
             .addOnCompleteListener {
                 when {
                     it.isSuccessful -> {
-                        assignMovieToUser(userId, movie, section)
+                        toggleSectionMovieValue(userId, movie, section)
                         Log.i("schab", "Added to general movies")
                     }
                     it.isComplete -> {
@@ -134,21 +149,39 @@ object MoviesFirebaseRepository {
             }
     }
 
-    private fun assignMovieToUser(userId: String, movie: DetailedItem, section: Section) {
-        usersReference.child("$userId/${Path.MOVIES.value}/${section.value}/${movie.id}")
-            .setValue(true)
-                .addOnCompleteListener {
-                    when {
-                        it.isSuccessful -> {
-                            Log.i("schab", "added successfully")
-                        }
-                        it.isComplete -> {
-                            Log.i("schab", it.exception?.message.toString())
-                        }
-                        it.isCanceled -> {
-                            Log.i("schab", it.exception?.message.toString())
-                        }
+    private fun toggleSectionMovieValue(userId: String, movie: DetailedItem, section: WatchableSection) {
+        val path = "$userId/${Path.MOVIES.value}/${section.value}/${movie.id}"
+        usersReference.child(path)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var newValue = snapshot.getValue(Boolean::class.java)
+                    if (newValue === null) newValue = false
+                    newValue = !newValue
+
+                    setNewMovieSectionValue(path, newValue)
+                }
+
+                override fun onCancelled(p0: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+            })
+    }
+
+    private fun setNewMovieSectionValue(path: String, value: Boolean) {
+        usersReference.child(path)
+            .setValue(value)
+            .addOnCompleteListener {
+                when {
+                    it.isSuccessful -> {
+                        Log.i("schab", "added successfully")
+                    }
+                    it.isComplete -> {
+                        Log.i("schab", it.exception?.message.toString())
+                    }
+                    it.isCanceled -> {
+                        Log.i("schab", it.exception?.message.toString())
                     }
                 }
+            }
     }
 }

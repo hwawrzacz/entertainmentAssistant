@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.repositories.DetailedMovieRepository
 
 class DetailsViewModel: ViewModel() {
@@ -19,6 +19,19 @@ class DetailsViewModel: ViewModel() {
     val isSuccessful: LiveData<Boolean> = _isSuccessful
 
     private val _currentItem = MutableLiveData<DetailedItem?>()
+    val currentItem: LiveData<DetailedItem?> = _currentItem
+
+    val isMovieInFavourite: (id: String) -> LiveData<Boolean> = { id ->
+        Transformations.map(repository.isMovieInSection(id, WatchableSection.FAVOURITES)) { it }
+    }
+
+    val isMovieInWatched: (id: String) -> LiveData<Boolean> = { id ->
+        Transformations.map(repository.isMovieInSection(id, WatchableSection.WATCHED)) { it }
+    }
+
+    val isMovieInToWatch: (id: String) -> LiveData<Boolean> = { id ->
+        Transformations.map(repository.isMovieInSection(id, WatchableSection.TO_WATCH)) { it }
+    }
 
     fun getDetailedItem(id: String): LiveData<DetailedItem?> {
         _isLoading.value = true
@@ -31,9 +44,9 @@ class DetailsViewModel: ViewModel() {
         }
     }
 
-    fun addItemToFirebaseDatabase(section: Section) {
+    fun toggleItemSection(section: WatchableSection) {
         if (_currentItem.value != null){
-            repository.addMovieToCurrentUser(section, _currentItem.value!!)
+            repository.toggleItemSection(section, _currentItem.value!!)
         }
     }
 }

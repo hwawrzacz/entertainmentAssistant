@@ -3,7 +3,7 @@ package com.wawrzacz.entertainmentassistant.data.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.wawrzacz.entertainmentassistant.data.enums.Section
+import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.errors.Response
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.responses.DetailedItemResponse
@@ -12,6 +12,10 @@ object DetailedMovieRepository {
 
     private val firebaseRepository = MoviesFirebaseRepository
     private val apiRepository = ApiRepository
+
+    fun isMovieInSection(id: String?, section: WatchableSection): LiveData<Boolean> {
+        return firebaseRepository.checkIfMovieInSection(id, section)
+    }
 
     fun getDetailedItem(id: String): LiveData<DetailedItem?> {
         return MediatorLiveData<DetailedItem?>().apply {
@@ -47,9 +51,9 @@ object DetailedMovieRepository {
         }
     }
 
-    fun addMovieToCurrentUser(section: Section, movie: DetailedItem) {
+    fun toggleItemSection(section: WatchableSection, movie: DetailedItem) {
         Log.i("schab", "add to $section")
-        firebaseRepository.addMovieToCurrentUser(section, movie)
+        firebaseRepository.toggleMovieSection(section, movie)
     }
     
 }
