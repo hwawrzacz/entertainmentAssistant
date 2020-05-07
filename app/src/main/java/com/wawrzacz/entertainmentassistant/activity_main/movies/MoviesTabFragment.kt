@@ -10,7 +10,8 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.movies.new_movie.MovieCreationFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation.MovieCreationFragment
+import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.ui.adapters.MoviesViewPagerAdapter
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
@@ -41,14 +42,14 @@ class MoviesTabFragment: Fragment() {
 
         initializeViewPager()
         initializeTabLayout()
-        addButtonsListener()
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        val activity = (requireActivity() as MainActivity)
+        activity.changeCurrentCategory(MediaCategory.MOVIES)
         setUpActionBar()
         setTabChangeListeners()
     }
@@ -61,41 +62,17 @@ class MoviesTabFragment: Fragment() {
     private fun initializeTabLayout() {
         val tabLayout = binding.tabLayout
 
-        TabLayoutMediator(
-            tabLayout,
-            viewPager,
-            TabLayoutMediator
-                .TabConfigurationStrategy {
-                    tab, position -> run {
-                        when (position) {
-                            0 -> {
-                                tab.text = getString(R.string.label_to_watch)
-                            }
-                            1 -> {
-                                tab.text = getString(R.string.label_watched)
-                            }
-                            2 ->{
-                                tab.text = getString(R.string.label_favourites)
-                            }
-                        }
+        TabLayoutMediator( tabLayout, viewPager, TabLayoutMediator
+            .TabConfigurationStrategy {
+                tab, position -> run {
+                    when (position) {
+                        0 -> tab.text = getString(R.string.label_to_watch)
+                        1 -> tab.text = getString(R.string.label_watched)
+                        2 -> tab.text = getString(R.string.label_favourites)
                     }
+                }
             }
         ).attach()
-    }
-
-    private fun addButtonsListener() {
-        binding.fabAddMovie.setOnClickListener {
-            openMovieCreationFragment()
-        }
-    }
-
-    private fun openMovieCreationFragment() {
-        val fragmentManager = requireActivity().supportFragmentManager
-        val fragment = MovieCreationFragment()
-        fragmentManager.beginTransaction().apply {
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
-        }.commit()
     }
 
     private fun setUpActionBar() {

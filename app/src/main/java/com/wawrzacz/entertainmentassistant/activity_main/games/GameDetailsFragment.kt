@@ -13,6 +13,7 @@ import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
+import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsGameBinding
 

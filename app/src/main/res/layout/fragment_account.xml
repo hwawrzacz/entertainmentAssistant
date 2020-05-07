@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_regular"
+                android:layout_marginTop="@dimen/margin_small"
 
                 style="@style/TextAppearance.MaterialComponents.Body1"
                 android:textColor="@color/text_high_emphasis"
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
 
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_tiny"
 
                 android:text="User"
                 style="@style/TextAppearance.MaterialComponents.Body2"

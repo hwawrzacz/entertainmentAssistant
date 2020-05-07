@@ -26,7 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.SignInResult
-import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
+import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
 import com.wawrzacz.entertainmentassistant.data.errors.SignInError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentLoginBinding
 
@@ -106,7 +106,7 @@ class LoginFragment: Fragment() {
     private fun observeViewModelChanges() {
         loginViewModel.loginError.observe(viewLifecycleOwner, Observer {
             val loginError = it
-            if (loginError != LoginFormError.NOT_INITIALIZED)
+            if (loginError != FormValidationState.NOT_INITIALIZED)
                 emailWrapper.error = loginError?.value
             if (loginError == null)
                 emailWrapper.error = null
@@ -114,7 +114,7 @@ class LoginFragment: Fragment() {
 
         loginViewModel.passwordError.observe(viewLifecycleOwner, Observer {
             val passwordError = it
-            if (passwordError != LoginFormError.NOT_INITIALIZED)
+            if (passwordError != FormValidationState.NOT_INITIALIZED)
                 passwordWrapper.error = passwordError?.value
             if (passwordError == null)
                 passwordWrapper.error = null

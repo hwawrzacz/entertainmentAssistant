@@ -25,8 +25,8 @@
     </style>
     <style name="AccountBottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:layout_marginLeft">@dimen/margin_big</item>
-        <item name="android:layout_marginRight">@dimen/margin_big</item>
+        <item name="android:layout_marginLeft">@dimen/margin_regular</item>
+        <item name="android:layout_marginRight">@dimen/margin_regular</item>
         <item name="android:layout_marginBottom">0dp</item>
     </style>
     <style name="AccountBottomSheetDialogTheme" parent="AccountBottomSheetDialog" />

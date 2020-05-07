@@ -27,7 +27,7 @@
             android:id="@+id/email_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_regular"
 
             android:hint="@string/hint_email"
             app:errorEnabled="true"
@@ -55,7 +55,7 @@
             android:id="@+id/password_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_tiny"
 
             android:hint="@string/hint_password"
             app:errorEnabled="true"
@@ -83,7 +83,7 @@
             android:id="@+id/repeat_password_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_tiny"
 
             android:hint="@string/hint_repeat_password"
             app:errorEnabled="true"
@@ -111,7 +111,7 @@
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_regular"
 
             android:text="@string/action_register"
 
@@ -130,7 +130,7 @@
             android:id="@+id/button_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_tiny"
 
             android:text="@string/action_back"
 

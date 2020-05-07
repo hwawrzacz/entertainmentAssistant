@@ -7,7 +7,8 @@
         android:layout_height="match_parent"
         android:background="@color/bg_movies"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:windowTranslucentStatus="false">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -22,8 +23,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/padding_fragment_regular" >
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/title_wrapper"
@@ -32,9 +32,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="@dimen/margin_regular"
+                    android:layout_marginTop="@dimen/padding_fragment_regular"
+                    android:layout_marginStart="@dimen/padding_fragment_regular"
+                    android:layout_marginEnd="@dimen/padding_fragment_regular"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_title"
+                    app:helperText="@string/hint_required"
+                    
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -50,11 +55,12 @@
                     android:id="@+id/production_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    android:layout_marginTop="@dimen/margin_regular"
+                    android:layout_marginTop="@dimen/margin_tiny"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_production"
                     app:layout_constraintEnd_toEndOf="@id/title_wrapper"
                     app:layout_constraintStart_toStartOf="@id/title_wrapper"
@@ -71,10 +77,12 @@
                     android:id="@+id/year_wrapper"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_regular"
-                    android:layout_marginEnd="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginEnd="@dimen/margin_tiny"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_year"
+                    app:helperText="@string/hint_required"
 
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
@@ -98,9 +106,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
 
-                    android:layout_marginTop="@dimen/margin_regular"
-                    android:layout_marginStart="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginStart="@dimen/margin_tiny"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_duration"
 
                     app:layout_constraintStart_toEndOf="@id/year_wrapper"
@@ -111,18 +120,22 @@
                         android:id="@+id/duration"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:maxLength="6" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/director_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_regular"
+                    android:layout_marginTop="@dimen/margin_tiny"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_director"
+                    app:helperText="@string/hint_required"
+
                     app:layout_constraintTop_toBottomOf="@id/year_wrapper"
                     app:layout_constraintStart_toStartOf="@id/year_wrapper"
                     app:layout_constraintEnd_toEndOf="@id/duration_wrapper">
@@ -138,10 +151,11 @@
                     android:id="@+id/genre_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_regular"
+                    android:layout_marginTop="@dimen/margin_tiny"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_genre"
 
                     app:layout_constraintTop_toBottomOf="@id/director_wrapper"
@@ -159,11 +173,13 @@
                     android:id="@+id/plot_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_regular"
+                    android:layout_marginTop="@dimen/margin_tiny"
 
+                    app:errorEnabled="true"
                     android:hint="@string/label_plot"
+                    app:helperText="@string/hint_required"
 
                     app:layout_constraintTop_toBottomOf="@id/genre_wrapper"
                     app:layout_constraintStart_toStartOf="@id/genre_wrapper"
@@ -178,9 +194,9 @@
 
                 <TextView
                     android:id="@+id/label_add_to"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_big"
+                    android:layout_marginTop="@dimen/margin_regular"
                     android:text="@string/label_also_add_to"
                     app:layout_constraintTop_toBottomOf="@id/plot_wrapper"
                     app:layout_constraintStart_toStartOf="@id/plot_wrapper"
@@ -203,9 +219,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_watched"
 
-                    app:layout_constraintTop_toBottomOf="@id/label_add_to"
+                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"
                     app:layout_constraintStart_toEndOf="@id/add_to_to_watch"
-                    app:layout_constraintEnd_toStartOf="@id/add_to_favourites" />
+                    app:layout_constraintEnd_toStartOf="@id/add_to_favourites"
+                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/add_to_favourites"
@@ -213,9 +230,37 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_favourites"
 
-                    app:layout_constraintTop_toBottomOf="@id/label_add_to"
+                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"
                     app:layout_constraintStart_toEndOf="@id/add_to_watched"
-                    app:layout_constraintEnd_toEndOf="@id/label_add_to" />
+                    app:layout_constraintEnd_toEndOf="@id/label_add_to"
+                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>
+
+                <Button
+                    android:id="@+id/create"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big"
+
+                    android:enabled="false"
+                    
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:text="@string/action_create"
+                    android:drawableStart="@drawable/add_24"
+                    app:layout_constraintTop_toBottomOf="@id/add_to_to_watch"
+                    app:layout_constraintStart_toStartOf="@id/add_to_to_watch"
+                    app:layout_constraintEnd_toEndOf="@id/add_to_favourites"  />
+
+                <Button
+                    android:id="@+id/cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:text="@string/action_cancel"
+                    android:drawableStart="@drawable/add_24"
+                    app:layout_constraintTop_toBottomOf="@id/create"
+                    app:layout_constraintStart_toStartOf="@id/create"
+                    app:layout_constraintEnd_toEndOf="@id/create"  />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

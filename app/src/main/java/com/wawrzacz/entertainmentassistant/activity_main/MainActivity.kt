@@ -2,6 +2,7 @@ package com.wawrzacz.entertainmentassistant.activity_main
 
 import android.content.Context
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -14,11 +15,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.google.android.material.snackbar.Snackbar
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.account.AccountFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation.MovieCreationFragment
+import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val accountFragment = AccountFragment()
     private var searchView: SearchView? = null
+    private var currentCategory = MediaCategory.BROWSE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -66,6 +72,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeBindings() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.fabOpenCreationFragment.setOnClickListener {
+            openCreationDialog()
+        }
     }
 
     private fun setupBottomNavigation() {
@@ -96,6 +105,44 @@ class MainActivity : AppCompatActivity() {
 
     fun clearFocusFromSearchView() {
         searchView?.clearFocus()
+    }
+
+    fun changeCurrentCategory(category: MediaCategory) {
+        when (category) {
+            MediaCategory.BROWSE -> binding.fabOpenCreationFragment.hide()
+            else -> binding.fabOpenCreationFragment.show()
+        }
+        currentCategory = category
+    }
+
+    private fun openCreationDialog() {
+        when (currentCategory) {
+            MediaCategory.BROWSE -> {}
+            MediaCategory.MOVIES -> openMovieCreationFragment()
+            MediaCategory.SERIES -> openSeriesCreationFragment()
+            MediaCategory.GAMES -> openGameCreationFragment()
+        }
+    }
+
+    private fun openMovieCreationFragment() {
+        val fragmentManager = supportFragmentManager
+        val fragment = MovieCreationFragment()
+        fragmentManager.beginTransaction().apply {
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
+        }.commit()
+    }
+
+    private fun openSeriesCreationFragment() {
+        openSnackbarShort("Create new series")
+    }
+
+    private fun openGameCreationFragment() {
+        openSnackbarShort("Create new game")
+    }
+
+    private fun openSnackbarShort(message: String) {
+        Snackbar.make(binding.bottomNavigationView, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onBackPressed() {

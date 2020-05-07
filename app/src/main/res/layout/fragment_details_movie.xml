@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/margin_regular"
+                android:layout_marginTop="@dimen/margin_small"
                 android:indeterminate="true"
                 app:layout_constraintBottom_toBottomOf="@+id/details_container"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
                             style="@style/TextAppearance.MaterialComponents.Headline4"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_regular"
+                            android:layout_marginStart="@dimen/margin_small"
 
                             android:ellipsize="end"
                             android:maxLines="3"
@@ -108,7 +108,7 @@
                             android:id="@+id/icon"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:layout_marginStart="@dimen/margin_regular"
+                            android:layout_marginStart="@dimen/margin_small"
                             android:foregroundTint="@android:color/white"
 
                             app:layout_constraintStart_toEndOf="@+id/poster"
@@ -119,7 +119,7 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_regular"
+                            android:layout_marginStart="@dimen/margin_small"
 
                             app:layout_constraintBottom_toBottomOf="@+id/icon"
                             app:layout_constraintStart_toEndOf="@+id/icon"
@@ -130,7 +130,7 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_regular"
+                            android:layout_marginStart="@dimen/margin_small"
 
                             app:layout_constraintBottom_toBottomOf="@+id/year"
                             app:layout_constraintStart_toEndOf="@+id/year"
@@ -142,7 +142,7 @@
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_regular"
+                        android:layout_marginTop="@dimen/margin_small"
 
                         android:text="@string/label_production" />
 
@@ -156,7 +156,7 @@
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_regular"
+                        android:layout_marginTop="@dimen/margin_small"
 
                         android:text="@string/label_director" />
 
@@ -171,7 +171,7 @@
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_regular"
+                        android:layout_marginTop="@dimen/margin_small"
 
                         android:text="@string/label_genre" />
 
@@ -186,7 +186,7 @@
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_regular"
+                        android:layout_marginTop="@dimen/margin_small"
                         android:text="@string/label_plot" />
 
                     <TextView

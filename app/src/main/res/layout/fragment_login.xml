@@ -39,7 +39,7 @@
             android:id="@+id/email_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_regular"
 
             android:hint="@string/hint_email"
             app:errorEnabled="true"
@@ -67,7 +67,7 @@
             android:id="@+id/password_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_tiny"
 
             android:hint="@string/hint_password"
             app:errorEnabled="true"
@@ -95,7 +95,7 @@
             android:id="@+id/button_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_big"
+            android:layout_marginTop="@dimen/margin_regular"
 
             android:text="@string/action_sign_in"
 
@@ -114,7 +114,7 @@
             android:id="@+id/button_sign_in_with_google"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_tiny"
             app:strokeColor="@color/colorPrimary"
 
             android:text="@string/action_sign_in_with_google"

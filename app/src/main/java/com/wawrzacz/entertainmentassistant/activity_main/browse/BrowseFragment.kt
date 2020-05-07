@@ -16,6 +16,7 @@ import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.games.GameDetailsFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.MovieDetailsFragment
 import com.wawrzacz.entertainmentassistant.activity_main.series.SeriesDetailsFragment
+import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
@@ -45,7 +46,8 @@ class BrowseFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val activity = (requireActivity() as AppCompatActivity)
+        val activity = (requireActivity() as MainActivity)
+        activity.changeCurrentCategory(MediaCategory.BROWSE)
         val actionBar = activity.supportActionBar
         actionBar?.title = getString(R.string.label_browse)
         actionBar?.setIcon(R.drawable.browse_24)

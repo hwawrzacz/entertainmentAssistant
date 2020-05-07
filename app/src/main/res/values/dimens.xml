@@ -27,9 +27,11 @@
     <!--    Margins, paddings, spacings -->
     <dimen name="padding_fragment_regular">16dp</dimen>
     <dimen name="padding_fragment_small">8dp</dimen>
-    <dimen name="margin_small">4dp</dimen>
-    <dimen name="margin_regular">8dp</dimen>
-    <dimen name="margin_big">16dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_regular">16dp</dimen>
+    <dimen name="margin_big">32dp</dimen>
+    <dimen name="margin_huge">56dp</dimen>
     <dimen name="padding_drawable_left">32dp</dimen>
     <dimen name="space_big">32dp</dimen>
     <dimen name="space_huge">56dp</dimen>

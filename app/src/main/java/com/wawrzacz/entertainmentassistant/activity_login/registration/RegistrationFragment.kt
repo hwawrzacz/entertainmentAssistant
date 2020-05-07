@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
-import com.wawrzacz.entertainmentassistant.data.errors.LoginFormError
+import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
 import com.wawrzacz.entertainmentassistant.data.errors.RegistrationError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentRegistrationBinding
 
@@ -100,7 +100,7 @@ class RegistrationFragment: Fragment() {
     private fun observeViewModelChanges() {
         registrationViewModel.loginError.observe(viewLifecycleOwner, Observer {
             val loginError = it
-            if (loginError != LoginFormError.NOT_INITIALIZED)
+            if (loginError != FormValidationState.NOT_INITIALIZED)
                 emailWrapper.error = loginError?.value
             if (loginError == null)
                 emailWrapper.error = null
@@ -108,7 +108,7 @@ class RegistrationFragment: Fragment() {
 
         registrationViewModel.passwordError.observe(viewLifecycleOwner, Observer {
             val passwordError = it
-            if (passwordError != LoginFormError.NOT_INITIALIZED)
+            if (passwordError != FormValidationState.NOT_INITIALIZED)
                 passwordWrapper.error = passwordError?.value
             if (passwordError == null)
                 passwordWrapper.error = null
@@ -116,7 +116,7 @@ class RegistrationFragment: Fragment() {
 
         registrationViewModel.repeatPasswordError.observe(viewLifecycleOwner, Observer {
             val repeatPasswordError = it
-            if (repeatPasswordError != LoginFormError.NOT_INITIALIZED)
+            if (repeatPasswordError != FormValidationState.NOT_INITIALIZED)
                 repeatPasswordWrapper.error = repeatPasswordError?.value
             if (repeatPasswordError == null)
                 repeatPasswordWrapper.error = null
