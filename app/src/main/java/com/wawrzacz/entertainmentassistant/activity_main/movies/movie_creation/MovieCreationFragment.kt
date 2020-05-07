@@ -17,7 +17,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
+import com.wawrzacz.entertainmentassistant.data.errors.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentCretionMovieBinding
+import kotlinx.coroutines.flow.callbackFlow
 
 class MovieCreationFragment: DialogFragment() {
     private lateinit var binding: FragmentCretionMovieBinding
@@ -97,6 +99,41 @@ class MovieCreationFragment: DialogFragment() {
         viewModel.formValidity.observe(viewLifecycleOwner, Observer {
             binding.create.isEnabled = it
         })
+
+        viewModel.movieCreationStatus.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                when (it) {
+                    ResponseStatus.IN_PROGRESS -> setAllInputsEnable(false)
+                    ResponseStatus.SUCCESS -> {
+                        setAllInputsEnable(true)
+                        showSnackbarOnCreationSucceed()
+                        dismissAllowingStateLoss()
+                    }
+                    ResponseStatus.ERROR -> {
+                        setAllInputsEnable(true)
+                        showSnackbarOnCreationFailed()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun addTextInputsListeners() {
+        val titleValidator: (String) -> Unit = { value -> viewModel.validateTitle(value) }
+        val yearValidator: (String) -> Unit = { value -> viewModel.validateYear(value) }
+        val directorValidator: (String) -> Unit = { value -> viewModel.validateDirector(value) }
+        val plotValidator: (String) -> Unit = { value -> viewModel.validatePlot(value) }
+        val setProduction: (String) -> Unit = { value -> viewModel.setProduction(value) }
+        val setDuration: (String) -> Unit = { value -> viewModel.setDuration(value) }
+        val setGenre: (String) -> Unit = { value -> viewModel.setGenre(value) }
+
+        binding.title.addTextChangedListener(MyTextWatcher( titleValidator ))
+        binding.year.addTextChangedListener(MyTextWatcher( yearValidator ))
+        binding.director.addTextChangedListener(MyTextWatcher( directorValidator ))
+        binding.plot.addTextChangedListener(MyTextWatcher( plotValidator ))
+        binding.production.addTextChangedListener(MyTextWatcher( setProduction ))
+        binding.duration.addTextChangedListener(MyTextWatcher( setDuration ))
+        binding.genre.addTextChangedListener(MyTextWatcher( setGenre ))
     }
 
     private fun setTextViewError(view: TextInputLayout, state: FormValidationState) {
@@ -105,19 +142,6 @@ class MovieCreationFragment: DialogFragment() {
             FormValidationState.NOT_INITIALIZED -> view.error = null
             else -> view.error = state.value
         }
-    }
-
-
-    private fun addTextInputsListeners() {
-        val titleValidator: (String) -> Unit = { value -> viewModel.validateTitle(value) }
-        val yearValidator: (String) -> Unit = { value -> viewModel.validateYear(value) }
-        val directorValidator: (String) -> Unit = { value -> viewModel.validateDirector(value) }
-        val plotValidator: (String) -> Unit = { value -> viewModel.validatePlot(value) }
-
-        binding.title.addTextChangedListener(MyTextWatcher( titleValidator ))
-        binding.year.addTextChangedListener(MyTextWatcher( yearValidator ))
-        binding.director.addTextChangedListener(MyTextWatcher( directorValidator ))
-        binding.plot.addTextChangedListener(MyTextWatcher( plotValidator ))
     }
 
     class MyTextWatcher(var callback: (value: String) -> Unit): TextWatcher {
@@ -130,12 +154,55 @@ class MovieCreationFragment: DialogFragment() {
 
     private fun addButtonsListeners() {
         binding.create.setOnClickListener {
-            Toast.makeText(requireContext(), "Create new movie", Toast.LENGTH_LONG).show()
+            viewModel.createMovie()
         }
 
         binding.cancel.setOnClickListener {
             requireActivity().onBackPressed()
         }
+    }
+    
+    private fun setAllInputsEnable(value: Boolean) {
+        // TextBoxes
+        binding.title.isEnabled = value
+        binding.productionWrapper.isEnabled = value
+        binding.yearWrapper.isEnabled = value
+        binding.durationWrapper.isEnabled = value
+        binding.directorWrapper.isEnabled = value
+        binding.genreWrapper.isEnabled = value
+        binding.plotWrapper.isEnabled = value
+        
+        // Checkboxes
+        binding.addToToWatch.isEnabled = value
+        binding.addToWatched.isEnabled = value
+        binding.addToFavourites.isEnabled = value
+
+        // Buttons
+        binding.create.isEnabled = value
+        binding.cancel.isEnabled = value
+    }
+
+    private fun showSnackbarOnCreationFailed() {
+        val message = getString(R.string.error_creating_movie)
+        val actionMessage = getString(R.string.action_retry)
+        val actionCallback = { viewModel.createMovie() }
+
+        showSnackbarLong(message, actionMessage, actionCallback)
+    }
+
+    private fun showSnackbarOnCreationSucceed() {
+        val message = getString(R.string.message_movie_created)
+        val actionMessage = getString(R.string.action_ok)
+        val actionCallback = {}
+
+        showSnackbarLong(message, actionMessage, actionCallback)
+    }
+
+    private fun showSnackbarLong(message: String, actionMessage: String, actionCallback: () -> Unit) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+            .setAction(actionMessage) {
+                actionCallback()
+            }.show()
     }
 
     override fun dismiss() {
@@ -144,7 +211,6 @@ class MovieCreationFragment: DialogFragment() {
                 setTitle(R.string.title_unsaved_changes)
                 setMessage(R.string.confirmation_message_dismiss_unsaved_changes)
                 setPositiveButton(R.string.answer_yes) { _, _ -> run {
-
                         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                         super.dismiss()
                     }

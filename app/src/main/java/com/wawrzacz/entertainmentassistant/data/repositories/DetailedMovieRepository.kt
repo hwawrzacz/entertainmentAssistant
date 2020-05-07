@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
-import com.wawrzacz.entertainmentassistant.data.errors.Response
+import com.wawrzacz.entertainmentassistant.data.errors.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.responses.DetailedItemResponse
 
@@ -23,27 +23,27 @@ object DetailedMovieRepository {
             val apiItemResult = DetailedItemResponse()
 
             fun checkResults() {
-                if (firebaseItemResult.response == Response.SUCCESS) {
+                if (firebaseItemResult.response == ResponseStatus.SUCCESS) {
                     Log.i("schab", "itemSource: Firebase")
                     this.value = firebaseItemResult.item
                 }
-                else if (firebaseItemResult.response != Response.NOT_INITIALIZED && apiItemResult.response != Response.NOT_INITIALIZED) {
+                else if (firebaseItemResult.response != ResponseStatus.NOT_INITIALIZED && apiItemResult.response != ResponseStatus.NOT_INITIALIZED) {
                     Log.i("schab", "itemSource: API")
                     this.value = apiItemResult.item
                 }
             }
 
             addSource(firebaseRepository.getSingleMovie(id)) {
-                if (it == null) firebaseItemResult.response = Response.NO_RESULT
-                else firebaseItemResult.response = Response.SUCCESS
+                if (it == null) firebaseItemResult.response = ResponseStatus.NO_RESULT
+                else firebaseItemResult.response = ResponseStatus.SUCCESS
 
                 firebaseItemResult.item = it
                 checkResults()
             }
 
             addSource(apiRepository.getItem(id)) {
-                if (it == null) apiItemResult.response = Response.NO_RESULT
-                else apiItemResult.response = Response.SUCCESS
+                if (it == null) apiItemResult.response = ResponseStatus.NO_RESULT
+                else apiItemResult.response = ResponseStatus.SUCCESS
 
                 apiItemResult.item = it
                 checkResults()
@@ -53,7 +53,7 @@ object DetailedMovieRepository {
 
     fun toggleItemSection(section: WatchableSection, movie: DetailedItem) {
         Log.i("schab", "add to $section")
-        firebaseRepository.toggleMovieSection(section, movie)
+        firebaseRepository.toggleItemSection(section, movie)
     }
     
 }

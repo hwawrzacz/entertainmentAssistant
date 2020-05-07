@@ -167,7 +167,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         binding.production.text = movie.production
         binding.icon.setImageResource(R.drawable.movie_24)
         binding.year.text = movie.year
-        binding.runtime.text = movie.runtime
+        binding.runtime.text = movie.duration
         binding.genre.text = movie.genre
         binding.director.text = movie.director
         binding.plot.text = movie.plot

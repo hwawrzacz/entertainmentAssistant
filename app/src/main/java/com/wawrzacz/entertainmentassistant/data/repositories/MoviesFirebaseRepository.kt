@@ -9,6 +9,8 @@ import com.wawrzacz.entertainmentassistant.data.enums.Path
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
+import com.wawrzacz.entertainmentassistant.data.errors.ResponseStatus
+import com.wawrzacz.entertainmentassistant.data.model.Movie
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -16,6 +18,9 @@ object MoviesFirebaseRepository {
     private val currentUser = firebaseAuth.currentUser
     private val usersReference: DatabaseReference
     private val moviesReference: DatabaseReference
+
+    private val _movieCreationResult = MutableLiveData(ResponseStatus.NOT_INITIALIZED)
+    val movieCreationResult: LiveData<ResponseStatus> = _movieCreationResult
 
     init {
         firebaseDatabase.setPersistenceEnabled(true)
@@ -150,7 +155,21 @@ object MoviesFirebaseRepository {
         }
         targetLiveData.value = foundMovies}
 
-    fun toggleMovieSection(section: WatchableSection, movie: DetailedItem?) {
+    fun createMovie(movie: Movie) {
+        _movieCreationResult.value = ResponseStatus.IN_PROGRESS
+        moviesReference.push().setValue(movie).addOnCompleteListener {
+            when {
+                it.isSuccessful -> _movieCreationResult.value = ResponseStatus.SUCCESS
+                it.isCanceled -> _movieCreationResult.value = ResponseStatus.ERROR
+                it.isComplete -> _movieCreationResult.value = ResponseStatus.ERROR
+            }
+            // TODO: Another barbarian solution, which prevent happening an action
+            // when newly opened fragment subsribes to result initialized on previous fragment
+            _movieCreationResult.value = ResponseStatus.NOT_INITIALIZED
+        }
+    }
+
+    fun toggleItemSection(section: WatchableSection, movie: DetailedItem?) {
         val currentUserId = firebaseAuth.currentUser?.uid
         when {
             // TODO: Handle null item
@@ -164,7 +183,7 @@ object MoviesFirebaseRepository {
     private fun addMovieToDatabaseAndAssignToUser(
         userId: String,
         movie: DetailedItem,
-        section: WatchableSection
+        section: WatchableSection?
     ) {
         moviesReference.child(movie.id)
             .setValue(movie)
@@ -184,22 +203,23 @@ object MoviesFirebaseRepository {
             }
     }
 
-    private fun toggleSectionMovieValue(userId: String, movie: DetailedItem, section: WatchableSection) {
-        val path = "$userId/${Path.MOVIES.value}/${section.value}/${movie.id}"
-        usersReference.child(path)
-            .addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    var newValue = snapshot.getValue(Boolean::class.java)
-                    if (newValue === null) newValue = false
-                    newValue = !newValue
+    private fun toggleSectionMovieValue(userId: String, movie: DetailedItem, section: WatchableSection?) {
+        if (section != null) {
+            val path = "$userId/${Path.MOVIES.value}/${section.value}/${movie.id}"
+            usersReference.child(path)
+                .addListenerForSingleValueEvent(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        var newValue = snapshot.getValue(Boolean::class.java)
+                        if (newValue === null) newValue = false
+                        newValue = !newValue
 
-                    setNewMovieSectionValue(path, newValue)
-                }
-
-                override fun onCancelled(p0: DatabaseError) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-            })
+                        setNewMovieSectionValue(path, newValue)
+                    }
+                    override fun onCancelled(p0: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                })
+        }
     }
 
     private fun setNewMovieSectionValue(path: String, value: Boolean) {

@@ -14,7 +14,7 @@ class DetailedItem(
     @SerializedName("Year")
     val year: String = "",
     @SerializedName("Runtime")
-    val runtime: String = "",
+    val duration: String = "",
     @SerializedName("totalSeasons")
     val totalSeasons: String? = "",
     @SerializedName("Genre")

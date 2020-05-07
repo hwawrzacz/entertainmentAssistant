@@ -11,8 +11,10 @@
     <!--    Actions -->
     <string name="action_back">Back</string>
     <string name="action_cancel">Cancel</string>
-    <string name="action_search">Search hint</string>
     <string name="action_undo">Undo</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_search">Search hint</string>
     <string name="action_register">Register</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_with_google">Sign in with google</string>
@@ -77,6 +79,7 @@
     <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
     <string name="message_loading_data">Loading data</string>
+    <string name="message_movie_created">Movie created</string>
     <string name="action_message_added_to_to_watch">Added to "to watch"</string>
     <string name="action_message_added_to_watched">Added to watched</string>
     <string name="action_message_added_to_to_play">Added to "to play"</string>
@@ -91,6 +94,7 @@
     <!-- Errors -->
     <string name="error_general">An error occurred</string>
     <string name="error_getting_data">An error occurred while getting data</string>
+    <string name="error_creating_movie">An error occurred while creating a movie</string>
 
     <!-- Dialogs, prompts -->
     <string name="title_delete_account">Delete account</string>

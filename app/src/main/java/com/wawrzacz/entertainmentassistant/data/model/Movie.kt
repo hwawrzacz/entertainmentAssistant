@@ -1,29 +1,42 @@
 package com.wawrzacz.entertainmentassistant.data.model
 
-import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.annotations.SerializedName
-import java.time.Year
 
 class Movie (
     @SerializedName("imdbID")
-    var id: String = "",
+    var id: String = "N/A",
     @SerializedName("Title")
-    val title: String = "",
+    var title: String = "N/A",
+    @SerializedName("Production")
+    var production: String = "N/A",
     @SerializedName("Poster")
-    val posterURL: String = "",
+    var posterUrl: String = "N/A",
     @SerializedName("Runtime")
-    val duration: String = "",
+    var duration: String = "N/A",
     @SerializedName("Director")
-    val director: String = "",
+    var director: String = "N/A",
     @SerializedName("Country")
-    val country: String = "",
+    var country: String = "N/A",
     @SerializedName("Year")
-    val year: String = "",
-    @SerializedName("Type")
-    val type: String = "",
-    val isFavourite: Boolean = false
+    var year: String = "N/A",
+    @SerializedName("Plot")
+    var plot: String = "N/A",
+    @SerializedName("Genre")
+    var genre: String = "N/A",
+    val detailedItem: DetailedItem? = null
 ){
-
+    init {
+        if (detailedItem != null) {
+            id = detailedItem.id
+            title = detailedItem.title
+            posterUrl = detailedItem.posterUrl
+            duration = detailedItem.duration
+            director = detailedItem.director
+            year = detailedItem.year
+            genre = detailedItem.genre
+            plot = detailedItem.plot
+        }
+    }
     override fun toString(): String {
         return "$title by $director | $country $year $duration min"
     }
