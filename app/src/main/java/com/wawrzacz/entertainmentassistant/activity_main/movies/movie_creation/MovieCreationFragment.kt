@@ -18,10 +18,11 @@ import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidation
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentCretionMovieBinding
 
-class MovieCreationFragment: DialogFragment() {
+class MovieCreationFragment(val parentView: View): DialogFragment() {
     private lateinit var binding: FragmentCretionMovieBinding
     private lateinit var viewModel: MovieCreationViewModel
     private lateinit var mainActivity: MainActivity
+    private var hasChanges = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,7 +105,7 @@ class MovieCreationFragment: DialogFragment() {
                     ResponseStatus.SUCCESS -> {
                         setAllInputsEnable(true)
                         showSnackbarOnCreationSucceed()
-                        dismissAllowingStateLoss()
+                        mainActivity.onBackPressed()
                     }
                     ResponseStatus.ERROR -> {
                         setAllInputsEnable(true)
@@ -112,6 +113,10 @@ class MovieCreationFragment: DialogFragment() {
                     }
                 }
             }
+        })
+
+        viewModel.hasChanges.observe(viewLifecycleOwner, Observer {
+            hasChanges = it
         })
     }
 
@@ -138,14 +143,6 @@ class MovieCreationFragment: DialogFragment() {
             FormValidationState.VALID -> view.error = null
             FormValidationState.NOT_INITIALIZED -> view.error = null
             else -> view.error = state.value
-        }
-    }
-
-    class MyTextWatcher(var callback: (value: String) -> Unit): TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        override fun afterTextChanged(s: Editable?) {
-            callback(s.toString())
         }
     }
 
@@ -183,8 +180,8 @@ class MovieCreationFragment: DialogFragment() {
         val message = getString(R.string.error_creating_movie)
         val actionMessage = getString(R.string.action_retry)
         val actionCallback = { viewModel.createMovie() }
-
-        showSnackbarLong(message, actionMessage, actionCallback)
+        val view = binding.toolbar
+        showSnackbarLong(view, message, actionMessage, actionCallback)
     }
 
     private fun showSnackbarOnCreationSucceed() {
@@ -192,27 +189,38 @@ class MovieCreationFragment: DialogFragment() {
         val actionMessage = getString(R.string.action_ok)
         val actionCallback = {}
 
-        showSnackbarLong(message, actionMessage, actionCallback)
+        showSnackbarLong(parentView, message, actionMessage, actionCallback)
     }
 
-    private fun showSnackbarLong(message: String, actionMessage: String, actionCallback: () -> Unit) {
-        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+    private fun showSnackbarLong(view: View, message: String, actionMessage: String, actionCallback: () -> Unit) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction(actionMessage) {
                 actionCallback()
             }.show()
     }
 
     override fun dismiss() {
-        MaterialAlertDialogBuilder(requireContext())
-            .apply {
-                setTitle(R.string.title_unsaved_changes)
-                setMessage(R.string.confirmation_message_dismiss_unsaved_changes)
-                setPositiveButton(R.string.answer_yes) { _, _ -> run {
-                        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-                        super.dismiss()
+        if (hasChanges){
+            MaterialAlertDialogBuilder(requireContext())
+                .apply {
+                    setTitle(R.string.title_unsaved_changes)
+                    setMessage(R.string.confirmation_message_dismiss_unsaved_changes)
+                    setPositiveButton(R.string.answer_yes) { _, _ -> run {
+                            mainActivity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+                            super.dismiss()
+                        }
                     }
-                }
-                setNegativeButton(R.string.answer_no, null)
-            }.show()
+                    setNegativeButton(R.string.answer_no, null)
+                }.show()
+        }
+        else super.dismiss()
+    }
+
+    class MyTextWatcher(var callback: (value: String) -> Unit): TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun afterTextChanged(s: Editable?) {
+            callback(s.toString())
+        }
     }
 }

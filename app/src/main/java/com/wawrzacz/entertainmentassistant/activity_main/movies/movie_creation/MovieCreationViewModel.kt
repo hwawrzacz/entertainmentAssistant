@@ -2,6 +2,7 @@ package com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
@@ -36,7 +37,14 @@ class MovieCreationViewModel: ViewModel() {
 
     private val movie = DetailedItem(type = "movie")
 
-    val movieCreationStatus: LiveData<ResponseStatus> = repository.movieCreationResult
+    private val _hasChanges = MutableLiveData(false)
+    val hasChanges: LiveData<Boolean> = _hasChanges
+
+    val movieCreationStatus: LiveData<ResponseStatus> = Transformations.map(repository.movieCreationResult) {
+        if (it == ResponseStatus.SUCCESS)
+            _hasChanges.value = false
+        it
+    }
 
     fun validateTitle(value: String) {
         if (value.isBlank())
@@ -103,6 +111,7 @@ class MovieCreationViewModel: ViewModel() {
     }
 
     private fun checkFormValidity() {
+        _hasChanges.value = true
         _formValidity.value =
             _titleValidity.value == FormValidationState.VALID &&
             yearValidity.value == FormValidationState.VALID &&

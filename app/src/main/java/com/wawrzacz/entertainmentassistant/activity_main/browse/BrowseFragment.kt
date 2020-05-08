@@ -148,8 +148,10 @@ class BrowseFragment: Fragment() {
     }
 
     private fun refreshData(data: List<CommonListItem>?) {
-        Log.i("schab", "dataRefresh")
-        moviesAdapter.submitList(data)
+        if (data.isNullOrEmpty())
+            moviesAdapter = CommonListAdapter(browseViewModel)
+        else
+            moviesAdapter.submitList(data)
     }
 
     private fun openMovieDetailsFragment(id: String) {

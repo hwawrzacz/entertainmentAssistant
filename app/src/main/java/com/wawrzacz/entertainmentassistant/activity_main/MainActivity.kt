@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -126,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openMovieCreationFragment() {
         val fragmentManager = supportFragmentManager
-        val fragment = MovieCreationFragment()
+        val fragment = MovieCreationFragment(binding.fabOpenCreationFragment)
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
@@ -153,6 +154,7 @@ class MainActivity : AppCompatActivity() {
             if (fragment != null && (fragment.isInLayout || fragment.isAdded || fragment.isVisible)) {
                 dialogFragmentClosed = true
                 fragment.dismiss()
+                window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 initializeActionBar()
             }
         }
