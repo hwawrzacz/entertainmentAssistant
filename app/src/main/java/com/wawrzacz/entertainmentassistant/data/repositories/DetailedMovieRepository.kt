@@ -17,35 +17,27 @@ object DetailedMovieRepository {
         return firebaseRepository.getMovieSectionValue(id, section)
     }
 
-    fun getDetailedItem(id: String): LiveData<DetailedItem?> {
-        return MediatorLiveData<DetailedItem?>().apply {
-            val firebaseItemResult = DetailedItemResponse()
-            val apiItemResult = DetailedItemResponse()
+    fun getDetailedItem(id: String): LiveData<DetailedItemResponse> {
+        return MediatorLiveData<DetailedItemResponse>().apply {
+            var firebaseItemResult = DetailedItemResponse()
+            var apiItemResult = DetailedItemResponse()
 
             fun checkResults() {
-                if (firebaseItemResult.response == ResponseStatus.SUCCESS) {
-                    Log.i("schab", "itemSource: Firebase")
-                    this.value = firebaseItemResult.item
+                if (firebaseItemResult.responseStatus == ResponseStatus.SUCCESS) {
+                    this.value = firebaseItemResult
                 }
-                else if (firebaseItemResult.response != ResponseStatus.NOT_INITIALIZED && apiItemResult.response != ResponseStatus.NOT_INITIALIZED) {
-                    Log.i("schab", "itemSource: API")
-                    this.value = apiItemResult.item
+                else if (firebaseItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED && apiItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED) {
+                    this.value = apiItemResult
                 }
             }
 
-            addSource(firebaseRepository.getSingleMovie(id)) {
-                if (it == null) firebaseItemResult.response = ResponseStatus.NO_RESULT
-                else firebaseItemResult.response = ResponseStatus.SUCCESS
-
-                firebaseItemResult.item = it
+            addSource(firebaseRepository.getSingleItem(id)) {
+                firebaseItemResult = it ?: DetailedItemResponse(null, ResponseStatus.NO_RESULT)
                 checkResults()
             }
 
             addSource(apiRepository.getItem(id)) {
-                if (it == null) apiItemResult.response = ResponseStatus.NO_RESULT
-                else apiItemResult.response = ResponseStatus.SUCCESS
-
-                apiItemResult.item = it
+                apiItemResult = it ?: DetailedItemResponse(null, ResponseStatus.NO_RESULT)
                 checkResults()
             }
         }

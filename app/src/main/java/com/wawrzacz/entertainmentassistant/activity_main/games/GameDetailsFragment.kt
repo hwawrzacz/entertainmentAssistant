@@ -89,23 +89,6 @@ class GameDetailsFragment(private val id: String): DialogFragment() {
     }
 
     private fun observeViewModelChanges() {
-        detailsViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.progressBar.visibility = View.VISIBLE
-                binding.detailsContainer.visibility = View.GONE
-            } else {
-                binding.progressBar.visibility = View.GONE
-                binding.detailsContainer.visibility = View.VISIBLE
-            }
-        })
-
-        detailsViewModel.isSuccessful.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.message.visibility = View.GONE
-            } else {
-                binding.message.visibility = View.VISIBLE
-            }
-        })
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.data.model.SearchResult
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
@@ -27,15 +26,15 @@ class MoviesViewModel: ViewModel(), TransitViewModel {
     override val selectedItem: LiveData<CommonListItem?> = _selectedItem
 
     val foundToWatchMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundToWatchMovies) {
-        _responseToWatchStatus.value = it.response
+        _responseToWatchStatus.value = it.responseStatus
         it.items
     }
     val foundWatchedMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundWatchedMovies) {
-        _responseWatchedStatus.value = it.response
+        _responseWatchedStatus.value = it.responseStatus
         it.items
     }
     val foundFavouritesMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundFavouritesMovies) {
-        _responseFavouritesStatus.value = it.response
+        _responseFavouritesStatus.value = it.responseStatus
         it.items
     }
 

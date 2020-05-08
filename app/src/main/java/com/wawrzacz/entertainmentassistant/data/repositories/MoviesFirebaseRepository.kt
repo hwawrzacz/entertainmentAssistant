@@ -11,6 +11,7 @@ import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListResponse
+import com.wawrzacz.entertainmentassistant.data.responses.DetailedItemResponse
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -42,16 +43,16 @@ object MoviesFirebaseRepository {
     private val _foundFavouritesMovies = MutableLiveData<CommonItemsListResponse>()
     val foundFavouritesMovies: LiveData<CommonItemsListResponse> = _foundFavouritesMovies
 
-    fun getSingleMovie(id: String): LiveData<DetailedItem?> {
-        val result = MutableLiveData<DetailedItem?>()
+    fun getSingleItem(id: String): LiveData<DetailedItemResponse?> {
+        val result = MutableLiveData(DetailedItemResponse(null, ResponseStatus.IN_PROGRESS))
 
         itemsReference.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val movie: DetailedItem? = snapshot.getValue(DetailedItem::class.java)
-                result.value = movie
+                result.value = DetailedItemResponse(movie, ResponseStatus.SUCCESS)
             }
             override fun onCancelled(p0: DatabaseError) {
-                result.value = null
+                result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
             }
         })
         return result
@@ -80,13 +81,16 @@ object MoviesFirebaseRepository {
     fun findAllMoviesByTitle(title: String) {
         itemsReference.orderByChild("queryTitle").startAt(title).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.i("schab", "$snapshot")
                 val moviesIds: List<String> = populateItemsIds(snapshot)
                 if (moviesIds.isNotEmpty())
                     getMoviesBasedOnIds(moviesIds, _foundAllMovies)
-                else _foundAllMovies.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+                else {
+                    _foundAllMovies.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+                }
             }
             override fun onCancelled(p0: DatabaseError) {
-                _foundAllMovies.value = CommonItemsListResponse(null, ResponseStatus.CANCELLED)
+                _foundAllMovies.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
             }
         })
     }
@@ -107,7 +111,6 @@ object MoviesFirebaseRepository {
                         getMoviesBasedOnIds(moviesIds, targetLiveData)
                     }
                     override fun onChildChanged(snapshot: DataSnapshot, p1: String?) {
-                        Log.i("schab", "child changed $snapshot")
                         val moviesIds: List<String> = populateItemsIds(snapshot)
                         getMoviesBasedOnIds(moviesIds, targetLiveData)
                     }
@@ -150,7 +153,7 @@ object MoviesFirebaseRepository {
                 refreshItemsListFromSnapshot(moviesIds, snapshot, targetLiveData)
             }
             override fun onCancelled(p0: DatabaseError) {
-                targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.CANCELLED)
+                targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
             }
         })
     }
@@ -160,7 +163,7 @@ object MoviesFirebaseRepository {
         dataSnapshot: DataSnapshot,
         targetLiveData: MutableLiveData<CommonItemsListResponse>) {
 
-        val foundMovies = mutableListOf<CommonListItem>()
+        val foundMovies = arrayListOf<CommonListItem>()
         for (movieId in moviesIds) {
             val movies = dataSnapshot.children
             for (movieRow in movies) {
@@ -175,15 +178,20 @@ object MoviesFirebaseRepository {
 
     fun createItem(item: DetailedItem) {
         _movieCreationResult.value = ResponseStatus.IN_PROGRESS
-        itemsReference.push().setValue(item).addOnCompleteListener {
-            when {
-                it.isSuccessful -> _movieCreationResult.value = ResponseStatus.SUCCESS
-                it.isCanceled -> _movieCreationResult.value = ResponseStatus.ERROR
-                it.isComplete -> _movieCreationResult.value = ResponseStatus.ERROR
+        val generatedId = itemsReference.push().key
+
+        if (generatedId != null) {
+            item.id = generatedId
+            itemsReference.child(generatedId).setValue(item).addOnCompleteListener {
+                when {
+                    it.isSuccessful -> _movieCreationResult.value = ResponseStatus.SUCCESS
+                    it.isCanceled -> _movieCreationResult.value = ResponseStatus.ERROR
+                    it.isComplete -> _movieCreationResult.value = ResponseStatus.ERROR
+                }
+                // TODO: Another barbarian solution, which prevent happening an action
+                // when newly opened fragment subsribes to result initialized on previous fragment
+                _movieCreationResult.value = ResponseStatus.NOT_INITIALIZED
             }
-            // TODO: Another barbarian solution, which prevent happening an action
-            // when newly opened fragment subsribes to result initialized on previous fragment
-            _movieCreationResult.value = ResponseStatus.NOT_INITIALIZED
         }
     }
 

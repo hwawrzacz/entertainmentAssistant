@@ -2,6 +2,7 @@ package com.wawrzacz.entertainmentassistant.activity_main.movies
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,9 @@ import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewMode
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
+import java.lang.Error
 
 class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
@@ -95,24 +98,41 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
     private fun observeViewModelChanges() {
         detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer { firebaseMovie ->
+            Log.i("schab", "im here")
             if (firebaseMovie != null)
                 populateViewWithData(firebaseMovie)
         })
 
-        detailsViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            if (it) binding.progressBar.visibility = View.VISIBLE
+        detailsViewModel.responseStatus.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                when (it) {
+                    ResponseStatus.NOT_INITIALIZED -> {
+                        hideProgressBar()
+                        hideDetailsContent()
+                    }
+                    ResponseStatus.IN_PROGRESS -> {
+                        hideDetailsContent()
+                        hideBanner()
+                        showProgressBar()
+                    }
+                    ResponseStatus.SUCCESS -> {
+                        hideProgressBar()
+                        hideBanner()
+                        showDetailsContent()
+                    }
+                    ResponseStatus.ERROR -> {
+                        hideProgressBar()
+                        hideDetailsContent()
+                        showBanner(getString(R.string.error_getting_data))
+                    }
+                    ResponseStatus.NO_RESULT -> {
+                        hideProgressBar()
+                        hideDetailsContent()
+                        showBanner(getString(R.string.message_no_results))
+                    }
+                }
+            }
             else binding.progressBar.visibility = View.GONE
-        })
-
-        detailsViewModel.isSuccessful.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                binding.message.visibility = View.GONE
-                binding.detailsContainer.visibility = View.VISIBLE
-            }
-            else {
-                binding.message.visibility = View.VISIBLE
-                binding.detailsContainer.visibility = View.GONE
-            }
         })
 
         detailsViewModel.currentItem.observe(viewLifecycleOwner, Observer {
@@ -236,22 +256,32 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         showSectionSnackbar(actionMessage, callback)
     }
 
-    private fun hideDetailsContent() {
-        binding.detailsContainer.visibility = View.GONE
+    private fun showBanner(message: String) {
+        binding.message.text = message
+        binding.message.visibility = View.VISIBLE
+    }
+
+    private fun hideBanner() {
+        binding.message.visibility = View.GONE
+    }
+
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun showDetailsContent() {
         binding.detailsContainer.visibility = View.VISIBLE
     }
 
-    private fun removeObservers() {
-        detailsViewModel.isSuccessful.removeObservers(viewLifecycleOwner)
-        detailsViewModel.isLoading.removeObservers(viewLifecycleOwner)
+    private fun hideDetailsContent() {
+        binding.detailsContainer.visibility = View.GONE
     }
 
     override fun onDismiss(dialog: DialogInterface) {
-        removeObservers()
-        removeObservers()
         super.onDismiss(dialog)
     }
 

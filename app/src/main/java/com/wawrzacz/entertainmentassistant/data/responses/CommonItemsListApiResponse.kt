@@ -5,7 +5,7 @@ import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 
 class CommonItemsListApiResponse (
     @SerializedName("Search")
-    val items: List<CommonListItem>,
+    val items: ArrayList<CommonListItem>,
     @SerializedName("totalResults")
     val totalResults: String,
     @SerializedName("Response")

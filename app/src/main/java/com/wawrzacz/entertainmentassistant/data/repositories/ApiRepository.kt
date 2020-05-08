@@ -1,10 +1,13 @@
 package com.wawrzacz.entertainmentassistant.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListApiResponse
+import com.wawrzacz.entertainmentassistant.data.responses.DetailedItemResponse
 import com.wawrzacz.entertainmentassistant.data.retrofit.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,31 +37,34 @@ object ApiRepository {
         service = retrofit.create(ApiService::class.java)
     }
 
-    fun getItem(id: String): LiveData<DetailedItem?> {
-        val result = MutableLiveData<DetailedItem?>()
+    fun getItem(id: String): LiveData<DetailedItemResponse?> {
+        val result = MutableLiveData<DetailedItemResponse?>()
 
         service.getMovieById(id, API_KEY).enqueue(object: Callback<DetailedItem?>{
             override fun onResponse(call: Call<DetailedItem?>, response: Response<DetailedItem?>) {
                 if (response.isSuccessful)
-                    result.value = response.body()
+                    result.value = DetailedItemResponse(response.body(), ResponseStatus.SUCCESS)
                 else
-                    result.value = null
+                    result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
             }
             override fun onFailure(call: Call<DetailedItem?>, t: Throwable) {
-                result.value = null
+                result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
             }
         })
         return result
     }
 
     fun findItems(query: String) {
+        Log.i("schab", "Api called")
         service.findItems(query, API_KEY)
             .enqueue(object: Callback<CommonItemsListApiResponse> {
                 override fun onResponse(call: Call<CommonItemsListApiResponse>, response: Response<CommonItemsListApiResponse>) {
-                    if (response.isSuccessful)
+                    if (response.isSuccessful){
                         _foundItemsResponse.value = response.body()
-                    else
+                    }
+                    else {
                         _foundItemsResponse.value = null
+                    }
                 }
                 override fun onFailure(call: Call<CommonItemsListApiResponse>, t: Throwable) {
                     _foundItemsResponse.value = null

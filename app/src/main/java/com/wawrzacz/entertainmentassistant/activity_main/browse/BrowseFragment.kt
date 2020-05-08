@@ -1,6 +1,7 @@
 package com.wawrzacz.entertainmentassistant.activity_main.browse
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -60,6 +61,7 @@ class BrowseFragment: Fragment() {
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
+                browseViewModel.setQuery(newText)
                 findItems(newText)
                 return true
             }
@@ -117,11 +119,6 @@ class BrowseFragment: Fragment() {
                         hideProgressBar()
                         showResults()
                     }
-                    ResponseStatus.CANCELLED -> {
-                        showBanner(getString(R.string.message_query_cancelled))
-                        hideProgressBar()
-                        showResults()
-                    }
                 }
         })
 
@@ -151,6 +148,7 @@ class BrowseFragment: Fragment() {
     }
 
     private fun refreshData(data: List<CommonListItem>?) {
+        Log.i("schab", "dataRefresh")
         moviesAdapter.submitList(data)
     }
 

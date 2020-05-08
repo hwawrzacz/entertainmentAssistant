@@ -7,16 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.repositories.DetailedMovieRepository
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 
 class DetailsViewModel: ViewModel() {
 
     private val repository = DetailedMovieRepository
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _isSuccessful = MutableLiveData<Boolean>()
-    val isSuccessful: LiveData<Boolean> = _isSuccessful
+    private val _responseStatus = MutableLiveData(ResponseStatus.NOT_INITIALIZED)
+    val responseStatus: LiveData<ResponseStatus> = _responseStatus
 
     private val _currentItem = MutableLiveData<DetailedItem?>()
     val currentItem: LiveData<DetailedItem?> = _currentItem
@@ -34,13 +32,12 @@ class DetailsViewModel: ViewModel() {
     }
 
     fun getDetailedItem(id: String): LiveData<DetailedItem?> {
-        _isLoading.value = true
+        _responseStatus.value = ResponseStatus.IN_PROGRESS
 
         return Transformations.map(repository.getDetailedItem(id)) {
-            _isLoading.value = false
-            _isSuccessful.value = it != null
-            _currentItem.value = it
-            it
+            _responseStatus.value = it.responseStatus
+            _currentItem.value = it.item
+            it.item
         }
     }
 
