@@ -98,9 +98,10 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
     private fun observeViewModelChanges() {
         detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer { firebaseMovie ->
-            Log.i("schab", "im here")
-            if (firebaseMovie != null)
+            if (firebaseMovie != null){
+                Log.i("schab", "showing data")
                 populateViewWithData(firebaseMovie)
+            }
         })
 
         detailsViewModel.responseStatus.observe(viewLifecycleOwner, Observer {
@@ -132,7 +133,8 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
                     }
                 }
             }
-            else binding.progressBar.visibility = View.GONE
+
+            Log.i("schab", it.value)
         })
 
         detailsViewModel.currentItem.observe(viewLifecycleOwner, Observer {
@@ -279,10 +281,6 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
     private fun hideDetailsContent() {
         binding.detailsContainer.visibility = View.GONE
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
     }
 
     private fun showSectionSnackbar(message: String, callback: () -> Unit) {

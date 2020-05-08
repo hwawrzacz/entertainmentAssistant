@@ -49,7 +49,10 @@ object MoviesFirebaseRepository {
         itemsReference.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val movie: DetailedItem? = snapshot.getValue(DetailedItem::class.java)
-                result.value = DetailedItemResponse(movie, ResponseStatus.SUCCESS)
+                if (movie == null)
+                    result.value = DetailedItemResponse(null, ResponseStatus.NO_RESULT)
+                else
+                    result.value = DetailedItemResponse(movie, ResponseStatus.SUCCESS)
             }
             override fun onCancelled(p0: DatabaseError) {
                 result.value = DetailedItemResponse(null, ResponseStatus.ERROR)

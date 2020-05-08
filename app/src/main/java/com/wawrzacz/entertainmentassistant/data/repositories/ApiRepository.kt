@@ -38,16 +38,24 @@ object ApiRepository {
     }
 
     fun getItem(id: String): LiveData<DetailedItemResponse?> {
+
+        Log.i("schab", "Getting API item")
         val result = MutableLiveData<DetailedItemResponse?>()
 
         service.getMovieById(id, API_KEY).enqueue(object: Callback<DetailedItem?>{
             override fun onResponse(call: Call<DetailedItem?>, response: Response<DetailedItem?>) {
-                if (response.isSuccessful)
+                if (response.isSuccessful) {
+                    Log.i("schabAPI", "successful body: ${response.body()}")
                     result.value = DetailedItemResponse(response.body(), ResponseStatus.SUCCESS)
-                else
+                    Log.i("schabAPI", "successful value: ${result.value}")
+                }
+                else{
+                    Log.i("schabAPI", "unsuccessful body: ${response.errorBody()}")
                     result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
+                }
             }
             override fun onFailure(call: Call<DetailedItem?>, t: Throwable) {
+                Log.i("schabAPI", "fail body: ${t.message}")
                 result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
             }
         })

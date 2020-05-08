@@ -25,9 +25,11 @@ object DetailedMovieRepository {
             fun checkResults() {
                 if (firebaseItemResult.responseStatus == ResponseStatus.SUCCESS) {
                     this.value = firebaseItemResult
+                    Log.i("schabMERGER", "FBvalue: ${this.value}")
                 }
                 else if (firebaseItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED && apiItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED) {
                     this.value = apiItemResult
+                    Log.i("schabMERGER", "APIvalue: ${this.value}")
                 }
             }
 
