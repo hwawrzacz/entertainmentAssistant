@@ -121,21 +121,24 @@ class MovieCreationFragment(val parentView: View): DialogFragment() {
     }
 
     private fun addTextInputsListeners() {
-        val titleValidator: (String) -> Unit = { value -> viewModel.validateTitle(value) }
-        val yearValidator: (String) -> Unit = { value -> viewModel.validateYear(value) }
-        val directorValidator: (String) -> Unit = { value -> viewModel.validateDirector(value) }
-        val plotValidator: (String) -> Unit = { value -> viewModel.validatePlot(value) }
-        val setProduction: (String) -> Unit = { value -> viewModel.setProduction(value) }
-        val setDuration: (String) -> Unit = { value -> viewModel.setDuration(value) }
-        val setGenre: (String) -> Unit = { value -> viewModel.setGenre(value) }
+        val onPosterUrlChanged: (String) -> Unit = { value -> viewModel.onPosterUrlChanged(value) }
+        val onTitleChanged: (String) -> Unit = { value -> viewModel.onTitleChanged(value) }
+        val onYearChanged: (String) -> Unit = { value -> viewModel.onYearChanged(value) }
+        val onDirectorChanged: (String) -> Unit = { value -> viewModel.onDirectorChanged(value) }
+        val onPlotChanged: (String) -> Unit = { value -> viewModel.onPlotChanged(value) }
+        val onProductionChanged: (String) -> Unit = { value -> viewModel.onProductionChanged(value) }
+        val onDurationChanged: (String) -> Unit = { value -> viewModel.onDurationChanged(value) }
+        val onGenreChanged: (String) -> Unit = { value -> viewModel.onGenreChanged(value) }
 
-        binding.title.addTextChangedListener(MyTextWatcher( titleValidator ))
-        binding.year.addTextChangedListener(MyTextWatcher( yearValidator ))
-        binding.director.addTextChangedListener(MyTextWatcher( directorValidator ))
-        binding.plot.addTextChangedListener(MyTextWatcher( plotValidator ))
-        binding.production.addTextChangedListener(MyTextWatcher( setProduction ))
-        binding.duration.addTextChangedListener(MyTextWatcher( setDuration ))
-        binding.genre.addTextChangedListener(MyTextWatcher( setGenre ))
+
+        binding.posterUrl.addTextChangedListener(MyTextWatcher( onPosterUrlChanged ))
+        binding.title.addTextChangedListener(MyTextWatcher( onTitleChanged ))
+        binding.year.addTextChangedListener(MyTextWatcher( onYearChanged ))
+        binding.director.addTextChangedListener(MyTextWatcher( onDirectorChanged ))
+        binding.plot.addTextChangedListener(MyTextWatcher( onPlotChanged ))
+        binding.production.addTextChangedListener(MyTextWatcher( onProductionChanged ))
+        binding.duration.addTextChangedListener(MyTextWatcher( onDurationChanged ))
+        binding.genre.addTextChangedListener(MyTextWatcher( onGenreChanged ))
     }
 
     private fun setTextViewError(view: TextInputLayout, state: FormValidationState) {

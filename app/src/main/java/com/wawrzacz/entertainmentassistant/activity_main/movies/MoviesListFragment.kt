@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.data.model.SearchResult
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
@@ -77,18 +77,36 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
 
     private fun addViewModelObservers() {
         when (section) {
-            WatchableSection.TO_WATCH -> moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
+            WatchableSection.TO_WATCH -> {
+                moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })
-            WatchableSection.WATCHED -> moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
+
+                moviesViewModel.responseToWatchStatus.observe(viewLifecycleOwner, Observer {
+                    handleResponseStatusChange(it)
+                })
+            }
+            WatchableSection.WATCHED -> {
+                moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })
-            WatchableSection.FAVOURITES -> moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
+
+                moviesViewModel.responseWatchedStatus.observe(viewLifecycleOwner, Observer {
+                    handleResponseStatusChange(it)
+                })
+            }
+            WatchableSection.FAVOURITES -> {
+                moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)
                         refreshData(it)
                 })
+
+                moviesViewModel.responseFavouritesStatus.observe(viewLifecycleOwner, Observer {
+                    handleResponseStatusChange(it)
+                })
+            }
         }
 
         moviesViewModel.selectedItem.observe(viewLifecycleOwner, Observer {
@@ -100,6 +118,36 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
                 openMovieDetailsFragment(it.id)
             }
         })
+    }
+
+    private fun handleResponseStatusChange(responseStatus: ResponseStatus) {
+        when (responseStatus) {
+            ResponseStatus.NOT_INITIALIZED -> {
+                hideProgressBar()
+                hideResults()
+                showBanner(getString(R.string.message_action_browse))
+            }
+            ResponseStatus.IN_PROGRESS -> {
+                hideBanner()
+                hideResults()
+                showProgressBar()
+            }
+            ResponseStatus.SUCCESS -> {
+                hideBanner()
+                hideProgressBar()
+                showResults()
+            }
+            ResponseStatus.NO_RESULT -> {
+                hideProgressBar()
+                hideResults()
+                showBanner(getString(R.string.message_no_results))
+            }
+            ResponseStatus.ERROR -> {
+                hideProgressBar()
+                hideResults()
+                showBanner(getString(R.string.error_getting_data))
+            }
+        }
     }
 
     private fun findMovies() {
@@ -121,4 +169,31 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
             replace(android.R.id.content, fragment, "DETAILS_FRAGMENT")
         }.commit()
     }
+
+    //#region UI changes
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+    }
+
+    private fun showBanner(string: String) {
+        binding.bannerMessage.visibility = View.VISIBLE
+        binding.bannerMessage.text = string
+    }
+
+    private fun hideBanner() {
+        binding.bannerMessage.visibility = View.GONE
+    }
+
+    private fun showResults() {
+        binding.moviesRecyclerView.visibility = View.VISIBLE
+    }
+
+    private fun hideResults() {
+        binding.moviesRecyclerView.visibility = View.GONE
+    }
+    //#endregion
 }

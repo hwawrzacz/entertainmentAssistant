@@ -46,7 +46,11 @@ class MovieCreationViewModel: ViewModel() {
         it
     }
 
-    fun validateTitle(value: String) {
+    fun onPosterUrlChanged(value: String) {
+        movie.posterUrl = value
+    }
+
+    fun onTitleChanged(value: String) {
         if (value.isBlank())
             _titleValidity.value = FormValidationState.FIELD_EMPTY
         else {
@@ -57,7 +61,7 @@ class MovieCreationViewModel: ViewModel() {
         checkFormValidity()
     }
 
-    fun validateYear(value: String?) {
+    fun onYearChanged(value: String?) {
         if (value.isNullOrBlank())
             _yearValidity.value = FormValidationState.FIELD_EMPTY
         else {
@@ -72,7 +76,7 @@ class MovieCreationViewModel: ViewModel() {
         checkFormValidity()
     }
 
-    fun validateDirector(value: String) {
+    fun onDirectorChanged(value: String) {
         if (value.isBlank())
             _directorValidity.value = FormValidationState.FIELD_EMPTY
         else {
@@ -82,7 +86,7 @@ class MovieCreationViewModel: ViewModel() {
         checkFormValidity()
     }
 
-    fun validatePlot(value: String) {
+    fun onPlotChanged(value: String) {
         if (value.isBlank())
             _plotValidity.value = FormValidationState.FIELD_EMPTY
         else {
@@ -92,15 +96,15 @@ class MovieCreationViewModel: ViewModel() {
         checkFormValidity()
     }
 
-    fun setProduction(value: String) {
+    fun onProductionChanged(value: String) {
         movie.production = value
     }
 
-    fun setDuration(value: String) {
-        movie.duration = value
+    fun onDurationChanged(value: String) {
+        movie.duration = "$value min"
     }
 
-    fun setGenre(value: String) {
+    fun onGenreChanged(value: String) {
         movie.genre = value
     }
 

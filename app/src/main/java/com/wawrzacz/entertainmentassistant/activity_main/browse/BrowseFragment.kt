@@ -97,6 +97,8 @@ class BrowseFragment: Fragment() {
             if (it != null)
                 when (it) {
                     ResponseStatus.NOT_INITIALIZED -> {
+                        hideProgressBar()
+                        hideResults()
                         showBanner(getString(R.string.message_action_browse))
                     }
                     ResponseStatus.IN_PROGRESS -> {
@@ -110,14 +112,14 @@ class BrowseFragment: Fragment() {
                         showResults()
                     }
                     ResponseStatus.NO_RESULT -> {
-                        showBanner(getString(R.string.message_no_results))
                         hideProgressBar()
-                        showResults()
+                        hideResults()
+                        showBanner(getString(R.string.message_no_results))
                     }
                     ResponseStatus.ERROR -> {
-                        showBanner(getString(R.string.error_getting_data))
                         hideProgressBar()
-                        showResults()
+                        hideResults()
+                        showBanner(getString(R.string.error_getting_data))
                     }
                 }
         })

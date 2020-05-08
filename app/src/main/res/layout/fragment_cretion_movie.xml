@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/title_wrapper"
+                    android:id="@+id/poster_url_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
                     android:layout_width="match_parent"
@@ -37,12 +37,40 @@
                     android:layout_marginEnd="@dimen/padding_fragment_regular"
 
                     app:errorEnabled="true"
-                    android:hint="@string/label_title"
-                    app:helperText="@string/hint_required"
-                    
+                    android:hint="@string/label_poster_url"
+                    app:startIconDrawable="@drawable/image_24"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/poster_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/title_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginStart="@dimen/padding_fragment_regular"
+                    android:layout_marginEnd="@dimen/padding_fragment_regular"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_title"
+                    app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/title_24"
+                    
+                    app:layout_constraintEnd_toEndOf="@id/poster_url_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/poster_url_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/poster_url_wrapper">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/title"
@@ -53,15 +81,16 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/production_wrapper"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-
                     android:layout_marginTop="@dimen/margin_tiny"
 
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
                     app:errorEnabled="true"
                     android:hint="@string/label_production"
+                    app:startIconDrawable="@drawable/production_icon_24"
+
                     app:layout_constraintEnd_toEndOf="@id/title_wrapper"
                     app:layout_constraintStart_toStartOf="@id/title_wrapper"
                     app:layout_constraintTop_toBottomOf="@id/title_wrapper">
@@ -83,6 +112,7 @@
                     app:errorEnabled="true"
                     android:hint="@string/label_year"
                     app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/calendar_24"
 
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
                     app:boxBackgroundColor="@color/bg_movie_list_element"
@@ -111,6 +141,7 @@
 
                     app:errorEnabled="true"
                     android:hint="@string/label_duration"
+                    app:startIconDrawable="@drawable/time_24"
 
                     app:layout_constraintStart_toEndOf="@id/year_wrapper"
                     app:layout_constraintEnd_toEndOf="@id/production_wrapper"
@@ -135,6 +166,7 @@
                     app:errorEnabled="true"
                     android:hint="@string/label_director"
                     app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/person_24"
 
                     app:layout_constraintTop_toBottomOf="@id/year_wrapper"
                     app:layout_constraintStart_toStartOf="@id/year_wrapper"
@@ -157,6 +189,7 @@
 
                     app:errorEnabled="true"
                     android:hint="@string/label_genre"
+                    app:startIconDrawable="@drawable/genre_24"
 
                     app:layout_constraintTop_toBottomOf="@id/director_wrapper"
                     app:layout_constraintStart_toStartOf="@id/director_wrapper"
@@ -180,6 +213,7 @@
                     app:errorEnabled="true"
                     android:hint="@string/label_plot"
                     app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/text_content_24"
 
                     app:layout_constraintTop_toBottomOf="@id/genre_wrapper"
                     app:layout_constraintStart_toStartOf="@id/genre_wrapper"
@@ -189,7 +223,7 @@
                         android:id="@+id/plot"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="textMultiLine" />
+                        android:inputType="textCapSentences|textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView

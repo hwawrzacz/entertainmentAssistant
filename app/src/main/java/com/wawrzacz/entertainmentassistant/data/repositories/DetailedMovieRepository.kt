@@ -23,14 +23,11 @@ object DetailedMovieRepository {
             var apiItemResult = DetailedItemResponse()
 
             fun checkResults() {
-                if (firebaseItemResult.responseStatus == ResponseStatus.SUCCESS) {
+                if (firebaseItemResult.responseStatus == ResponseStatus.SUCCESS)
                     this.value = firebaseItemResult
-                    Log.i("schabMERGER", "FBvalue: ${this.value}")
-                }
-                else if (firebaseItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED && apiItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED) {
+                else if (firebaseItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED && apiItemResult.responseStatus != ResponseStatus.NOT_INITIALIZED)
                     this.value = apiItemResult
-                    Log.i("schabMERGER", "APIvalue: ${this.value}")
-                }
+
             }
 
             addSource(firebaseRepository.getSingleItem(id)) {
@@ -46,7 +43,6 @@ object DetailedMovieRepository {
     }
 
     fun toggleItemSection(section: WatchableSection, movie: DetailedItem) {
-        Log.i("schab", "add to $section")
         firebaseRepository.toggleItemSection(section, movie)
     }
     

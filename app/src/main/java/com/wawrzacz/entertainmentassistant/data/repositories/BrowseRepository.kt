@@ -1,21 +1,14 @@
 package com.wawrzacz.entertainmentassistant.data.repositories
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.common.internal.service.Common
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListApiResponse
 import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListResponse
 
 object BrowseRepository {
     private val apiRepository = ApiRepository
     private val firebaseRepository = MoviesFirebaseRepository
-
-    private val _foundItemsResponse = MutableLiveData<CommonItemsListApiResponse?>()
-    val foundItemsResponse: LiveData<CommonItemsListApiResponse?> = _foundItemsResponse
 
     fun findItems(query: String): LiveData<CommonItemsListResponse> {
         return MediatorLiveData<CommonItemsListResponse>().apply {
@@ -36,12 +29,10 @@ object BrowseRepository {
                     } else {
                         val mergedMovies = mergeResults(firebaseResult.items, apiResult.items)
 
-                        if (mergedMovies == null)
+                        if (mergedMovies.isNullOrEmpty())
                             this.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
                         else
                             this.value = CommonItemsListResponse(mergedMovies, ResponseStatus.SUCCESS)
-
-                        Log.i("schab", "Merged size: ${mergedMovies?.size}")
                     }
                 }
             }

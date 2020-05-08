@@ -82,7 +82,7 @@ object MoviesFirebaseRepository {
     }
 
     fun findAllMoviesByTitle(title: String) {
-        itemsReference.orderByChild("queryTitle").startAt(title).addValueEventListener(object: ValueEventListener {
+        itemsReference.orderByChild("queryTitle").startAt(title).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.i("schab", "$snapshot")
                 val moviesIds: List<String> = populateItemsIds(snapshot)

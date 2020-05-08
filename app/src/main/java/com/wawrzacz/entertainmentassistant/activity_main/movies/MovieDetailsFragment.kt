@@ -1,8 +1,6 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +18,6 @@ import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
-import java.lang.Error
 
 class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
@@ -98,10 +95,8 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
     private fun observeViewModelChanges() {
         detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer { firebaseMovie ->
-            if (firebaseMovie != null){
-                Log.i("schab", "showing data")
+            if (firebaseMovie != null)
                 populateViewWithData(firebaseMovie)
-            }
         })
 
         detailsViewModel.responseStatus.observe(viewLifecycleOwner, Observer {
@@ -133,8 +128,6 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
                     }
                 }
             }
-
-            Log.i("schab", it.value)
         })
 
         detailsViewModel.currentItem.observe(viewLifecycleOwner, Observer {

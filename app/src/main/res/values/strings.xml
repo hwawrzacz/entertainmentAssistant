@@ -50,6 +50,7 @@
     <string name="label_all">All</string>
     <string name="label_also_add_to">Also add to</string>
     <string name="label_favourites">Favourites</string>
+    <string name="label_poster_url">Poster URL</string>
     <string name="label_title">Title</string>
     <string name="label_year">Year</string>
     <string name="label_duration">Duration</string>
