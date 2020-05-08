@@ -3,7 +3,7 @@ package com.wawrzacz.entertainmentassistant.data.responses
 import com.google.gson.annotations.SerializedName
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 
-class ResponseUniversalItemsList (
+class CommonItemsListApiResponse (
     @SerializedName("Search")
     val items: List<CommonListItem>,
     @SerializedName("totalResults")

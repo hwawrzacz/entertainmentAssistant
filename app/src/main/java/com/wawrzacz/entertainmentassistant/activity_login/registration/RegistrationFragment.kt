@@ -18,8 +18,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
-import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
-import com.wawrzacz.entertainmentassistant.data.errors.RegistrationError
+import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
+import com.wawrzacz.entertainmentassistant.data.response_statuses.RegistrationError
 import com.wawrzacz.entertainmentassistant.databinding.FragmentRegistrationBinding
 
 class RegistrationFragment: Fragment() {

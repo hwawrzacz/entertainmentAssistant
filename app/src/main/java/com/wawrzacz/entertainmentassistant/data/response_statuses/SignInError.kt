@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.data.errors
+package com.wawrzacz.entertainmentassistant.data.response_statuses
 
 enum class SignInError (val value: String){
     INCORRECT_CREDENTIALS("Incorrect credentials"),

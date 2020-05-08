@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.data.errors
+package com.wawrzacz.entertainmentassistant.data.response_statuses
 
 enum class FormValidationState(var value: String) {
     LOGIN_TOO_SHORT("Email must contain > 5 digits"),

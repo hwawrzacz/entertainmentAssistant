@@ -1,12 +1,11 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
-import com.wawrzacz.entertainmentassistant.data.errors.ResponseStatus
-import com.wawrzacz.entertainmentassistant.data.model.Movie
+import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
+import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 
 class MovieCreationViewModel: ViewModel() {
@@ -35,7 +34,7 @@ class MovieCreationViewModel: ViewModel() {
     private val _plotValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
     val plotValidity: LiveData<FormValidationState> = _plotValidity
 
-    private val movie = Movie()
+    private val movie = DetailedItem(type = "movie")
 
     val movieCreationStatus: LiveData<ResponseStatus> = repository.movieCreationResult
 
@@ -45,6 +44,7 @@ class MovieCreationViewModel: ViewModel() {
         else {
             _titleValidity.value = FormValidationState.VALID
             movie.title = value
+            movie.queryTitle = value.toLowerCase()
         }
         checkFormValidity()
     }
@@ -98,7 +98,7 @@ class MovieCreationViewModel: ViewModel() {
 
     fun createMovie() {
         if (_formValidity.value == true) {
-            repository.createMovie(movie)
+            repository.createItem(movie)
         }
     }
 

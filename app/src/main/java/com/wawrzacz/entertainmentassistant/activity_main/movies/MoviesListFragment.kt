@@ -76,30 +76,6 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
     }
 
     private fun addViewModelObservers() {
-        moviesViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            if (it) binding.progressBar.visibility = View.VISIBLE
-            else binding.progressBar.visibility = View.GONE
-        })
-
-        moviesViewModel.hasAnyResult.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                SearchResult.NOT_INITIALIZED -> {
-                    binding.bannerMessage.text = getString(R.string.message_action_search_for_movies)
-                }
-                SearchResult.ERROR_GETTING_DATA -> {
-                    binding.bannerMessage.text = getString(R.string.error_getting_data)
-                }
-                SearchResult.NO_RESULTS -> {
-                    binding.bannerMessage.text = getString(R.string.message_no_results)
-                    binding.bannerMessage.visibility = View.VISIBLE
-                }
-                SearchResult.SUCCESS -> {
-                    binding.bannerMessage.visibility = View.GONE
-                }
-
-            }
-        })
-
         when (section) {
             WatchableSection.TO_WATCH -> moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
                     if (it != null)

@@ -28,7 +28,7 @@
     <string name="label_or">or</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_details">Details</string>
-    <string name="title_create_movie">Create movie</string>
+    <string name="title_create_movie">Create a movie</string>
     <string name="title_create_series">Create series</string>
     <string name="title_create_game">Create game</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -80,6 +80,9 @@
     <string name="message_action_search_for_games">Search for games</string>
     <string name="message_loading_data">Loading data</string>
     <string name="message_movie_created">Movie created</string>
+    <string name="message_query_cancelled">Query cancelled</string>
+
+    <!-- Action messages -->
     <string name="action_message_added_to_to_watch">Added to "to watch"</string>
     <string name="action_message_added_to_watched">Added to watched</string>
     <string name="action_message_added_to_to_play">Added to "to play"</string>

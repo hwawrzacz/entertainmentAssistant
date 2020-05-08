@@ -1,6 +1,6 @@
 package com.wawrzacz.entertainmentassistant.data.model
 
-import com.wawrzacz.entertainmentassistant.data.errors.SignInError
+import com.wawrzacz.entertainmentassistant.data.response_statuses.SignInError
 
 class SignInResult (
     val signedInSuccessfully: Boolean,

@@ -4,32 +4,35 @@ import com.google.gson.annotations.SerializedName
 
 class DetailedItem(
     @SerializedName("imdbID")
-    val id: String = "",
+    var id: String = "N/A",
     @SerializedName("Title")
-    val title: String = "",
+    var title: String = "N/A",
     @SerializedName("Production")
-    val production: String = "",
+    var production: String = "N/A",
     @SerializedName("Type")
-    val type: String = "",
+    var type: String = "N/A",
     @SerializedName("Year")
-    val year: String = "",
+    var year: String = "N/A",
     @SerializedName("Runtime")
-    val duration: String = "",
+    var duration: String = "N/A",
     @SerializedName("totalSeasons")
-    val totalSeasons: String? = "",
+    var totalSeasons: String? = "N/A",
     @SerializedName("Genre")
-    val genre: String = "",
+    var genre: String = "N/A",
     @SerializedName("Poster")
-    val posterUrl: String = "",
+    var posterUrl: String = "N/A",
     @SerializedName("Director")
-    val director: String = "",
+    var director: String = "N/A",
     @SerializedName("Writer")
-    val writer: String = "",
+    var writer: String = "N/A",
     @SerializedName("Plot")
-    val plot: String = "",
-    @SerializedName("Response")
-    val response: String = "false"
-){
+    var plot: String = "N/A",
+    var queryTitle: String = "N/A"
+    ){
+
+    init {
+        queryTitle = title.toLowerCase()
+    }
 
     override fun toString(): String {
         return "$title $type $year"

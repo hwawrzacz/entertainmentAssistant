@@ -7,7 +7,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.repositories.AuthRepository
 import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
-import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
+import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
 
 class RegistrationViewModel: ViewModel() {
     private val authRepository =

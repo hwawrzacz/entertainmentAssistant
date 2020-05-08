@@ -7,8 +7,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.wawrzacz.entertainmentassistant.data.model.LoggedUser
 import com.wawrzacz.entertainmentassistant.data.model.RegistrationResult
 import com.wawrzacz.entertainmentassistant.data.model.SignInResult
-import com.wawrzacz.entertainmentassistant.data.errors.RegistrationError
-import com.wawrzacz.entertainmentassistant.data.errors.SignInError
+import com.wawrzacz.entertainmentassistant.data.response_statuses.RegistrationError
+import com.wawrzacz.entertainmentassistant.data.response_statuses.SignInError
 
 object AuthRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()

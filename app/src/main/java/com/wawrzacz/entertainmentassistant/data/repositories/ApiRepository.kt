@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.responses.ResponseUniversalItemsList
+import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListApiResponse
 import com.wawrzacz.entertainmentassistant.data.retrofit.ApiService
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,8 +18,8 @@ object ApiRepository {
     private const val BASE_URL = "http://www.omdbapi.com" //Resources.getSystem().getString(R.string.retrofit_base_url)
     private const val API_KEY = "373cac09" //Resources.getSystem().getString(R.string.retrofit_api_key)
 
-    private val _foundItemsResponse = MutableLiveData<ResponseUniversalItemsList?>()
-    val foundItemsResponse: LiveData<ResponseUniversalItemsList?> = _foundItemsResponse
+    private val _foundItemsResponse = MutableLiveData<CommonItemsListApiResponse?>()
+    val foundItemsResponse: LiveData<CommonItemsListApiResponse?> = _foundItemsResponse
 
     init {
         retrofit = Retrofit.Builder()
@@ -53,14 +53,14 @@ object ApiRepository {
 
     fun findItems(query: String) {
         service.findItems(query, API_KEY)
-            .enqueue(object: Callback<ResponseUniversalItemsList> {
-                override fun onResponse(call: Call<ResponseUniversalItemsList>, response: Response<ResponseUniversalItemsList>) {
+            .enqueue(object: Callback<CommonItemsListApiResponse> {
+                override fun onResponse(call: Call<CommonItemsListApiResponse>, response: Response<CommonItemsListApiResponse>) {
                     if (response.isSuccessful)
                         _foundItemsResponse.value = response.body()
                     else
                         _foundItemsResponse.value = null
                 }
-                override fun onFailure(call: Call<ResponseUniversalItemsList>, t: Throwable) {
+                override fun onFailure(call: Call<CommonItemsListApiResponse>, t: Throwable) {
                     _foundItemsResponse.value = null
                 }
             })

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.repositories.AuthRepository
 import com.wawrzacz.entertainmentassistant.data.model.LoggedUser
 import com.wawrzacz.entertainmentassistant.data.model.SignInResult
-import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
+import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
 
 class LoginViewModel: ViewModel() {
     private val authRepository =

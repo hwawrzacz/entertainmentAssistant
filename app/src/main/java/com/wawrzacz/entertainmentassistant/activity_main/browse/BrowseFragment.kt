@@ -18,6 +18,7 @@ import com.wawrzacz.entertainmentassistant.activity_main.movies.MovieDetailsFrag
 import com.wawrzacz.entertainmentassistant.activity_main.series.SeriesDetailsFragment
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentBrowseBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
@@ -90,37 +91,38 @@ class BrowseFragment: Fragment() {
             refreshData(it)
         })
 
-        browseViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            if (it) binding.progressBar.visibility = View.VISIBLE
-            else {
-                binding.progressBar.visibility = View.GONE
-            }
-        })
-
-        browseViewModel.hasAnyResults.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                null -> {
-                    showBanner(getString(R.string.message_action_browse))
-                    hideResults()
-                    hideProgressBar()
+        browseViewModel.responseStatus.observe(viewLifecycleOwner, Observer {
+            if (it != null)
+                when (it) {
+                    ResponseStatus.NOT_INITIALIZED -> {
+                        showBanner(getString(R.string.message_action_browse))
+                    }
+                    ResponseStatus.IN_PROGRESS -> {
+                        hideBanner()
+                        hideResults()
+                        showProgressBar()
+                    }
+                    ResponseStatus.SUCCESS -> {
+                        hideBanner()
+                        hideProgressBar()
+                        showResults()
+                    }
+                    ResponseStatus.NO_RESULT -> {
+                        showBanner(getString(R.string.message_no_results))
+                        hideProgressBar()
+                        showResults()
+                    }
+                    ResponseStatus.ERROR -> {
+                        showBanner(getString(R.string.error_getting_data))
+                        hideProgressBar()
+                        showResults()
+                    }
+                    ResponseStatus.CANCELLED -> {
+                        showBanner(getString(R.string.message_query_cancelled))
+                        hideProgressBar()
+                        showResults()
+                    }
                 }
-                false -> {
-                    showBanner(getString(R.string.message_no_results))
-                    hideResults()
-                    hideProgressBar()
-                }
-                true -> {
-                    hideBanner()
-                    hideProgressBar()
-                    showResults()
-                }
-            }
-        })
-
-        browseViewModel.isSuccessful.observe(viewLifecycleOwner, Observer {
-            if (it !== null) {
-                showBanner(getString(R.string.error_getting_data))
-            }
         })
 
         browseViewModel.selectedItem.observe(viewLifecycleOwner, Observer {

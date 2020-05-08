@@ -3,9 +3,7 @@ package com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -16,10 +14,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.data.errors.FormValidationState
-import com.wawrzacz.entertainmentassistant.data.errors.ResponseStatus
+import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentCretionMovieBinding
-import kotlinx.coroutines.flow.callbackFlow
 
 class MovieCreationFragment: DialogFragment() {
     private lateinit var binding: FragmentCretionMovieBinding

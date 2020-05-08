@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
-import com.wawrzacz.entertainmentassistant.data.errors.ResponseStatus
+import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.responses.DetailedItemResponse
 
