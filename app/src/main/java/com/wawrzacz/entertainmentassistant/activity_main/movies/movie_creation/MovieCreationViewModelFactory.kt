@@ -5,6 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 
 class MovieCreationViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MovieCreationViewModel() as T
+        return MovieEditionViewModel() as T
     }
 }

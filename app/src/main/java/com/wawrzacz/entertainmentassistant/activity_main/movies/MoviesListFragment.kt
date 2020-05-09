@@ -156,6 +156,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
 
     private fun refreshData(data: List<CommonListItem>) {
         moviesAdapter.submitList(data)
+        moviesAdapter.notifyDataSetChanged()
     }
 
     private fun openMovieDetailsFragment(id: String) {

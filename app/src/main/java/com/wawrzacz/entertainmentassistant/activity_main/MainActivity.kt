@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openMovieCreationFragment() {
         val fragmentManager = supportFragmentManager
-        val fragment = MovieCreationFragment(binding.fabOpenCreationFragment)
+        val fragment = MovieCreationFragment(binding.fabOpenCreationFragment, false, null)
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity() {
                 dialogFragmentClosed = true
                 fragment.dismiss()
                 window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+                hideKeyboard()
                 initializeActionBar()
             }
         }

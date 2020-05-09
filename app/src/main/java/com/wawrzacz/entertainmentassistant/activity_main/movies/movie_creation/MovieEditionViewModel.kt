@@ -9,7 +9,7 @@ import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidation
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 
-class MovieCreationViewModel: ViewModel() {
+class MovieEditionViewModel: ViewModel() {
 
     private val repository = MoviesFirebaseRepository
 
@@ -40,10 +40,14 @@ class MovieCreationViewModel: ViewModel() {
     private val _hasChanges = MutableLiveData(false)
     val hasChanges: LiveData<Boolean> = _hasChanges
 
-    val movieCreationStatus: LiveData<ResponseStatus> = Transformations.map(repository.movieCreationResult) {
+    val movieCreationStatus: LiveData<ResponseStatus> = Transformations.map(repository.movieEditionStatus) {
         if (it == ResponseStatus.SUCCESS)
             _hasChanges.value = false
         it
+    }
+
+    fun setMovieId(value: String) {
+        this.movie.id = value
     }
 
     fun onPosterUrlChanged(value: String) {
@@ -111,6 +115,12 @@ class MovieCreationViewModel: ViewModel() {
     fun createMovie() {
         if (_formValidity.value == true) {
             repository.createItem(movie)
+        }
+    }
+
+    fun updateMovie() {
+        if (_formValidity.value == true) {
+            repository.updateItem(movie)
         }
     }
 

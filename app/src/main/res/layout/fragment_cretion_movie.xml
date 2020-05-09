@@ -226,48 +226,48 @@
                         android:inputType="textCapSentences|textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/label_add_to"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_regular"
-                    android:text="@string/label_also_add_to"
-                    app:layout_constraintTop_toBottomOf="@id/plot_wrapper"
-                    app:layout_constraintStart_toStartOf="@id/plot_wrapper"
-                    app:layout_constraintEnd_toEndOf="@id/plot_wrapper"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/label_add_to"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/margin_regular"-->
+<!--                    android:text="@string/label_also_add_to"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/plot_wrapper"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/plot_wrapper"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/plot_wrapper"/>-->
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/add_to_to_watch"
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/add_to_to_watch"-->
 
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_to_watch"
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/label_to_watch"-->
 
-                    app:layout_constraintTop_toBottomOf="@id/label_add_to"
-                    app:layout_constraintStart_toStartOf="@id/label_add_to"
-                    app:layout_constraintEnd_toStartOf="@id/add_to_watched" />
+<!--                    app:layout_constraintTop_toBottomOf="@id/label_add_to"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/label_add_to"-->
+<!--                    app:layout_constraintEnd_toStartOf="@id/add_to_watched" />-->
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/add_to_watched"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_watched"
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/add_to_watched"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/label_watched"-->
 
-                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"
-                    app:layout_constraintStart_toEndOf="@id/add_to_to_watch"
-                    app:layout_constraintEnd_toStartOf="@id/add_to_favourites"
-                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>
+<!--                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/add_to_to_watch"-->
+<!--                    app:layout_constraintEnd_toStartOf="@id/add_to_favourites"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>-->
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/add_to_favourites"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_favourites"
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/add_to_favourites"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/label_favourites"-->
 
-                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"
-                    app:layout_constraintStart_toEndOf="@id/add_to_watched"
-                    app:layout_constraintEnd_toEndOf="@id/label_add_to"
-                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>
+<!--                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/add_to_watched"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/label_add_to"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>-->
 
                 <Button
                     android:id="@+id/create"
@@ -280,14 +280,15 @@
                     style="@style/Widget.MaterialComponents.Button"
                     android:text="@string/action_create"
                     android:drawableStart="@drawable/add_24"
-                    app:layout_constraintTop_toBottomOf="@id/add_to_to_watch"
-                    app:layout_constraintStart_toStartOf="@id/add_to_to_watch"
-                    app:layout_constraintEnd_toEndOf="@id/add_to_favourites"  />
+                    app:layout_constraintTop_toBottomOf="@id/plot_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/plot_wrapper"
+                    app:layout_constraintEnd_toEndOf="@id/plot_wrapper"  />
 
                 <Button
                     android:id="@+id/cancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_fragment_regular"
 
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:text="@string/action_cancel"

@@ -39,23 +39,18 @@ object ApiRepository {
 
     fun getItem(id: String): LiveData<DetailedItemResponse?> {
 
-        Log.i("schab", "Getting API item")
         val result = MutableLiveData<DetailedItemResponse?>()
 
         service.getMovieById(id, API_KEY).enqueue(object: Callback<DetailedItem?>{
             override fun onResponse(call: Call<DetailedItem?>, response: Response<DetailedItem?>) {
                 if (response.isSuccessful) {
-                    Log.i("schabAPI", "successful body: ${response.body()}")
                     result.value = DetailedItemResponse(response.body(), ResponseStatus.SUCCESS)
-                    Log.i("schabAPI", "successful value: ${result.value}")
                 }
                 else{
-                    Log.i("schabAPI", "unsuccessful body: ${response.errorBody()}")
                     result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
                 }
             }
             override fun onFailure(call: Call<DetailedItem?>, t: Throwable) {
-                Log.i("schabAPI", "fail body: ${t.message}")
                 result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
             }
         })
@@ -63,28 +58,23 @@ object ApiRepository {
     }
 
     fun findItems(query: String) {
-        Log.i("schab", "Api called")
         service.findItems(query, API_KEY)
             .enqueue(object: Callback<CommonItemsListApiResponse> {
                 override fun onResponse(call: Call<CommonItemsListApiResponse>, response: Response<CommonItemsListApiResponse>) {
                     if (response.isSuccessful){
                         val apiResult = response.body()
                         if (apiResult?.totalResults == null || apiResult?.items == null) {
-                            Log.i("schab", "Api response: fail ")
                             _foundItemsResponse.value = CommonItemsListApiResponse(items = null, response = false)
                         } else {
-                            Log.i("schab", "Api response: success ")
                             _foundItemsResponse.value = CommonItemsListApiResponse(apiResult.items, apiResult.totalResults, true)
                         }
                     }
                     else {
-                        Log.i("schab", "Api response not successful")
                         _foundItemsResponse.value = CommonItemsListApiResponse(items = null, response = false)
                     }
                 }
                 override fun onFailure(call: Call<CommonItemsListApiResponse>, t: Throwable) {
                     _foundItemsResponse.value = CommonItemsListApiResponse(items = null, response = false)
-                    Log.i("schab", "Api response fail")
                 }
             })
     }

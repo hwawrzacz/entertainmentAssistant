@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
 import com.wawrzacz.entertainmentassistant.data.enums.Path
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
@@ -21,8 +22,8 @@ object MoviesFirebaseRepository {
     private val usersReference: DatabaseReference
     private val itemsReference: DatabaseReference
 
-    private val _movieCreationResult = MutableLiveData(ResponseStatus.NOT_INITIALIZED)
-    val movieCreationResult: LiveData<ResponseStatus> = _movieCreationResult
+    private val _movieEditionStatus = MutableLiveData(ResponseStatus.NOT_INITIALIZED)
+    val movieEditionStatus: LiveData<ResponseStatus> = _movieEditionStatus
 
     init {
         firebaseDatabase.setPersistenceEnabled(true)
@@ -52,8 +53,10 @@ object MoviesFirebaseRepository {
                 val movie: DetailedItem? = snapshot.getValue(DetailedItem::class.java)
                 if (movie == null)
                     result.value = DetailedItemResponse(null, ResponseStatus.NO_RESULT)
-                else
+                else{
+                    movie.source = ItemSource.FIREBASE
                     result.value = DetailedItemResponse(movie, ResponseStatus.SUCCESS)
+                }
             }
             override fun onCancelled(p0: DatabaseError) {
                 result.value = DetailedItemResponse(null, ResponseStatus.ERROR)
@@ -177,7 +180,8 @@ object MoviesFirebaseRepository {
             for (movieRow in movies) {
                 if (movieRow.key == movieId) {
                     val movie = movieRow.getValue(CommonListItem::class.java)
-                    if (movie != null) foundMovies.add(movie)
+                    if (movie != null)
+                        foundMovies.add(movie)
                 }
             }
         }
@@ -185,21 +189,32 @@ object MoviesFirebaseRepository {
     }
 
     fun createItem(item: DetailedItem) {
-        _movieCreationResult.value = ResponseStatus.IN_PROGRESS
+        _movieEditionStatus.value = ResponseStatus.IN_PROGRESS
         val generatedId = itemsReference.push().key
 
         if (generatedId != null) {
             item.id = generatedId
             itemsReference.child(generatedId).setValue(item).addOnCompleteListener {
                 when {
-                    it.isSuccessful -> _movieCreationResult.value = ResponseStatus.SUCCESS
-                    it.isCanceled -> _movieCreationResult.value = ResponseStatus.ERROR
-                    it.isComplete -> _movieCreationResult.value = ResponseStatus.ERROR
+                    it.isSuccessful -> _movieEditionStatus.value = ResponseStatus.SUCCESS
+                    it.isCanceled -> _movieEditionStatus.value = ResponseStatus.ERROR
+                    it.isComplete -> _movieEditionStatus.value = ResponseStatus.ERROR
                 }
                 // TODO: Another barbarian solution, which prevent happening an action
                 // when newly opened fragment subsribes to result initialized on previous fragment
-                _movieCreationResult.value = ResponseStatus.NOT_INITIALIZED
+                _movieEditionStatus.value = ResponseStatus.NOT_INITIALIZED
             }
+        }
+    }
+
+    fun updateItem(item: DetailedItem) {
+        itemsReference.child(item.id).setValue(item).addOnCompleteListener {
+            when {
+                it.isSuccessful -> _movieEditionStatus.value = ResponseStatus.SUCCESS
+                it.isCanceled -> _movieEditionStatus.value = ResponseStatus.ERROR
+                it.isComplete -> _movieEditionStatus.value = ResponseStatus.ERROR
+            }
+            _movieEditionStatus.value = ResponseStatus.NOT_INITIALIZED
         }
     }
 

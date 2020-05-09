@@ -49,7 +49,7 @@ class CommonListAdapter(private val browseViewModel: TransitViewModel):
     }
 
     private fun setPosterBasedOnUrl(item: CommonListItem, holder: CommonListItemViewHolder) {
-        if (item.posterUrl == "N/A" || item.posterUrl.isEmpty()) {
+        if (item.posterUrl == "N/A" || item.posterUrl.isNullOrBlank()) {
             val imageResource: Int = when (item.type) {
                 "series" -> R.mipmap.poster_default_series
                 "game" -> R.mipmap.poster_default_game

@@ -4,16 +4,21 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.navGraphViewModels
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
 import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
+import com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation.MovieCreationFragment
+import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
@@ -43,6 +48,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
         initializeViewModel()
         observeViewModelChanges()
+        addButtonsListeners()
 
         return binding.root
     }
@@ -175,22 +181,43 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
             favIconInitialized = true
         })
     }
+
+    private fun addButtonsListeners() {
+        binding.edit.setOnClickListener {
+            openEditFragment()
+        }
+    }
+
+    private fun openEditFragment() {
+        val fragment = MovieCreationFragment(binding.detailsContainer, true, detailsViewModel)
+        (requireActivity() as MainActivity).supportFragmentManager.beginTransaction().apply {
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
+        }.commit()
+    }
     
     private fun populateViewWithData(movie: DetailedItem) {
         setPosterBasedOnUrl(movie, binding.poster)
         binding.title.text = movie.title
         binding.production.text = movie.production
-        binding.icon.setImageResource(R.drawable.movie_24)
+        binding.typeIcon.setImageResource(R.drawable.movie_24)
         binding.year.text = movie.year
-        binding.runtime.text = movie.duration
+        binding.duration.text = movie.duration
         binding.genre.text = movie.genre
         binding.director.text = movie.director
         binding.plot.text = movie.plot
+        binding.edit.isVisible = movie.source == ItemSource.FIREBASE
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
-        if (item.posterUrl != "N/A")
-            Picasso.get().load(item.posterUrl).into(view)
+        if (item.posterUrl == "N/A" || item.posterUrl.isNullOrBlank()) {
+            val imageResource: Int = when (item.type) {
+                "series" -> R.mipmap.poster_default_series
+                "game" -> R.mipmap.poster_default_game
+                else -> R.mipmap.poster_default_movie
+            }
+            binding.poster.setImageResource(imageResource)
+        } else Picasso.get().load(item.posterUrl).into(view)
     }
 
     private fun setSectionIconFilled(section: WatchableSection) {

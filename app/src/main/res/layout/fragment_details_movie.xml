@@ -72,12 +72,10 @@
                     android:orientation="vertical"
                     android:padding="@dimen/padding_fragment_regular">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/poster"
@@ -92,49 +90,89 @@
                         <TextView
                             android:id="@+id/title"
                             style="@style/TextAppearance.MaterialComponents.Headline4"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_small"
 
                             android:ellipsize="end"
-                            android:maxLines="3"
+                            android:maxLines="4" />
+                    </LinearLayout>
 
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/poster"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_regular"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
-                            android:id="@+id/icon"
+                            android:id="@+id/type_icon"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:layout_marginStart="@dimen/margin_small"
                             android:foregroundTint="@android:color/white"
 
-                            app:layout_constraintStart_toEndOf="@+id/poster"
-                            app:layout_constraintTop_toBottomOf="@+id/title" />
+                            app:layout_constraintEnd_toEndOf="@+id/type_label"
+                            app:layout_constraintStart_toStartOf="@+id/type_label"
+                            app:layout_constraintBottom_toBottomOf="@id/type_icon" />
+
+                        <TextView
+                            android:id="@+id/type_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_type"
+                            android:textAlignment="center"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/type_icon"
+                            app:layout_constraintEnd_toStartOf="@id/year_label"/>
 
                         <TextView
                             android:id="@+id/year"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_small"
 
-                            app:layout_constraintBottom_toBottomOf="@+id/icon"
-                            app:layout_constraintStart_toEndOf="@+id/icon"
-                            app:layout_constraintTop_toBottomOf="@+id/title" />
+                            app:layout_constraintBottom_toTopOf="@+id/year_label"
+                            app:layout_constraintEnd_toEndOf="@+id/year_label"
+                            app:layout_constraintStart_toStartOf="@+id/year_label"/>
 
                         <TextView
-                            android:id="@+id/runtime"
+                            android:id="@+id/year_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/label_year"
+                            android:textAlignment="center"
+
+                            app:layout_constraintStart_toEndOf="@+id/type_label"
+                            app:layout_constraintBottom_toBottomOf="@+id/type_label"
+                            app:layout_constraintEnd_toStartOf="@id/duration_label"
+                            app:layout_constraintTop_toTopOf="@+id/type_label" />
+
+                        <TextView
+                            android:id="@+id/duration"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_small"
 
-                            app:layout_constraintBottom_toBottomOf="@+id/year"
-                            app:layout_constraintStart_toEndOf="@+id/year"
-                            app:layout_constraintTop_toTopOf="@+id/year" />
+                            app:layout_constraintStart_toStartOf="@id/duration_label"
+                            app:layout_constraintEnd_toEndOf="@+id/duration_label"
+                            app:layout_constraintBottom_toTopOf="@id/duration_label" />
+
+                        <TextView
+                            android:id="@+id/duration_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/label_duration"
+                            android:textAlignment="center"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/year_label"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/year_label"
+                            app:layout_constraintTop_toTopOf="@+id/year_label" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -142,7 +180,7 @@
                         style="@style/TextAppearance.MaterialComponents.Subtitle2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginTop="@dimen/margin_regular"
 
                         android:text="@string/label_production" />
 
@@ -194,6 +232,17 @@
                         style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_edit_in_library"
+                        android:layout_marginTop="@dimen/margin_big"
+                        android:layout_marginStart="@dimen/padding_fragment_regular"
+                        android:layout_marginEnd="@dimen/padding_fragment_regular"
+                        android:layout_marginBottom="@dimen/padding_fragment_regular"
+                        android:visibility="visible" />
                 </LinearLayout>
             </ScrollView>
 

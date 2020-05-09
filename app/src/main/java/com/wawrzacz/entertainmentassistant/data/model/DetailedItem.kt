@@ -1,6 +1,7 @@
 package com.wawrzacz.entertainmentassistant.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
 
 class DetailedItem(
     @SerializedName("imdbID")
@@ -27,7 +28,8 @@ class DetailedItem(
     var writer: String = "N/A",
     @SerializedName("Plot")
     var plot: String = "N/A",
-    var queryTitle: String = "N/A"
+    var queryTitle: String = "N/A",
+    var source: ItemSource = ItemSource.API
     ){
 
     init {
