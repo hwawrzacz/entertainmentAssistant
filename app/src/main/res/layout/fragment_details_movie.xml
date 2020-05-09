@@ -23,6 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="?attr/actionBarSize"
+            android:padding="@dimen/padding_fragment_regular"
             android:background="@color/bg_movies">
 
             <ProgressBar
@@ -37,7 +38,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.16000003" />
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
                 android:id="@+id/message"
@@ -52,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.25" />
+                app:layout_constraintVertical_bias="0.5" />
 
             <ScrollView
                 android:id="@+id/details_container"
@@ -69,8 +70,7 @@
                     android:clickable="true"
                     android:elevation="100dp"
 
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_fragment_regular">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:orientation="horizontal"
