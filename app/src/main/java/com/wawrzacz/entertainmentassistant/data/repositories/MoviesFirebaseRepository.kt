@@ -36,13 +36,13 @@ object MoviesFirebaseRepository {
     private val _foundAllItems = MutableLiveData<CommonItemsListResponse>()
     val foundAllItems: LiveData<CommonItemsListResponse> = _foundAllItems
 
-    private val _foundToWatchMovies = MutableLiveData<CommonItemsListResponse>()
+    private val _foundToWatchMovies = MutableLiveData(CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED))
     val foundToWatchMovies: LiveData<CommonItemsListResponse> = _foundToWatchMovies
 
-    private val _foundWatchedMovies = MutableLiveData<CommonItemsListResponse>()
+    private val _foundWatchedMovies = MutableLiveData(CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED))
     val foundWatchedMovies: LiveData<CommonItemsListResponse> = _foundWatchedMovies
 
-    private val _foundFavouritesMovies = MutableLiveData<CommonItemsListResponse>()
+    private val _foundFavouritesMovies = MutableLiveData(CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED))
     val foundFavouritesMovies: LiveData<CommonItemsListResponse> = _foundFavouritesMovies
 
     fun getSingleItem(id: String): LiveData<DetailedItemResponse?> {
@@ -88,8 +88,8 @@ object MoviesFirebaseRepository {
     fun findAllItemsByTitle(title: String) {
         //TODO: This solution is fatal for big database. Use some third-party solution in the future.
         itemsReference.addValueEventListener(object: ValueEventListener {
-            val items = mutableListOf<CommonListItem>()
             override fun onDataChange(snapshot: DataSnapshot) {
+                val items = mutableListOf<CommonListItem>()
                 snapshot.children.forEach {
                     val item = it.getValue(CommonListItem::class.java)
                     if (item != null && item.title.toLowerCase(Locale.ROOT).contains(title))
@@ -97,8 +97,10 @@ object MoviesFirebaseRepository {
                 }
                 if (items.isNullOrEmpty())
                     _foundAllItems.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
-                else
+                else {
+                    Log.i("schabFIREBASE", "Found ${items.size} items")
                     _foundAllItems.value = CommonItemsListResponse(items, ResponseStatus.SUCCESS)
+                }
             }
             override fun onCancelled(p0: DatabaseError) {
                 _foundAllItems.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
@@ -185,7 +187,10 @@ object MoviesFirebaseRepository {
                 }
             }
         }
-        targetLiveData.value = CommonItemsListResponse(foundMovies, ResponseStatus.SUCCESS)
+        if (foundMovies.isNullOrEmpty())
+            targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+        else
+            targetLiveData.value = CommonItemsListResponse(foundMovies, ResponseStatus.SUCCESS)
     }
 
     fun createItem(item: DetailedItem) {

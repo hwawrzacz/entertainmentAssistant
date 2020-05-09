@@ -1,6 +1,7 @@
 package com.wawrzacz.entertainmentassistant.activity_main.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -79,30 +80,24 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
         when (section) {
             WatchableSection.TO_WATCH -> {
                 moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
-                    if (it != null)
-                        refreshData(it)
+                    refreshData(it)
                 })
-
                 moviesViewModel.responseToWatchStatus.observe(viewLifecycleOwner, Observer {
                     handleResponseStatusChange(it)
                 })
             }
             WatchableSection.WATCHED -> {
                 moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
-                    if (it != null)
-                        refreshData(it)
+                    refreshData(it)
                 })
-
                 moviesViewModel.responseWatchedStatus.observe(viewLifecycleOwner, Observer {
                     handleResponseStatusChange(it)
                 })
             }
             WatchableSection.FAVOURITES -> {
                 moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
-                    if (it != null)
-                        refreshData(it)
+                    refreshData(it)
                 })
-
                 moviesViewModel.responseFavouritesStatus.observe(viewLifecycleOwner, Observer {
                     handleResponseStatusChange(it)
                 })
@@ -121,6 +116,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
     }
 
     private fun handleResponseStatusChange(responseStatus: ResponseStatus) {
+        Log.i("schab", "${responseStatus}")
         when (responseStatus) {
             ResponseStatus.NOT_INITIALIZED -> {
                 hideProgressBar()
@@ -154,7 +150,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
         moviesViewModel.findMovies(section, "")
     }
 
-    private fun refreshData(data: List<CommonListItem>) {
+    private fun refreshData(data: List<CommonListItem>?) {
         moviesAdapter.submitList(data)
         moviesAdapter.notifyDataSetChanged()
     }

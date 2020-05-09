@@ -101,8 +101,9 @@ class BrowseFragment: Fragment() {
                         showBanner(getString(R.string.message_action_browse))
                     }
                     ResponseStatus.IN_PROGRESS -> {
-                        hideBanner()
+                        Log.i("schab", "IN_PROGRESS")
                         hideResults()
+                        hideBanner()
                         showProgressBar()
                     }
                     ResponseStatus.SUCCESS -> {
@@ -185,8 +186,8 @@ class BrowseFragment: Fragment() {
     }
 
     private fun showBanner(string: String) {
-        binding.bannerMessage.visibility = View.VISIBLE
         binding.bannerMessage.text = string
+        binding.bannerMessage.visibility = View.VISIBLE
     }
 
     private fun hideBanner() {

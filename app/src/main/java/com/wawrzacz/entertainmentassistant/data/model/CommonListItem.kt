@@ -22,9 +22,9 @@ class CommonListItem(
 
     fun equals(item: CommonListItem): Boolean {
         return item.id == id ||
-                item.title == title &&
+                (item.title == title &&
                 item.year == year &&
                 item.type == type &&
-                item.posterUrl == posterUrl
+                item.posterUrl == posterUrl)
     }
 }

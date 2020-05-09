@@ -22,22 +22,18 @@ object BrowseRepository {
 
                     if (firebaseResult.responseStatus == ResponseStatus.NO_RESULT &&
                         apiResult.responseStatus == ResponseStatus.NO_RESULT){
-                        Log.i("schab", "Merge no results")
                         this.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
                     }
                     else if (firebaseResult.responseStatus == ResponseStatus.ERROR &&
                         apiResult.responseStatus == ResponseStatus.ERROR) {
-                        Log.i("schab", "Merge error")
                         this.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
                     } else {
                         val mergedMovies = mergeResults(firebaseResult.items, apiResult.items)
 
                         if (mergedMovies.isNullOrEmpty()) {
-                            Log.i("schab", "Merge failed")
                             this.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
                         }
                         else {
-                            Log.i("schab", "Merge success: ${mergedMovies}")
                             this.value = CommonItemsListResponse(mergedMovies, ResponseStatus.SUCCESS)
                         }
                     }
@@ -81,6 +77,7 @@ object BrowseRepository {
             if (!contains(mergedResults, it)) mergedResults.add(it)
         }
 
+        Log.i("schabMERGE", "Found ${mergedResults.size} results")
         return mergedResults
     }
 
