@@ -5,14 +5,13 @@ import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 
 class CommonItemsListApiResponse (
     @SerializedName("Search")
-    val items: ArrayList<CommonListItem>,
+    val items: ArrayList<CommonListItem>? = null,
     @SerializedName("totalResults")
-    val totalResults: String,
+    val totalResults: String? = "0",
     @SerializedName("Response")
-    val response: Boolean,
-    val isSuccessful: Boolean
+    val response: Boolean = false
 ){
     override fun toString(): String {
-        return "${items[0]}"
+        return "${items?.get(0)}"
     }
 }

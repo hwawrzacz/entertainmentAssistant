@@ -1,5 +1,6 @@
 package com.wawrzacz.entertainmentassistant.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
@@ -10,7 +11,7 @@ object BrowseRepository {
     private val apiRepository = ApiRepository
     private val firebaseRepository = MoviesFirebaseRepository
 
-    fun findItems(query: String): LiveData<CommonItemsListResponse> {
+    fun findItems(query: String?): LiveData<CommonItemsListResponse> {
         return MediatorLiveData<CommonItemsListResponse>().apply {
             var apiResult = CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED)
             var firebaseResult = CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED)
@@ -20,49 +21,62 @@ object BrowseRepository {
                     apiResult.responseStatus != ResponseStatus.NOT_INITIALIZED) {
 
                     if (firebaseResult.responseStatus == ResponseStatus.NO_RESULT &&
-                        firebaseResult.responseStatus == ResponseStatus.NO_RESULT){
+                        apiResult.responseStatus == ResponseStatus.NO_RESULT){
+                        Log.i("schab", "Merge no results")
                         this.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
                     }
                     else if (firebaseResult.responseStatus == ResponseStatus.ERROR &&
-                        firebaseResult.responseStatus == ResponseStatus.ERROR) {
+                        apiResult.responseStatus == ResponseStatus.ERROR) {
+                        Log.i("schab", "Merge error")
                         this.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
                     } else {
                         val mergedMovies = mergeResults(firebaseResult.items, apiResult.items)
 
-                        if (mergedMovies.isNullOrEmpty())
+                        if (mergedMovies.isNullOrEmpty()) {
+                            Log.i("schab", "Merge failed")
                             this.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
-                        else
+                        }
+                        else {
+                            Log.i("schab", "Merge success: ${mergedMovies}")
                             this.value = CommonItemsListResponse(mergedMovies, ResponseStatus.SUCCESS)
+                        }
                     }
                 }
             }
 
-            addSource(firebaseRepository.foundAllMovies) {
-                firebaseResult = it
-                checkData()
-            }
-
-            addSource(apiRepository.foundItemsResponse) {
-                apiResult = when {
-                    it == null -> CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED)
-                    !it.response -> CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
-                    else -> CommonItemsListResponse(it.items, ResponseStatus.SUCCESS)
+            if (query.isNullOrBlank()) {
+                // To display default message, when query is cleared
+                this.value = CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED)
+            } else {
+                addSource(firebaseRepository.foundAllItems) {
+                    firebaseResult = it
+                    checkData()
                 }
-                checkData()
-            }
 
-            firebaseRepository.findAllMoviesByTitle(query)
-            apiRepository.findItems(query)
+                addSource(apiRepository.foundItemsResponse) {
+                    apiResult = when {
+                        it == null -> CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED)
+                        !it.response -> {
+                            CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+                        }
+                        else -> CommonItemsListResponse(it.items, ResponseStatus.SUCCESS)
+                    }
+                    checkData()
+                }
+
+                firebaseRepository.findAllItemsByTitle(query)
+                apiRepository.findItems(query)
+            }
         }
     }
 
     private fun mergeResults(
-        firebaseResults: ArrayList<CommonListItem>?,
-        apiResults: ArrayList<CommonListItem>?
-    ): ArrayList<CommonListItem> {
+        firebaseResults: List<CommonListItem>?,
+        apiResults: List<CommonListItem>?
+    ): List<CommonListItem> {
         val mergedResults = arrayListOf<CommonListItem>()
 
-        firebaseResults?.forEach{ mergedResults.add(it) }
+        firebaseResults?.forEach { mergedResults.add(it) }
         apiResults?.forEach {
             if (!contains(mergedResults, it)) mergedResults.add(it)
         }
@@ -70,9 +84,9 @@ object BrowseRepository {
         return mergedResults
     }
 
-    private fun contains(list: ArrayList<CommonListItem>, item: CommonListItem): Boolean {
+    private fun contains(list: List<CommonListItem>, item: CommonListItem): Boolean {
         var counter = 0
         list.forEach { if (it.equals(item)) counter++ }
-        return counter == list.size
+        return counter > 0
     }
 }

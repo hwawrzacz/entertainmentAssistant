@@ -68,14 +68,23 @@ object ApiRepository {
             .enqueue(object: Callback<CommonItemsListApiResponse> {
                 override fun onResponse(call: Call<CommonItemsListApiResponse>, response: Response<CommonItemsListApiResponse>) {
                     if (response.isSuccessful){
-                        _foundItemsResponse.value = response.body()
+                        val apiResult = response.body()
+                        if (apiResult?.totalResults == null || apiResult?.items == null) {
+                            Log.i("schab", "Api response: fail ")
+                            _foundItemsResponse.value = CommonItemsListApiResponse(items = null, response = false)
+                        } else {
+                            Log.i("schab", "Api response: success ")
+                            _foundItemsResponse.value = CommonItemsListApiResponse(apiResult.items, apiResult.totalResults, true)
+                        }
                     }
                     else {
-                        _foundItemsResponse.value = null
+                        Log.i("schab", "Api response not successful")
+                        _foundItemsResponse.value = CommonItemsListApiResponse(items = null, response = false)
                     }
                 }
                 override fun onFailure(call: Call<CommonItemsListApiResponse>, t: Throwable) {
-                    _foundItemsResponse.value = null
+                    _foundItemsResponse.value = CommonItemsListApiResponse(items = null, response = false)
+                    Log.i("schab", "Api response fail")
                 }
             })
     }

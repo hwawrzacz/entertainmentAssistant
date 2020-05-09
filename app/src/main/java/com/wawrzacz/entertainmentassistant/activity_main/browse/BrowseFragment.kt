@@ -62,7 +62,6 @@ class BrowseFragment: Fragment() {
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 browseViewModel.setQuery(newText)
-                findItems(newText)
                 return true
             }
 
@@ -145,15 +144,9 @@ class BrowseFragment: Fragment() {
         })
     }
 
-    private fun findItems(query: String?) {
-        browseViewModel.findItems(query)
-    }
-
     private fun refreshData(data: List<CommonListItem>?) {
-        if (data.isNullOrEmpty())
-            moviesAdapter = CommonListAdapter(browseViewModel)
-        else
-            moviesAdapter.submitList(data)
+        moviesAdapter.submitList(data)
+        moviesAdapter.notifyDataSetChanged()
     }
 
     private fun openMovieDetailsFragment(id: String) {

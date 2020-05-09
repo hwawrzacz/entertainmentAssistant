@@ -23,27 +23,18 @@ class BrowseViewModel: ViewModel(), TransitViewModel {
 
     private val query = MutableLiveData<String>()
 
-    val foundItems: LiveData<ArrayList<CommonListItem>?> =
+    val foundItems: LiveData<List<CommonListItem>?> =
     Transformations.switchMap(query) { query ->
         Transformations.map(browseRepository.findItems(query)){
             _responseStatus.value = it.responseStatus
+            Log.i("schab", "receved: ${it?.items}")
             it.items
         }
     }
 
-    fun findItems(query: String?) {
-        if (query != null && query.isNotEmpty()){
-            _responseStatus.value = ResponseStatus.IN_PROGRESS
-//            apiRepository.findItems(query)
-//            MoviesFirebaseRepository.findAllMoviesByTitle(query)
-            browseRepository.findItems(query)
-        }
-    }
-
     fun setQuery(query: String?) {
-        if (!query.isNullOrBlank()) {
-            this.query.value = query
-        }
+        _responseStatus.value = ResponseStatus.IN_PROGRESS
+        this.query.value = query
     }
 
     override fun setSelectedItem(item: CommonListItem?) {

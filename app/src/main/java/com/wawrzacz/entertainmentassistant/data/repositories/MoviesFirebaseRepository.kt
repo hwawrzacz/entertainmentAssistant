@@ -12,6 +12,7 @@ import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListResponse
 import com.wawrzacz.entertainmentassistant.data.responses.DetailedItemResponse
+import java.util.*
 
 object MoviesFirebaseRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -31,8 +32,8 @@ object MoviesFirebaseRepository {
 //        itemsReference.keepSynced(false)
     }
 
-    private val _foundAllMovies = MutableLiveData<CommonItemsListResponse>()
-    val foundAllMovies: LiveData<CommonItemsListResponse> = _foundAllMovies
+    private val _foundAllItems = MutableLiveData<CommonItemsListResponse>()
+    val foundAllItems: LiveData<CommonItemsListResponse> = _foundAllItems
 
     private val _foundToWatchMovies = MutableLiveData<CommonItemsListResponse>()
     val foundToWatchMovies: LiveData<CommonItemsListResponse> = _foundToWatchMovies
@@ -81,19 +82,23 @@ object MoviesFirebaseRepository {
         return result
     }
 
-    fun findAllMoviesByTitle(title: String) {
-        itemsReference.orderByChild("queryTitle").startAt(title).addListenerForSingleValueEvent(object: ValueEventListener {
+    fun findAllItemsByTitle(title: String) {
+        //TODO: This solution is fatal for big database. Use some third-party solution in the future.
+        itemsReference.addValueEventListener(object: ValueEventListener {
+            val items = mutableListOf<CommonListItem>()
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.i("schab", "$snapshot")
-                val moviesIds: List<String> = populateItemsIds(snapshot)
-                if (moviesIds.isNotEmpty())
-                    getMoviesBasedOnIds(moviesIds, _foundAllMovies)
-                else {
-                    _foundAllMovies.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+                snapshot.children.forEach {
+                    val item = it.getValue(CommonListItem::class.java)
+                    if (item != null && item.title.toLowerCase(Locale.ROOT).contains(title))
+                        items.add(item)
                 }
+                if (items.isNullOrEmpty())
+                    _foundAllItems.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+                else
+                    _foundAllItems.value = CommonItemsListResponse(items, ResponseStatus.SUCCESS)
             }
             override fun onCancelled(p0: DatabaseError) {
-                _foundAllMovies.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
+                _foundAllItems.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
             }
         })
     }
