@@ -5,19 +5,20 @@
 
     <item
         android:id="@+id/add_to_to_watch"
-        android:title="@string/label_add_to_to_watch"
-        app:showAsAction="ifRoom"
+        android:title="@string/action_add_to_to_watch"
+        app:showAsAction="always"
         android:icon="@drawable/bookmark_outlined_24"/>
 
     <item
         android:id="@+id/add_to_watched"
-        android:title="@string/label_add_to_watched"
-        app:showAsAction="ifRoom"
+        android:title="@string/action_add_to_watched"
+        app:showAsAction="always"
         android:icon="@drawable/eye_outlined_24"/>
 
     <item
         android:id="@+id/add_to_favourites"
-        android:title="@string/label_add_to_favourites"
-        app:showAsAction="ifRoom"
+        android:title="@string/action_add_to_favourites"
+        app:showAsAction="always"
         android:icon="@drawable/heart_outlined_24" />
+
 </menu>

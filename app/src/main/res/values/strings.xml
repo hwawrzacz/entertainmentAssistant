@@ -67,11 +67,11 @@
     <string name="label_genre">Genre</string>
 
     <!-- Menu labels -->
-    <string name="label_add_to_watched">Add to watched</string>
-    <string name="label_add_to_to_watch">Add to "to watch"</string>
+    <string name="action_add_to_watched">Add to watched</string>
+    <string name="action_add_to_to_watch">Add to "to watch"</string>
     <string name="label_add_to_played">Add to played</string>
     <string name="label_add_to_to_play">Add to "to play"</string>
-    <string name="label_add_to_favourites">Add to favourites</string>
+    <string name="action_add_to_favourites">Add to favourites</string>
 
     <!--    Messages -->
     <string name="message_no_internet_access">No internet access</string>

@@ -23,6 +23,7 @@ import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
+import kotlinx.android.synthetic.main.fragment_details_movie.*
 
 class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
@@ -48,7 +49,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
 
         initializeViewModel()
         observeViewModelChanges()
-        addButtonsListeners()
+        addButtonListener()
 
         return binding.root
     }
@@ -182,8 +183,8 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         })
     }
 
-    private fun addButtonsListeners() {
-        binding.edit.setOnClickListener {
+    private fun addButtonListener() {
+        binding.fabEdit.setOnClickListener {
             openEditFragment()
         }
     }
@@ -206,7 +207,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
         binding.genre.text = movie.genre
         binding.director.text = movie.director
         binding.plot.text = movie.plot
-        binding.edit.isVisible = movie.source == ItemSource.FIREBASE
+        binding.fabEdit.isVisible = movie.source == ItemSource.FIREBASE
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {

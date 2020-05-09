@@ -11,7 +11,7 @@
         android:clickable="true"
         android:focusable="true">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -233,19 +233,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/action_edit_in_library"
-                        android:layout_marginTop="@dimen/margin_big"
-                        android:layout_marginStart="@dimen/padding_fragment_regular"
-                        android:layout_marginEnd="@dimen/padding_fragment_regular"
-                        android:layout_marginBottom="@dimen/padding_fragment_regular"
-                        android:visibility="visible" />
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/edit"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/action_edit_in_library"-->
+<!--                        android:layout_marginTop="@dimen/margin_big"-->
+<!--                        android:layout_marginStart="@dimen/padding_fragment_regular"-->
+<!--                        android:layout_marginEnd="@dimen/padding_fragment_regular"-->
+<!--                        android:layout_marginBottom="@dimen/padding_fragment_regular"-->
+<!--                        android:visibility="visible" />-->
                 </LinearLayout>
             </ScrollView>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_margin"
+
+                android:src="@drawable/edit_24"
+                android:visibility="invisible"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

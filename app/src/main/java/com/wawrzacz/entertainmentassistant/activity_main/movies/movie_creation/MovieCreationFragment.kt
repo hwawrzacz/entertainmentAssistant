@@ -52,7 +52,7 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.creation_menu, menu)
+        inflater.inflate(R.menu.menu_creation, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

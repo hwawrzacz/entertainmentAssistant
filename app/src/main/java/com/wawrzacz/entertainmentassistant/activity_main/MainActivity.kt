@@ -2,20 +2,14 @@ package com.wawrzacz.entertainmentassistant.activity_main
 
 import android.content.Context
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -48,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.action_bar_menu, menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
 
         val accountMenuItem = menu.findItem(R.id.nav_open_account_panel)
         val searchItem = menu.findItem(R.id.nav_search)
