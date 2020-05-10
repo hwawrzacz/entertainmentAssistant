@@ -1,9 +1,8 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies
+package com.wawrzacz.entertainmentassistant.activity_main.series
 
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,17 +12,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.movies.details.MovieDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.details.SeriesDetailsFragment
+//import com.wawrzacz.entertainmentassistant.activity_main.movies.SeriesFABFragment
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
-class MoviesListFragment(private val section: WatchableSection): Fragment() {
+class SeriesListFragment(private val section: WatchableSection): Fragment() {
 
     private lateinit var binding: FragmentListBinding
-    private lateinit var moviesViewModel: MoviesViewModel
+    private lateinit var moviesViewModel: SeriesViewModel
     private lateinit var moviesAdapter: CommonListAdapter
 
     override fun onCreateView(
@@ -37,10 +37,14 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
         initializeViewModel()
         initializeRecyclerView()
         addViewModelObservers()
-        findMovies(null)
+        findSeries(null)
 
         return binding.root
     }
+
+//    override fun openAddSerieDialog() {
+//        Toast.makeText(requireContext(), "Open add movie_24#watched dialog", Toast.LENGTH_LONG).show()
+//    }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         val searchItem = menu.findItem(R.id.nav_search)
@@ -48,7 +52,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                findMovies(newText)
+                findSeries(newText)
                 return true
             }
             override fun onQueryTextSubmit(query: String?): Boolean { return false }
@@ -68,14 +72,14 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
     }
 
     private fun initializeViewModel() {
-        moviesViewModel = ViewModelProvider(requireActivity().viewModelStore, MoviesViewModelFactory())
-            .get(MoviesViewModel::class.java)
+        moviesViewModel = ViewModelProvider(requireActivity().viewModelStore, SeriesViewModelFactory())
+            .get(SeriesViewModel::class.java)
     }
 
     private fun addViewModelObservers() {
         when (section) {
             WatchableSection.TO_WATCH -> {
-                moviesViewModel.foundToWatchMovies.observe(viewLifecycleOwner, Observer {
+                moviesViewModel.foundToWatchSeries.observe(viewLifecycleOwner, Observer {
                     refreshData(it)
                 })
                 moviesViewModel.responseToWatchStatus.observe(viewLifecycleOwner, Observer {
@@ -83,7 +87,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
                 })
             }
             WatchableSection.WATCHED -> {
-                moviesViewModel.foundWatchedMovies.observe(viewLifecycleOwner, Observer {
+                moviesViewModel.foundWatchedSeries.observe(viewLifecycleOwner, Observer {
                     refreshData(it)
                 })
                 moviesViewModel.responseWatchedStatus.observe(viewLifecycleOwner, Observer {
@@ -91,7 +95,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
                 })
             }
             WatchableSection.FAVOURITES -> {
-                moviesViewModel.foundFavouritesMovies.observe(viewLifecycleOwner, Observer {
+                moviesViewModel.foundFavouritesSeries.observe(viewLifecycleOwner, Observer {
                     refreshData(it)
                 })
                 moviesViewModel.responseFavouritesStatus.observe(viewLifecycleOwner, Observer {
@@ -106,7 +110,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
                 activity.clearFocusFromSearchView()
                 activity.initializeActionBar()
 
-                openMovieDetailsFragment(it.id)
+                openSeriesDetailsFragment(it.id)
             }
         })
     }
@@ -142,8 +146,8 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
         }
     }
 
-    private fun findMovies(query: String?) {
-        moviesViewModel.findMovies(section, query)
+    private fun findSeries(query: String?) {
+        moviesViewModel.findSeries(section, query)
     }
 
     private fun refreshData(data: List<CommonListItem>?) {
@@ -151,11 +155,11 @@ class MoviesListFragment(private val section: WatchableSection): Fragment() {
         moviesAdapter.notifyDataSetChanged()
     }
 
-    private fun openMovieDetailsFragment(id: String) {
+    private fun openSeriesDetailsFragment(id: String) {
         val activity = requireActivity() as MainActivity
         val fragmentManager = requireActivity().supportFragmentManager
         val fragment =
-            MovieDetailsFragment(id, binding.moviesRecyclerView)
+            SeriesDetailsFragment(id, binding.moviesRecyclerView)
 
         activity.hideKeyboard()
         fragmentManager.beginTransaction().apply {

@@ -2,6 +2,7 @@ package com.wawrzacz.entertainmentassistant.data.model
 
 import com.google.gson.annotations.SerializedName
 import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
+import com.wawrzacz.entertainmentassistant.data.enums.ItemType
 
 class DetailedItem(
     @SerializedName("imdbID")
@@ -11,7 +12,7 @@ class DetailedItem(
     @SerializedName("Production")
     var production: String = "N/A",
     @SerializedName("Type")
-    var type: String = "N/A",
+    var type: ItemType = ItemType.MOVIE,
     @SerializedName("Year")
     var year: String = "N/A",
     @SerializedName("Runtime")

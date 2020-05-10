@@ -17,7 +17,7 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.account.AccountFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation.MovieCreationFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.creation.MovieEditionFragment
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openMovieCreationFragment() {
         val fragmentManager = supportFragmentManager
-        val fragment = MovieCreationFragment(binding.fabOpenCreationFragment, false, null)
+        val fragment = MovieEditionFragment(binding.fabOpenCreationFragment, false, null)
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "CREATION_FRAGMENT")

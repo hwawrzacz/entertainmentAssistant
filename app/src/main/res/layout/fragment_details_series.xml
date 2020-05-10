@@ -7,9 +7,11 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:focusable="true">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -21,6 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="?attr/actionBarSize"
+            android:padding="@dimen/padding_fragment_regular"
             android:background="@color/bg_movies">
 
             <ProgressBar
@@ -35,7 +38,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.16000003" />
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
                 android:id="@+id/message"
@@ -50,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.25" />
+                app:layout_constraintVertical_bias="0.5" />
 
             <ScrollView
                 android:id="@+id/details_container"
@@ -67,15 +70,12 @@
                     android:clickable="true"
                     android:elevation="100dp"
 
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_fragment_regular">
+                    android:orientation="vertical">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/poster"
@@ -90,28 +90,43 @@
                         <TextView
                             android:id="@+id/title"
                             style="@style/TextAppearance.MaterialComponents.Headline4"
-                            android:layout_width="0dp"
-
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_small"
 
                             android:ellipsize="end"
-                            android:maxLines="3"
+                            android:maxLines="4" />
+                    </LinearLayout>
 
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/poster"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_regular"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
-                            android:id="@+id/icon"
+                            android:id="@+id/type_icon"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:layout_marginStart="@dimen/margin_small"
                             android:foregroundTint="@android:color/white"
 
-                            app:layout_constraintStart_toEndOf="@+id/poster"
-                            app:layout_constraintTop_toBottomOf="@+id/title" />
+                            app:layout_constraintEnd_toEndOf="@+id/type_label"
+                            app:layout_constraintStart_toStartOf="@+id/type_label"
+                            app:layout_constraintBottom_toBottomOf="@id/type_icon" />
+
+                        <TextView
+                            android:id="@+id/type_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_type"
+                            android:textAlignment="center"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/type_icon"
+                            app:layout_constraintEnd_toStartOf="@id/year_label"/>
 
                         <TextView
                             android:id="@+id/year"
@@ -119,11 +134,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-                            android:layout_marginStart="@dimen/margin_small"
+                            app:layout_constraintBottom_toTopOf="@+id/year_label"
+                            app:layout_constraintEnd_toEndOf="@+id/year_label"
+                            app:layout_constraintStart_toStartOf="@+id/year_label"/>
 
-                            app:layout_constraintBottom_toBottomOf="@+id/icon"
-                            app:layout_constraintStart_toEndOf="@+id/icon"
-                            app:layout_constraintTop_toBottomOf="@+id/title" />
+                        <TextView
+                            android:id="@+id/year_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/label_year"
+                            android:textAlignment="center"
+
+                            app:layout_constraintStart_toEndOf="@+id/type_label"
+                            app:layout_constraintBottom_toBottomOf="@+id/type_label"
+                            app:layout_constraintEnd_toStartOf="@id/seasons_label"
+                            app:layout_constraintTop_toTopOf="@+id/type_label" />
 
                         <TextView
                             android:id="@+id/seasons"
@@ -131,11 +157,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
-                            android:layout_marginStart="@dimen/margin_small"
+                            app:layout_constraintStart_toStartOf="@id/seasons_label"
+                            app:layout_constraintEnd_toEndOf="@+id/seasons_label"
+                            app:layout_constraintBottom_toTopOf="@id/seasons_label" />
 
-                            app:layout_constraintBottom_toBottomOf="@+id/year"
-                            app:layout_constraintStart_toEndOf="@+id/year"
-                            app:layout_constraintTop_toTopOf="@+id/year" />
+                        <TextView
+                            android:id="@+id/seasons_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/label_seasons"
+                            android:textAlignment="center"
+
+                            app:layout_constraintBottom_toBottomOf="@+id/year_label"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/year_label"
+                            app:layout_constraintTop_toTopOf="@+id/year_label" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
@@ -184,7 +222,18 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </ScrollView>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+
+            android:src="@drawable/edit_24"
+            android:visibility="invisible"
+            android:layout_gravity="bottom|end"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

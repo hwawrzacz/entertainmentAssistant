@@ -1,17 +1,20 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation
+package com.wawrzacz.entertainmentassistant.activity_main.series.creation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.wawrzacz.entertainmentassistant.data.enums.ItemType
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
+import com.wawrzacz.entertainmentassistant.data.repositories.SeriesFirebaseRepository
+import java.util.*
 
-class MovieEditionViewModel: ViewModel() {
+class SeriesEditionViewModel: ViewModel() {
 
-    private val repository = MoviesFirebaseRepository
+    private val repository = SeriesFirebaseRepository
 
     //#region Validation fields
     private val _formValidity = MutableLiveData(false)
@@ -23,35 +26,32 @@ class MovieEditionViewModel: ViewModel() {
     private val _yearValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
     val yearValidity: LiveData<FormValidationState> = _yearValidity
 
-    private val _durationValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
-    val durationValidity: LiveData<FormValidationState> = _durationValidity
+    private val _seasonsValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
+    val seasonsValidity: LiveData<FormValidationState> = _seasonsValidity
 
-    private val _directorValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
-    val directorValidity: LiveData<FormValidationState> = _directorValidity
-
-    private val _genreValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
-    val genreValidity: LiveData<FormValidationState> = _genreValidity
+    private val _writerValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
+    val writerValidity: LiveData<FormValidationState> = _writerValidity
 
     private val _plotValidity = MutableLiveData(FormValidationState.NOT_INITIALIZED)
     val plotValidity: LiveData<FormValidationState> = _plotValidity
 
-    private val movie = DetailedItem(type = "movie")
+    private val series = DetailedItem(type = ItemType.SERIES)
 
     private val _hasChanges = MutableLiveData(false)
     val hasChanges: LiveData<Boolean> = _hasChanges
 
-    val movieCreationStatus: LiveData<ResponseStatus> = Transformations.map(repository.movieEditionStatus) {
+    val seriesCreationStatus: LiveData<ResponseStatus> = Transformations.map(repository.seriesEditionStatus) {
         if (it == ResponseStatus.SUCCESS)
             _hasChanges.value = false
         it
     }
 
-    fun setMovieId(value: String) {
-        this.movie.id = value
+    fun setSeriesId(value: String) {
+        this.series.id = value
     }
 
     fun onPosterUrlChanged(value: String) {
-        movie.posterUrl = value
+        series.posterUrl = value
     }
 
     fun onTitleChanged(value: String) {
@@ -59,8 +59,8 @@ class MovieEditionViewModel: ViewModel() {
             _titleValidity.value = FormValidationState.FIELD_EMPTY
         else {
             _titleValidity.value = FormValidationState.VALID
-            movie.title = value
-            movie.queryTitle = value.toLowerCase()
+            series.title = value
+            series.queryTitle = value.toLowerCase(Locale.ROOT)
         }
         checkFormValidity()
     }
@@ -74,18 +74,18 @@ class MovieEditionViewModel: ViewModel() {
                 _yearValidity.value = FormValidationState.YEAR_BEFORE_CINEMATOGRAPHY
             else {
                 _yearValidity.value = FormValidationState.VALID
-                movie.year = value
+                series.year = value
             }
         }
         checkFormValidity()
     }
 
-    fun onDirectorChanged(value: String) {
+    fun onWriterChanged(value: String) {
         if (value.isBlank())
-            _directorValidity.value = FormValidationState.FIELD_EMPTY
+            _writerValidity.value = FormValidationState.FIELD_EMPTY
         else {
-            _directorValidity.value = FormValidationState.VALID
-            movie.director = value
+            _writerValidity.value = FormValidationState.VALID
+            series.writer = value
         }
         checkFormValidity()
     }
@@ -95,32 +95,28 @@ class MovieEditionViewModel: ViewModel() {
             _plotValidity.value = FormValidationState.FIELD_EMPTY
         else {
             _plotValidity.value = FormValidationState.VALID
-            movie.plot = value
+            series.plot = value
         }
         checkFormValidity()
     }
 
-    fun onProductionChanged(value: String) {
-        movie.production = value
-    }
-
-    fun onDurationChanged(value: String) {
-        movie.duration = "$value min"
+    fun onSeasonsChanged(value: String) {
+        series.totalSeasons = value
     }
 
     fun onGenreChanged(value: String) {
-        movie.genre = value
+        series.genre = value
     }
 
-    fun createMovie() {
+    fun createSeries() {
         if (_formValidity.value == true) {
-            repository.createItem(movie)
+            repository.createItem(series)
         }
     }
 
-    fun updateMovie() {
+    fun updateSeries() {
         if (_formValidity.value == true) {
-            repository.updateItem(movie)
+            repository.updateItem(series)
         }
     }
 
@@ -129,7 +125,7 @@ class MovieEditionViewModel: ViewModel() {
         _formValidity.value =
             _titleValidity.value == FormValidationState.VALID &&
             yearValidity.value == FormValidationState.VALID &&
-            _directorValidity.value == FormValidationState.VALID &&
+            _writerValidity.value == FormValidationState.VALID &&
             _plotValidity.value == FormValidationState.VALID
     }
 }

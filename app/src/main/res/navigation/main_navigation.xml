@@ -17,9 +17,9 @@
 
     <fragment
         android:id="@+id/nav_movies"
-        android:name="com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesTabFragment"
+        android:name="com.wawrzacz.entertainmentassistant.activity_main.movies.MoviesTabsFragment"
         android:label="MoviesFragment"
-        tools:layout="@layout/fragment_movies" >
+        tools:layout="@layout/fragment_tabs_watchable" >
         <action
             android:id="@+id/action_nav_movies_to_nav_books"
             app:destination="@id/nav_series" />
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/nav_series"
-        android:name="com.wawrzacz.entertainmentassistant.activity_main.series.SeriesFragment"
+        android:name="com.wawrzacz.entertainmentassistant.activity_main.series.SeriesTabsFragment"
         android:label="BooksFragment"
         tools:layout="@layout/fragment_series">
         <action

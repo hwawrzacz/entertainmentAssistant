@@ -6,13 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import com.wawrzacz.entertainmentassistant.data.repositories.ApiRepository
 import com.wawrzacz.entertainmentassistant.data.repositories.BrowseRepository
-import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.ui.adapters.TransitViewModel
+import com.wawrzacz.entertainmentassistant.ui.adapters.ItemPassingViewModel
 
-class BrowseViewModel: ViewModel(), TransitViewModel {
+class BrowseViewModel: ViewModel(), ItemPassingViewModel {
     private val browseRepository = BrowseRepository
 
     private val _selectedItem = MutableLiveData<CommonListItem?>()

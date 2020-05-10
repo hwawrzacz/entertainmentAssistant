@@ -3,7 +3,6 @@ package com.wawrzacz.entertainmentassistant.activity_main.browse
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,8 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.activity_main.games.GameDetailsFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.MovieDetailsFragment
-import com.wawrzacz.entertainmentassistant.activity_main.series.SeriesDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.details.MovieDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.details.SeriesDetailsFragment
+import com.wawrzacz.entertainmentassistant.data.enums.ItemType
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
@@ -131,15 +131,9 @@ class BrowseFragment: Fragment() {
                 activity.initializeActionBar()
 
                 when (it.type){
-                    "movie" -> {
-                        openMovieDetailsFragment(it.id)
-                    }
-                    "series" -> {
-                        openSeriesDetailsFragment(it.id)
-                    }
-                    "game" -> {
-                        openGameDetailsFragment(it.id)
-                    }
+                    ItemType.MOVIE -> openMovieDetailsFragment(it.id)
+                    ItemType.SERIES -> openSeriesDetailsFragment(it.id)
+                    ItemType.GAME -> openGameDetailsFragment(it.id)
                 }
             }
         })
@@ -151,12 +145,12 @@ class BrowseFragment: Fragment() {
     }
 
     private fun openMovieDetailsFragment(id: String) {
-        val movieDetailsFragment = MovieDetailsFragment(id)
+        val movieDetailsFragment = MovieDetailsFragment(id, binding.moviesRecyclerView)
         openDetailsFragment(movieDetailsFragment)
     }
 
     private fun openSeriesDetailsFragment(id: String) {
-        val seriesDetailsFragment = SeriesDetailsFragment(id)
+        val seriesDetailsFragment = SeriesDetailsFragment(id, binding.moviesRecyclerView)
         openDetailsFragment(seriesDetailsFragment)
     }
 

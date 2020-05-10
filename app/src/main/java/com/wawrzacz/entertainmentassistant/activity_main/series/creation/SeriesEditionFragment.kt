@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation
+package com.wawrzacz.entertainmentassistant.activity_main.series.creation
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,15 +14,18 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
+import com.wawrzacz.entertainmentassistant.activity_main.series.details.SeriesDetailsViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.databinding.FragmentCretionMovieBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentEditionSeriesBinding
 
-class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detailsViewModel: DetailsViewModel?): DialogFragment() {
-    private lateinit var binding: FragmentCretionMovieBinding
-    private lateinit var movieEditionViewModel: MovieEditionViewModel
+class SeriesEditionFragment(private val parentView: View,
+                            private val isEdit: Boolean,
+                            private val detailsViewModel: SeriesDetailsViewModel?
+): DialogFragment() {
+    private lateinit var binding: FragmentEditionSeriesBinding
+    private lateinit var seriesEditionViewModel: SeriesEditionViewModel
     private lateinit var mainActivity: MainActivity
     private var hasChanges = false
 
@@ -31,7 +34,7 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_cretion_movie, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_edition_series, container, false)
 
         initializeViewModel()
         prepareView()
@@ -61,9 +64,9 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
             android.R.id.home -> mainActivity.onBackPressed()
             R.id.menu_save_item -> {
                 if (isEdit)
-                    movieEditionViewModel.updateMovie()
+                    seriesEditionViewModel.updateSeries()
                 else
-                    movieEditionViewModel.createMovie()
+                    seriesEditionViewModel.createSeries()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -77,14 +80,14 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.arrow_back_24)
-        actionBar?.title = getString(R.string.title_create_movie)
+        actionBar?.title = getString(R.string.title_create_series)
 
         setHasOptionsMenu(true)
     }
 
     private fun initializeViewModel() {
-        movieEditionViewModel = ViewModelProvider(viewModelStore, MovieCreationViewModelFactory())
-            .get(MovieEditionViewModel::class.java)
+        seriesEditionViewModel = ViewModelProvider(viewModelStore, SeriesEditionViewModelFactory())
+            .get(SeriesEditionViewModel::class.java)
     }
 
     private fun prepareView() {
@@ -93,27 +96,27 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
     }
 
     private fun observeViewModelChanges() {
-        movieEditionViewModel.titleValidity.observe(viewLifecycleOwner, Observer {
+        seriesEditionViewModel.titleValidity.observe(viewLifecycleOwner, Observer {
             setTextViewError(binding.titleWrapper, it)
         })
 
-        movieEditionViewModel.yearValidity.observe(viewLifecycleOwner, Observer {
+        seriesEditionViewModel.yearValidity.observe(viewLifecycleOwner, Observer {
             setTextViewError(binding.yearWrapper, it)
         })
 
-        movieEditionViewModel.directorValidity.observe(viewLifecycleOwner, Observer {
-            setTextViewError(binding.directorWrapper, it)
+        seriesEditionViewModel.writerValidity.observe(viewLifecycleOwner, Observer {
+            setTextViewError(binding.writerWrapper, it)
         })
 
-        movieEditionViewModel.plotValidity.observe(viewLifecycleOwner, Observer {
+        seriesEditionViewModel.plotValidity.observe(viewLifecycleOwner, Observer {
             setTextViewError(binding.plotWrapper, it)
         })
 
-        movieEditionViewModel.formValidity.observe(viewLifecycleOwner, Observer {
+        seriesEditionViewModel.formValidity.observe(viewLifecycleOwner, Observer {
             binding.create.isEnabled = it
         })
 
-        movieEditionViewModel.movieCreationStatus.observe(viewLifecycleOwner, Observer {
+        seriesEditionViewModel.seriesCreationStatus.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 when (it) {
                     ResponseStatus.IN_PROGRESS -> setAllInputsEnable(false)
@@ -136,7 +139,7 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
             }
         })
 
-        movieEditionViewModel.hasChanges.observe(viewLifecycleOwner, Observer {
+        seriesEditionViewModel.hasChanges.observe(viewLifecycleOwner, Observer {
             hasChanges = it
         })
 
@@ -149,35 +152,32 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
     }
 
     private fun populateFieldsWithData(item: DetailedItem) {
-        movieEditionViewModel.setMovieId(item.id)
+        seriesEditionViewModel.setSeriesId(item.id)
         binding.posterUrl.setText(item.posterUrl)
         binding.title.setText(item.title)
-        binding.production.setText(item.production)
         binding.year.setText(item.year)
-        binding.duration.setText(item.duration.replace(Regex("(min)| "), ""))
-        binding.director.setText(item.director)
+        binding.seasons.setText(item.totalSeasons)
+        binding.writer.setText(item.writer)
         binding.genre.setText(item.genre)
         binding.plot.setText(item.plot)
     }
 
     private fun addTextInputsListeners() {
-        val onPosterUrlChanged: (String) -> Unit = { value -> movieEditionViewModel.onPosterUrlChanged(value) }
-        val onTitleChanged: (String) -> Unit = { value -> movieEditionViewModel.onTitleChanged(value) }
-        val onYearChanged: (String) -> Unit = { value -> movieEditionViewModel.onYearChanged(value) }
-        val onDirectorChanged: (String) -> Unit = { value -> movieEditionViewModel.onDirectorChanged(value) }
-        val onPlotChanged: (String) -> Unit = { value -> movieEditionViewModel.onPlotChanged(value) }
-        val onProductionChanged: (String) -> Unit = { value -> movieEditionViewModel.onProductionChanged(value) }
-        val onDurationChanged: (String) -> Unit = { value -> movieEditionViewModel.onDurationChanged(value) }
-        val onGenreChanged: (String) -> Unit = { value -> movieEditionViewModel.onGenreChanged(value) }
+        val onPosterUrlChanged: (String) -> Unit = { value -> seriesEditionViewModel.onPosterUrlChanged(value) }
+        val onTitleChanged: (String) -> Unit = { value -> seriesEditionViewModel.onTitleChanged(value) }
+        val onYearChanged: (String) -> Unit = { value -> seriesEditionViewModel.onYearChanged(value) }
+        val onWriterChanged: (String) -> Unit = { value -> seriesEditionViewModel.onWriterChanged(value) }
+        val onPlotChanged: (String) -> Unit = { value -> seriesEditionViewModel.onPlotChanged(value) }
+        val onSeasonsChanged: (String) -> Unit = { value -> seriesEditionViewModel.onSeasonsChanged(value) }
+        val onGenreChanged: (String) -> Unit = { value -> seriesEditionViewModel.onGenreChanged(value) }
 
 
         binding.posterUrl.addTextChangedListener(MyTextWatcher( onPosterUrlChanged ))
         binding.title.addTextChangedListener(MyTextWatcher( onTitleChanged ))
         binding.year.addTextChangedListener(MyTextWatcher( onYearChanged ))
-        binding.director.addTextChangedListener(MyTextWatcher( onDirectorChanged ))
+        binding.writer.addTextChangedListener(MyTextWatcher( onWriterChanged ))
         binding.plot.addTextChangedListener(MyTextWatcher( onPlotChanged ))
-        binding.production.addTextChangedListener(MyTextWatcher( onProductionChanged ))
-        binding.duration.addTextChangedListener(MyTextWatcher( onDurationChanged ))
+        binding.seasons.addTextChangedListener(MyTextWatcher( onSeasonsChanged ))
         binding.genre.addTextChangedListener(MyTextWatcher( onGenreChanged ))
     }
 
@@ -192,9 +192,9 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
     private fun addButtonsListeners() {
         binding.create.setOnClickListener {
             if (isEdit)
-                movieEditionViewModel.updateMovie()
+                seriesEditionViewModel.updateSeries()
             else
-                movieEditionViewModel.createMovie()
+                seriesEditionViewModel.createSeries()
         }
 
         binding.cancel.setOnClickListener {
@@ -205,10 +205,9 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
     private fun setAllInputsEnable(value: Boolean) {
         // TextBoxes
         binding.title.isEnabled = value
-        binding.productionWrapper.isEnabled = value
         binding.yearWrapper.isEnabled = value
-        binding.durationWrapper.isEnabled = value
-        binding.directorWrapper.isEnabled = value
+        binding.seasonsWrapper.isEnabled = value
+        binding.writerWrapper.isEnabled = value
         binding.genreWrapper.isEnabled = value
         binding.plotWrapper.isEnabled = value
         
@@ -223,31 +222,31 @@ class MovieCreationFragment(val parentView: View, val isEdit: Boolean, val detai
     }
 
     private fun showSnackbarOnCreationSucceed() {
-        val message = getString(R.string.message_movie_created)
+        val message = getString(R.string.message_series_created_successfully)
         val actionCallback = {}
 
         showSnackbarLong(parentView, message, null, actionCallback)
     }
 
     private fun showSnackbarOnCreationFailed() {
-        val message = getString(R.string.error_creating_movie)
+        val message = getString(R.string.error_creating_series)
         val actionMessage = getString(R.string.action_retry)
-        val actionCallback = { movieEditionViewModel.createMovie() }
+        val actionCallback = { seriesEditionViewModel.createSeries() }
         val view = binding.toolbar
         showSnackbarLong(view, message, actionMessage, actionCallback)
     }
 
     private fun showSnackbarOnUpdateSucceed() {
-        val message = getString(R.string.message_movie_created)
+        val message = getString(R.string.message_series_updated_successfully)
         val actionCallback = {}
 
         showSnackbarLong(parentView, message, null, actionCallback)
     }
 
     private fun showSnackbarOnUpdateFailed() {
-        val message = getString(R.string.error_creating_movie)
+        val message = getString(R.string.error_creating_series)
         val actionMessage = getString(R.string.action_retry)
-        val actionCallback = { movieEditionViewModel.updateMovie() }
+        val actionCallback = { seriesEditionViewModel.updateSeries() }
         val view = binding.toolbar
         showSnackbarLong(view, message, actionMessage, actionCallback)
     }

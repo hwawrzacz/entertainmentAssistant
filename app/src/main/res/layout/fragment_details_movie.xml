@@ -245,19 +245,18 @@
 <!--                        android:visibility="visible" />-->
                 </LinearLayout>
             </ScrollView>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginEnd="@dimen/fab_margin"
-
-                android:src="@drawable/edit_24"
-                android:visibility="invisible"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+
+            android:src="@drawable/edit_24"
+            android:visibility="invisible"
+            android:layout_gravity="bottom|end"/>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

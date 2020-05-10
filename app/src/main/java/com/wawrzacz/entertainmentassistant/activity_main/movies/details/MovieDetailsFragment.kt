@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies
+package com.wawrzacz.entertainmentassistant.activity_main.movies.details
 
 import android.os.Bundle
 import android.view.*
@@ -10,25 +10,21 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.navGraphViewModels
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
-import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
-import com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation.MovieCreationFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.creation.MovieEditionFragment
 import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
-import kotlinx.android.synthetic.main.fragment_details_movie.*
 
-class MovieDetailsFragment(private val movieId: String): DialogFragment() {
+class MovieDetailsFragment(private val movieId: String, private val parentView: View): DialogFragment() {
 
     private lateinit var binding: FragmentDetailsMovieBinding
-    private lateinit var detailsViewModel: DetailsViewModel
+    private lateinit var detailsViewModel: MovieDetailsViewModel
     private lateinit var mainActivity: MainActivity
     private var toWatchIconInitialized = false
     private var watchedIconInitialized = false
@@ -96,8 +92,8 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun initializeViewModel() {
-        detailsViewModel = ViewModelProvider(requireActivity().viewModelStore, DetailsViewModelFactory())
-            .get(DetailsViewModel::class.java)
+        detailsViewModel = ViewModelProvider(requireActivity().viewModelStore, MovieDetailsViewModelFactory())
+            .get(MovieDetailsViewModel::class.java)
     }
 
     private fun observeViewModelChanges() {
@@ -190,7 +186,7 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun openEditFragment() {
-        val fragment = MovieCreationFragment(binding.detailsContainer, true, detailsViewModel)
+        val fragment = MovieEditionFragment(parentView, true, detailsViewModel)
         (requireActivity() as MainActivity).supportFragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
@@ -211,14 +207,8 @@ class MovieDetailsFragment(private val movieId: String): DialogFragment() {
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
-        if (item.posterUrl == "N/A" || item.posterUrl.isNullOrBlank()) {
-            val imageResource: Int = when (item.type) {
-                "series" -> R.mipmap.poster_default_series
-                "game" -> R.mipmap.poster_default_game
-                else -> R.mipmap.poster_default_movie
-            }
-            binding.poster.setImageResource(imageResource)
-        } else Picasso.get().load(item.posterUrl).into(view)
+        if (item.posterUrl != "N/A" && !item.posterUrl.isNullOrBlank())
+            Picasso.get().load(item.posterUrl).into(view)
     }
 
     private fun setSectionIconFilled(section: WatchableSection) {

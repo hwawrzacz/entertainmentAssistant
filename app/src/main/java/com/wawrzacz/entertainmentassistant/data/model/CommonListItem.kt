@@ -1,8 +1,7 @@
 package com.wawrzacz.entertainmentassistant.data.model
 
-import android.icu.text.CaseMap
 import com.google.gson.annotations.SerializedName
-import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
+import com.wawrzacz.entertainmentassistant.data.enums.ItemType
 
 class CommonListItem(
     @SerializedName("imdbID")
@@ -12,7 +11,7 @@ class CommonListItem(
     @SerializedName("Year")
     val year: String = "N/A",
     @SerializedName("Type")
-    val type: String = "N/A",
+    val type: ItemType = ItemType.MOVIE,
     @SerializedName("Poster")
     val posterUrl: String = "N/A"
 ) {

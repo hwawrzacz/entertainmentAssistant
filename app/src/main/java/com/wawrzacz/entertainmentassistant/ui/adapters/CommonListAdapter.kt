@@ -11,11 +11,11 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
+import com.wawrzacz.entertainmentassistant.data.enums.ItemType
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
-import java.util.*
 
 // idDedicated field determines whether or not favourite heart should be displayed. In Browse view it should'n be displayed
-class CommonListAdapter(private val browseViewModel: TransitViewModel):
+class CommonListAdapter(private val browseViewModel: ItemPassingViewModel):
     ListAdapter<CommonListItem, CommonListAdapter.CommonListItemViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonListItemViewHolder {
@@ -49,21 +49,21 @@ class CommonListAdapter(private val browseViewModel: TransitViewModel):
     }
 
     private fun setPosterBasedOnUrl(item: CommonListItem, holder: CommonListItemViewHolder) {
-        if (item.posterUrl == "N/A" || item.posterUrl.isNullOrBlank()) {
+        if (item.posterUrl == "N/A" || item.posterUrl.isBlank()) {
             val imageResource: Int = when (item.type) {
-                "series" -> R.mipmap.poster_default_series
-                "game" -> R.mipmap.poster_default_game
-                else -> R.mipmap.poster_default_movie
+                ItemType.MOVIE -> R.mipmap.poster_default_movie
+                ItemType.SERIES -> R.mipmap.poster_default_series
+                ItemType.GAME -> R.mipmap.poster_default_game
             }
             holder.poster.setImageResource(imageResource)
         } else Picasso.get().load(item.posterUrl).into(holder.poster)
     }
 
-    private fun getTypeDrawable(value: String): Int {
-        return when (value.toLowerCase(Locale.getDefault())) {
-            "movie" -> R.drawable.movie_24
-            "series" -> R.drawable.series_24
-            else -> R.drawable.gamepad_filled
+    private fun getTypeDrawable(value: ItemType): Int {
+        return when (value) {
+            ItemType.MOVIE -> R.drawable.movie_24
+            ItemType.SERIES -> R.drawable.series_24
+            ItemType.GAME -> R.drawable.gamepad_filled
         }
     }
 

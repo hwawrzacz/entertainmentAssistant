@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies
+package com.wawrzacz.entertainmentassistant.activity_main.series
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,11 +8,12 @@ import com.wawrzacz.entertainmentassistant.data.enums.ItemType
 import com.wawrzacz.entertainmentassistant.data.model.CommonListItem
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.repositories.MoviesFirebaseRepository
+import com.wawrzacz.entertainmentassistant.data.repositories.SeriesFirebaseRepository
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.ui.adapters.ItemPassingViewModel
 
-class MoviesViewModel: ViewModel(), ItemPassingViewModel {
-    private val moviesRepository = MoviesFirebaseRepository
+class SeriesViewModel: ViewModel(), ItemPassingViewModel {
+    private val seriesRepository = SeriesFirebaseRepository
 
     private val _responseToWatchStatus = MutableLiveData(ResponseStatus.NOT_INITIALIZED)
     val responseToWatchStatus: LiveData<ResponseStatus> = _responseToWatchStatus
@@ -26,15 +27,15 @@ class MoviesViewModel: ViewModel(), ItemPassingViewModel {
     private val _selectedItem = MutableLiveData<CommonListItem?>()
     override val selectedItem: LiveData<CommonListItem?> = _selectedItem
 
-    val foundToWatchMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundToWatchMovies) {
+    val foundToWatchSeries: LiveData<List<CommonListItem>?> = Transformations.map(seriesRepository.foundToWatchSeries) {
         _responseToWatchStatus.value = it.responseStatus
         it.items
     }
-    val foundWatchedMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundWatchedMovies) {
+    val foundWatchedSeries: LiveData<List<CommonListItem>?> = Transformations.map(seriesRepository.foundWatchedSeries) {
         _responseWatchedStatus.value = it.responseStatus
         it.items
     }
-    val foundFavouritesMovies: LiveData<List<CommonListItem>?> = Transformations.map(moviesRepository.foundFavouritesMovies) {
+    val foundFavouritesSeries: LiveData<List<CommonListItem>?> = Transformations.map(seriesRepository.foundFavouritesSeries) {
         _responseFavouritesStatus.value = it.responseStatus
         it.items
     }
@@ -43,7 +44,7 @@ class MoviesViewModel: ViewModel(), ItemPassingViewModel {
         _selectedItem.value = item
     }
 
-    fun findMovies(section: WatchableSection, query: String?) {
+    fun findSeries(section: WatchableSection, query: String?) {
         val targetResponseStatus = when (section) {
             WatchableSection.TO_WATCH -> _responseToWatchStatus
             WatchableSection.WATCHED -> _responseWatchedStatus
@@ -51,7 +52,7 @@ class MoviesViewModel: ViewModel(), ItemPassingViewModel {
         }
 
         targetResponseStatus.value = ResponseStatus.IN_PROGRESS
-        moviesRepository.findItemsInSection(ItemType.MOVIE, section, query)
+        seriesRepository.findItemsInSection(section, query)
     }
 
 }

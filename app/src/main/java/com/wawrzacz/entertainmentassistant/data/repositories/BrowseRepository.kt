@@ -9,7 +9,7 @@ import com.wawrzacz.entertainmentassistant.data.responses.CommonItemsListRespons
 
 object BrowseRepository {
     private val apiRepository = ApiRepository
-    private val firebaseRepository = MoviesFirebaseRepository
+    private val firebaseRepository = GeneralFirebaseRepository
 
     fun findItems(query: String?): LiveData<CommonItemsListResponse> {
         return MediatorLiveData<CommonItemsListResponse>().apply {
@@ -44,7 +44,7 @@ object BrowseRepository {
                 // To display default message, when query is cleared
                 this.value = CommonItemsListResponse(null, ResponseStatus.NOT_INITIALIZED)
             } else {
-                addSource(firebaseRepository.foundAllItems) {
+                addSource(firebaseRepository.foundAllMovies) {
                     firebaseResult = it
                     checkData()
                 }

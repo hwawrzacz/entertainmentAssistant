@@ -1,9 +1,9 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation
+package com.wawrzacz.entertainmentassistant.activity_main.movies.creation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class MovieCreationViewModelFactory: ViewModelProvider.Factory {
+class MovieEditionViewModelFactory: ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return MovieEditionViewModel() as T
     }

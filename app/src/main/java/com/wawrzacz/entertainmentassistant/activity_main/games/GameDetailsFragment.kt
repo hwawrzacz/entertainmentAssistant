@@ -6,21 +6,19 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModel
-import com.wawrzacz.entertainmentassistant.activity_main.details.DetailsViewModelFactory
-import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
+import com.wawrzacz.entertainmentassistant.activity_main.movies.details.MovieDetailsViewModel
+import com.wawrzacz.entertainmentassistant.activity_main.movies.details.MovieDetailsViewModelFactory
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsGameBinding
 
 class GameDetailsFragment(private val id: String): DialogFragment() {
 
     private lateinit var binding: FragmentDetailsGameBinding
-    private lateinit var detailsViewModel: DetailsViewModel
+    private lateinit var detailsViewModel: MovieDetailsViewModel
     private lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -83,9 +81,9 @@ class GameDetailsFragment(private val id: String): DialogFragment() {
 
     private fun initializeViewModel() {
         detailsViewModel = ViewModelProvider(viewModelStore,
-            DetailsViewModelFactory()
+            MovieDetailsViewModelFactory()
         )
-            .get(DetailsViewModel::class.java)
+            .get(MovieDetailsViewModel::class.java)
     }
 
     private fun observeViewModelChanges() {

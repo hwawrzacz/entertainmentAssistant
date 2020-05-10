@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.movies.movie_creation.MovieCreationFragment
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
-import com.wawrzacz.entertainmentassistant.ui.adapters.MoviesViewPagerAdapter
-import com.wawrzacz.entertainmentassistant.databinding.FragmentMoviesBinding
+import com.wawrzacz.entertainmentassistant.ui.adapters.MyViewPagerAdapter
+import com.wawrzacz.entertainmentassistant.databinding.FragmentTabsWatchableBinding
 
-class MoviesTabFragment: Fragment() {
-    private lateinit var binding: FragmentMoviesBinding
+class MoviesTabsFragment: Fragment() {
+    private lateinit var binding: FragmentTabsWatchableBinding
 
     private lateinit var viewPager: ViewPager2
     private val moviesFragments = listOf(
@@ -38,7 +36,7 @@ class MoviesTabFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_movies, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_tabs_watchable, container, false)
 
         initializeViewPager()
         initializeTabLayout()
@@ -56,7 +54,7 @@ class MoviesTabFragment: Fragment() {
 
     private fun initializeViewPager() {
         viewPager = binding.moviesViewPager
-        viewPager.adapter = MoviesViewPagerAdapter(this, moviesFragments)
+        viewPager.adapter = MyViewPagerAdapter(this, moviesFragments)
     }
 
     private fun initializeTabLayout() {

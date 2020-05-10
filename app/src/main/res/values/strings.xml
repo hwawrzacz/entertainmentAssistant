@@ -61,6 +61,7 @@
     <string name="label_year">Year</string>
     <string name="label_type">Type</string>
     <string name="label_duration">Duration</string>
+    <string name="label_seasons">Seasons</string>
     <string name="label_production">Production</string>
     <string name="label_director">Director</string>
     <string name="label_writer">Writer</string>
@@ -87,8 +88,15 @@
     <string name="message_action_search_for_series">Search for series</string>
     <string name="message_action_search_for_games">Search for games</string>
     <string name="message_loading_data">Loading data</string>
-    <string name="message_movie_created">Movie created</string>
+    <string name="message_movie_created_successfully">Movie created successfully</string>
+    <string name="message_series_created_successfully">Series created successfully</string>
+    <string name="message_game_created_successfully">Game created successfully</string>
+    <string name="message_movie_updated_successfully">Movie updated successfully</string>
+    <string name="message_series_updated_successfully">Series updated successfully</string>
+    <string name="message_game_updated_successfully">Game updated successfully</string>
     <string name="message_movie_saved">Movie saved</string>
+    <string name="message_series_saved">Series saved</string>
+    <string name="message_game_saved">Game saved</string>
     <string name="message_query_cancelled">Query cancelled</string>
 
     <!-- Action messages -->
@@ -107,7 +115,11 @@
     <string name="error_general">An error occurred</string>
     <string name="error_getting_data">An error occurred while getting data</string>
     <string name="error_creating_movie">An error occurred while creating a movie</string>
+    <string name="error_creating_series">An error occurred while creating a series</string>
+    <string name="error_creating_game">An error occurred while creating a game</string>
     <string name="error_saving_movie">An error occurred while saving a movie</string>
+    <string name="error_saving_series">An error occurred while saving a series</string>
+    <string name="error_saving_game">An error occurred while saving a game</string>
 
     <!-- Dialogs, prompts -->
     <string name="title_delete_account">Delete account</string>
