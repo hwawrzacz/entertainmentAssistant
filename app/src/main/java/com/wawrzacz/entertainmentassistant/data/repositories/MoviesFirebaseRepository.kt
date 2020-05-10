@@ -92,7 +92,9 @@ object MoviesFirebaseRepository {
                 val items = mutableListOf<CommonListItem>()
                 snapshot.children.forEach {
                     val item = it.getValue(CommonListItem::class.java)
-                    if (item != null && item.title.toLowerCase(Locale.ROOT).contains(title))
+                    if (item != null && item.title
+                            .toLowerCase(Locale.ROOT)
+                            .contains(title.toLowerCase()))
                         items.add(item)
                 }
                 if (items.isNullOrEmpty())
@@ -108,51 +110,27 @@ object MoviesFirebaseRepository {
         })
     }
 
-    fun getAllItemsBySection(section: WatchableSection) {
+    fun findItemsInSection(section: WatchableSection, title: String?) {
         val userId = firebaseAuth.currentUser?.uid
-        val targetLiveData: MutableLiveData<CommonItemsListResponse> = when (section) {
-            WatchableSection.TO_WATCH-> _foundToWatchMovies
-            WatchableSection.WATCHED -> _foundWatchedMovies
-            else -> _foundFavouritesMovies
-        }
+        val targetLiveData: MutableLiveData<CommonItemsListResponse> = getTargetLiveDataBasedOnSection(section)
 
         // Child listener must be added before value listener because otherwise, result can be empty
         usersReference.child("${userId}/${Path.MOVIES.value}/${section.value}")
-            .addChildEventListener(object: ChildEventListener {
-                    override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
-                        val moviesIds: List<String> = populateItemsIds(snapshot)
-                        getMoviesBasedOnIds(moviesIds, targetLiveData)
-                    }
-                    override fun onChildChanged(snapshot: DataSnapshot, p1: String?) {
-                        val moviesIds: List<String> = populateItemsIds(snapshot)
-                        getMoviesBasedOnIds(moviesIds, targetLiveData)
-                    }
-                    override fun onChildMoved(snapshot: DataSnapshot, p1: String?) {
-                        val moviesIds: List<String> = populateItemsIds(snapshot)
-                        getMoviesBasedOnIds(moviesIds, targetLiveData)
-                    }
-                    override fun onChildRemoved(snapshot: DataSnapshot) {
-                        val moviesIds: List<String> = populateItemsIds(snapshot)
-                        getMoviesBasedOnIds(moviesIds, targetLiveData)
-                    }
-                    override fun onCancelled(snapshot: DatabaseError) {
-//                        targetLiveData.value = null
-                    }
-                })
+            .addChildEventListener(SectionSearchChildEventListener(targetLiveData, title))
 
         usersReference.child("${userId}/${Path.MOVIES.value}/${section.value}")
-            .addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val moviesIds: List<String> = populateItemsIds(snapshot)
-                    getMoviesBasedOnIds(moviesIds, targetLiveData)
-                }
-                override fun onCancelled(p0: DatabaseError) {
-                    Log.i("schab", "Change cancelled")
-                }
-            })
+            .addValueEventListener(SectionSearchValueEventListener(targetLiveData, title))
     }
 
-    private fun populateItemsIds(snapshot: DataSnapshot): List<String> {
+    private fun getTargetLiveDataBasedOnSection(section: WatchableSection): MutableLiveData<CommonItemsListResponse> {
+        return when (section) {
+            WatchableSection.TO_WATCH -> _foundToWatchMovies
+            WatchableSection.WATCHED -> _foundWatchedMovies
+            else -> _foundFavouritesMovies
+        }
+    }
+
+    private fun getFoundItemsIds(snapshot: DataSnapshot): List<String> {
         val moviesIds = mutableListOf<String>()
         for (row in snapshot.children)
             if (row.key != null && row.value != null && row.value != false)
@@ -164,6 +142,17 @@ object MoviesFirebaseRepository {
         itemsReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 refreshItemsListFromSnapshot(moviesIds, snapshot, targetLiveData)
+            }
+            override fun onCancelled(p0: DatabaseError) {
+                targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
+            }
+        })
+    }
+
+    private fun getMoviesBasedOnIdsAndTitle(moviesIds: List<String>, title: String, targetLiveData: MutableLiveData<CommonItemsListResponse>) {
+        itemsReference.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                filterByTitleAndRefresh(moviesIds, title, snapshot, targetLiveData)
             }
             override fun onCancelled(p0: DatabaseError) {
                 targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
@@ -183,6 +172,32 @@ object MoviesFirebaseRepository {
                 if (movieRow.key == movieId) {
                     val movie = movieRow.getValue(CommonListItem::class.java)
                     if (movie != null)
+                        foundMovies.add(movie)
+                }
+            }
+        }
+        if (foundMovies.isNullOrEmpty())
+            targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.NO_RESULT)
+        else
+            targetLiveData.value = CommonItemsListResponse(foundMovies, ResponseStatus.SUCCESS)
+    }
+
+    private fun filterByTitleAndRefresh(
+        moviesIds: List<String>,
+        title: String,
+        dataSnapshot: DataSnapshot,
+        targetLiveData: MutableLiveData<CommonItemsListResponse>) {
+
+        val foundMovies = arrayListOf<CommonListItem>()
+        for (movieId in moviesIds) {
+            val movies = dataSnapshot.children
+            for (movieRow in movies) {
+                if (movieRow.key == movieId ) {
+                    val movie = movieRow.getValue(CommonListItem::class.java)
+                    if (movie != null &&
+                        movie.title
+                            .toLowerCase(Locale.ROOT)
+                            .contains(title.toLowerCase(Locale.ROOT)))
                         foundMovies.add(movie)
                 }
             }
@@ -292,5 +307,58 @@ object MoviesFirebaseRepository {
                     }
                 }
             }
+    }
+
+    private class SectionSearchValueEventListener(
+        val targetLiveData: MutableLiveData<CommonItemsListResponse>,
+        val title: String?
+    ): ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val moviesIds: List<String> = getFoundItemsIds(snapshot)
+            if (title.isNullOrBlank())
+                getMoviesBasedOnIds(moviesIds, targetLiveData)
+            else
+                getMoviesBasedOnIdsAndTitle(moviesIds, title, targetLiveData)
+        }
+        override fun onCancelled(p0: DatabaseError) {
+            targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
+        }
+    }
+
+    private class SectionSearchChildEventListener(
+        val targetLiveData: MutableLiveData<CommonItemsListResponse>,
+        val title: String?
+    ): ChildEventListener {
+        override fun onChildAdded(snapshot: DataSnapshot, p1: String?) {
+            val moviesIds: List<String> = getFoundItemsIds(snapshot)
+            if (title.isNullOrBlank())
+                getMoviesBasedOnIds(moviesIds, targetLiveData)
+            else
+                getMoviesBasedOnIdsAndTitle(moviesIds, title, targetLiveData)
+        }
+        override fun onChildChanged(snapshot: DataSnapshot, p1: String?) {
+            val moviesIds: List<String> = getFoundItemsIds(snapshot)
+            if (title.isNullOrBlank())
+                getMoviesBasedOnIds(moviesIds, targetLiveData)
+            else
+                getMoviesBasedOnIdsAndTitle(moviesIds, title, targetLiveData)
+        }
+        override fun onChildMoved(snapshot: DataSnapshot, p1: String?) {
+            val moviesIds: List<String> = getFoundItemsIds(snapshot)
+            if (title.isNullOrBlank())
+                getMoviesBasedOnIds(moviesIds, targetLiveData)
+            else
+                getMoviesBasedOnIdsAndTitle(moviesIds, title, targetLiveData)
+        }
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            val moviesIds: List<String> = getFoundItemsIds(snapshot)
+            if (title.isNullOrBlank())
+                getMoviesBasedOnIds(moviesIds, targetLiveData)
+            else
+                getMoviesBasedOnIdsAndTitle(moviesIds, title, targetLiveData)
+        }
+        override fun onCancelled(snapshot: DatabaseError) {
+            targetLiveData.value = CommonItemsListResponse(null, ResponseStatus.ERROR)
+        }
     }
 }

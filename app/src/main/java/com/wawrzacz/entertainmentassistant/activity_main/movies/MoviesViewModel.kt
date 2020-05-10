@@ -42,14 +42,15 @@ class MoviesViewModel: ViewModel(), TransitViewModel {
         _selectedItem.value = item
     }
 
-    fun findMovies(section: WatchableSection, query: String) {
+    fun findMovies(section: WatchableSection, query: String?) {
         val targetResponseStatus = when (section) {
             WatchableSection.TO_WATCH -> _responseToWatchStatus
             WatchableSection.WATCHED -> _responseWatchedStatus
             else -> _responseFavouritesStatus
         }
+
         targetResponseStatus.value = ResponseStatus.IN_PROGRESS
-        moviesRepository.getAllItemsBySection(section)
+        moviesRepository.findItemsInSection(section, query)
     }
 
 }

@@ -37,7 +37,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
         initializeViewModel()
         initializeRecyclerView()
         addViewModelObservers()
-        findMovies()
+        findMovies(null)
 
         return binding.root
     }
@@ -52,7 +52,7 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
 
         searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                // TODO: Handle query search
+                findMovies(newText)
                 return true
             }
             override fun onQueryTextSubmit(query: String?): Boolean { return false }
@@ -146,8 +146,8 @@ class MoviesListFragment(private val section: WatchableSection): Fragment(),
         }
     }
 
-    private fun findMovies() {
-        moviesViewModel.findMovies(section, "")
+    private fun findMovies(query: String?) {
+        moviesViewModel.findMovies(section, query)
     }
 
     private fun refreshData(data: List<CommonListItem>?) {
