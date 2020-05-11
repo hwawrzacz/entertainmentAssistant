@@ -65,7 +65,7 @@ class SeriesListFragment(private val section: WatchableSection): Fragment() {
         val moviesLayoutManager = LinearLayoutManager(context)
         moviesAdapter = CommonListAdapter(moviesViewModel)
 
-        binding.moviesRecyclerView.apply {
+        binding.recyclerView.apply {
             layoutManager = moviesLayoutManager
             adapter = moviesAdapter
         }
@@ -159,7 +159,7 @@ class SeriesListFragment(private val section: WatchableSection): Fragment() {
         val activity = requireActivity() as MainActivity
         val fragmentManager = requireActivity().supportFragmentManager
         val fragment =
-            SeriesDetailsFragment(id, binding.moviesRecyclerView)
+            SeriesDetailsFragment(id, binding.recyclerView)
 
         activity.hideKeyboard()
         fragmentManager.beginTransaction().apply {
@@ -187,11 +187,11 @@ class SeriesListFragment(private val section: WatchableSection): Fragment() {
     }
 
     private fun showResults() {
-        binding.moviesRecyclerView.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
     }
 
     private fun hideResults() {
-        binding.moviesRecyclerView.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
     }
     //#endregion
 }

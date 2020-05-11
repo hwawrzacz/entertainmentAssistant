@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_movies"
+        android:clickable="true"
+        android:focusable="true"
+        android:windowTranslucentStatus="false">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/poster_url_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="@dimen/padding_fragment_regular"
+                    android:layout_marginStart="@dimen/padding_fragment_regular"
+                    android:layout_marginEnd="@dimen/padding_fragment_regular"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_poster_url"
+                    app:startIconDrawable="@drawable/image_24"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/poster_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/title_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginStart="@dimen/padding_fragment_regular"
+                    android:layout_marginEnd="@dimen/padding_fragment_regular"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_title"
+                    app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/title_24"
+                    
+                    app:layout_constraintEnd_toEndOf="@id/poster_url_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/poster_url_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/poster_url_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/production_wrapper"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:errorEnabled="true"
+                    android:hint="@string/label_production"
+                    app:startIconDrawable="@drawable/production_icon_24"
+
+                    app:layout_constraintEnd_toEndOf="@id/title_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/title_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/title_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/production"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/year_wrapper"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginEnd="@dimen/margin_tiny"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_year"
+                    app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/calendar_24"
+
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+
+                    app:layout_constraintEnd_toStartOf="@id/duration_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/title_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/title_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/year"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="date"
+                        android:maxLength="4" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/duration_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:layout_marginStart="@dimen/margin_tiny"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_duration"
+                    app:startIconDrawable="@drawable/time_24"
+
+                    app:layout_constraintStart_toEndOf="@id/year_wrapper"
+                    app:layout_constraintEnd_toEndOf="@id/title_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/title_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:maxLength="6" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/director_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_director"
+                    app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/person_24"
+
+                    app:layout_constraintTop_toBottomOf="@id/year_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/year_wrapper"
+                    app:layout_constraintEnd_toEndOf="@id/duration_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/director"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/genre_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_genre"
+                    app:startIconDrawable="@drawable/genre_24"
+
+                    app:layout_constraintTop_toBottomOf="@id/director_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/director_wrapper"
+                    app:layout_constraintEnd_toEndOf="@id/director_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/genre"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/plot_wrapper"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+
+                    app:errorEnabled="true"
+                    android:hint="@string/label_plot"
+                    app:helperText="@string/hint_required"
+                    app:startIconDrawable="@drawable/text_content_24"
+
+                    app:layout_constraintTop_toBottomOf="@id/genre_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/genre_wrapper"
+                    app:layout_constraintEnd_toEndOf="@id/genre_wrapper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/plot"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="textCapSentences|textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+<!--                <TextView-->
+<!--                    android:id="@+id/label_add_to"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/margin_regular"-->
+<!--                    android:text="@string/label_also_add_to"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/plot_wrapper"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/plot_wrapper"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/plot_wrapper"/>-->
+
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/add_to_to_watch"-->
+
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/label_to_watch"-->
+
+<!--                    app:layout_constraintTop_toBottomOf="@id/label_add_to"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/label_add_to"-->
+<!--                    app:layout_constraintEnd_toStartOf="@id/add_to_watched" />-->
+
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/add_to_watched"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/label_watched"-->
+
+<!--                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/add_to_to_watch"-->
+<!--                    app:layout_constraintEnd_toStartOf="@id/add_to_favourites"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>-->
+
+<!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+<!--                    android:id="@+id/add_to_favourites"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/label_favourites"-->
+
+<!--                    app:layout_constraintTop_toTopOf="@id/add_to_to_watch"-->
+<!--                    app:layout_constraintStart_toEndOf="@id/add_to_watched"-->
+<!--                    app:layout_constraintEnd_toEndOf="@id/label_add_to"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/add_to_to_watch"/>-->
+
+                <Button
+                    android:id="@+id/create"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_big"
+
+                    android:enabled="false"
+                    
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:text="@string/action_create"
+                    android:drawableStart="@drawable/add_24"
+                    app:layout_constraintTop_toBottomOf="@id/plot_wrapper"
+                    app:layout_constraintStart_toStartOf="@id/plot_wrapper"
+                    app:layout_constraintEnd_toEndOf="@id/plot_wrapper"  />
+
+                <Button
+                    android:id="@+id/cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_fragment_regular"
+
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:text="@string/action_cancel"
+                    android:drawableStart="@drawable/add_24"
+                    app:layout_constraintTop_toBottomOf="@id/create"
+                    app:layout_constraintStart_toStartOf="@id/create"
+                    app:layout_constraintEnd_toEndOf="@id/create"  />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

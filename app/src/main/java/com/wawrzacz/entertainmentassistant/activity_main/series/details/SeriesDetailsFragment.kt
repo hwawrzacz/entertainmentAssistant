@@ -14,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.series.creation.SeriesEditionFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.edition.SeriesEditionFragment
 import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
@@ -212,16 +212,16 @@ class SeriesDetailsFragment(private val seriesId: String, private val parentView
 
     private fun setSectionIconFilled(section: WatchableSection) {
         when (section) {
-            WatchableSection.WATCHED -> DetailsMenu.watched.setIcon(R.drawable.eye_filled_24)
             WatchableSection.TO_WATCH -> DetailsMenu.toWatch.setIcon(R.drawable.bookmark_filled_24)
+            WatchableSection.WATCHED -> DetailsMenu.watched.setIcon(R.drawable.eye_filled_24)
             WatchableSection.FAVOURITES -> DetailsMenu.favourites.setIcon(R.drawable.heart_filled_24)
         }
     }
 
     private fun setSectionIconOutlined(section: WatchableSection) {
         when (section) {
-            WatchableSection.WATCHED -> DetailsMenu.watched.setIcon(R.drawable.eye_outlined_24)
             WatchableSection.TO_WATCH -> DetailsMenu.toWatch.setIcon(R.drawable.bookmark_outlined_24)
+            WatchableSection.WATCHED -> DetailsMenu.watched.setIcon(R.drawable.eye_outlined_24)
             WatchableSection.FAVOURITES -> DetailsMenu.favourites.setIcon(R.drawable.heart_outlined_24)
         }
     }
@@ -231,13 +231,13 @@ class SeriesDetailsFragment(private val seriesId: String, private val parentView
         var callback: () -> Unit = {}
 
         when (section) {
-            WatchableSection.WATCHED -> {
-                actionMessage = getString(R.string.action_message_added_to_watched)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.WATCHED) }
-            }
             WatchableSection.TO_WATCH -> {
                 actionMessage = getString(R.string.action_message_added_to_to_watch)
                 callback = { detailsViewModel.toggleItemSection(WatchableSection.TO_WATCH) }
+            }
+            WatchableSection.WATCHED -> {
+                actionMessage = getString(R.string.action_message_added_to_watched)
+                callback = { detailsViewModel.toggleItemSection(WatchableSection.WATCHED) }
             }
             WatchableSection.FAVOURITES -> {
                 actionMessage = getString(R.string.action_message_added_to_favourites)
@@ -252,13 +252,13 @@ class SeriesDetailsFragment(private val seriesId: String, private val parentView
         var callback: () -> Unit = {}
 
         when (section) {
-            WatchableSection.WATCHED -> {
-                actionMessage = getString(R.string.action_message_removed_from_watched)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.WATCHED) }
-            }
             WatchableSection.TO_WATCH -> {
                 actionMessage = getString(R.string.action_message_removed_from_to_watch)
                 callback = { detailsViewModel.toggleItemSection(WatchableSection.TO_WATCH) }
+            }
+            WatchableSection.WATCHED -> {
+                actionMessage = getString(R.string.action_message_removed_from_watched)
+                callback = { detailsViewModel.toggleItemSection(WatchableSection.WATCHED) }
             }
             WatchableSection.FAVOURITES -> {
                 actionMessage = getString(R.string.action_message_removed_from_favourites)

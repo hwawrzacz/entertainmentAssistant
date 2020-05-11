@@ -11,14 +11,14 @@ import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
-import com.wawrzacz.entertainmentassistant.databinding.FragmentTabsWatchableBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentTabsBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.MyViewPagerAdapter
 
 class SeriesTabsFragment: Fragment() {
-    private lateinit var binding: FragmentTabsWatchableBinding
+    private lateinit var binding: FragmentTabsBinding
 
     private lateinit var viewPager: ViewPager2
-    private val moviesFragments = listOf(
+    private val seriesFragments = listOf(
         SeriesListFragment(
             WatchableSection.TO_WATCH
         ),
@@ -29,14 +29,14 @@ class SeriesTabsFragment: Fragment() {
             WatchableSection.FAVOURITES
         )
     )
-    private var currentSeriesFragment: SeriesListFragment = moviesFragments[0]
+    private var currentSeriesFragment: SeriesListFragment = seriesFragments[0]
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_tabs_watchable, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_tabs, container, false)
 
         initializeViewPager()
         initializeTabLayout()
@@ -47,20 +47,20 @@ class SeriesTabsFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val activity = (requireActivity() as MainActivity)
-        activity.changeCurrentCategory(MediaCategory.MOVIES)
+        activity.setCurrentCategory(MediaCategory.SERIES)
         setUpActionBar()
         setTabChangeListeners()
     }
 
     private fun initializeViewPager() {
-        viewPager = binding.moviesViewPager
-        viewPager.adapter = MyViewPagerAdapter(this, moviesFragments)
+        viewPager = binding.viewPager
+        viewPager.adapter = MyViewPagerAdapter(this, seriesFragments)
     }
 
     private fun initializeTabLayout() {
         val tabLayout = binding.tabLayout
 
-        TabLayoutMediator( tabLayout, viewPager, TabLayoutMediator
+        TabLayoutMediator(tabLayout, viewPager, TabLayoutMediator
             .TabConfigurationStrategy {
                 tab, position -> run {
                     when (position) {
@@ -87,7 +87,7 @@ class SeriesTabsFragment: Fragment() {
                 val currentPosition = tab?.position
                 hideKeyboard()
                 if (currentPosition != null)
-                    currentSeriesFragment = moviesFragments[currentPosition]
+                    currentSeriesFragment = seriesFragments[currentPosition]
             }
         })
     }

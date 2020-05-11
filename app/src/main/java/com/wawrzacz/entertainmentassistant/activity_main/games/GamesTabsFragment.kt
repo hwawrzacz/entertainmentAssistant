@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies
+package com.wawrzacz.entertainmentassistant.activity_main.games
 
 import android.os.Bundle
 import android.view.*
@@ -10,26 +10,26 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
-import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
+import com.wawrzacz.entertainmentassistant.data.enums.PlayableSection
 import com.wawrzacz.entertainmentassistant.databinding.FragmentTabsBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.MyViewPagerAdapter
 
-class MoviesTabsFragment: Fragment() {
+class GamesTabsFragment: Fragment() {
     private lateinit var binding: FragmentTabsBinding
 
     private lateinit var viewPager: ViewPager2
-    private val moviesFragments = listOf(
-        MoviesListFragment(
-            WatchableSection.TO_WATCH
+    private val gamesFragments = listOf(
+        GamesListFragment(
+            PlayableSection.TO_PLAY
         ),
-        MoviesListFragment(
-            WatchableSection.WATCHED
+        GamesListFragment(
+            PlayableSection.PLAYED
         ),
-        MoviesListFragment(
-            WatchableSection.FAVOURITES
+        GamesListFragment(
+            PlayableSection.FAVOURITES
         )
     )
-    private var currentMovieFragment: MoviesListFragment = moviesFragments[0]
+    private var currentMovieFragment: GamesListFragment = gamesFragments[0]
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,14 +47,14 @@ class MoviesTabsFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val activity = (requireActivity() as MainActivity)
-        activity.setCurrentCategory(MediaCategory.MOVIES)
+        activity.setCurrentCategory(MediaCategory.GAMES)
         setUpActionBar()
         setTabChangeListeners()
     }
 
     private fun initializeViewPager() {
         viewPager = binding.viewPager
-        viewPager.adapter = MyViewPagerAdapter(this, moviesFragments)
+        viewPager.adapter = MyViewPagerAdapter(this, gamesFragments)
     }
 
     private fun initializeTabLayout() {
@@ -64,8 +64,8 @@ class MoviesTabsFragment: Fragment() {
             .TabConfigurationStrategy {
                 tab, position -> run {
                     when (position) {
-                        0 -> tab.text = getString(R.string.label_to_watch)
-                        1 -> tab.text = getString(R.string.label_watched)
+                        0 -> tab.text = getString(R.string.label_to_play)
+                        1 -> tab.text = getString(R.string.label_played)
                         2 -> tab.text = getString(R.string.label_favourites)
                     }
                 }
@@ -74,8 +74,8 @@ class MoviesTabsFragment: Fragment() {
     }
 
     private fun setUpActionBar() {
-        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_movies))
-        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.movie_24)
+        (requireActivity() as MainActivity).setActionBarTitle(getString(R.string.label_games))
+        (requireActivity() as MainActivity).setActionBarIcon(R.drawable.gamepad_filled)
     }
 
     private fun setTabChangeListeners() {
@@ -87,7 +87,7 @@ class MoviesTabsFragment: Fragment() {
                 val currentPosition = tab?.position
                 hideKeyboard()
                 if (currentPosition != null)
-                    currentMovieFragment = moviesFragments[currentPosition]
+                    currentMovieFragment = gamesFragments[currentPosition]
             }
         })
     }

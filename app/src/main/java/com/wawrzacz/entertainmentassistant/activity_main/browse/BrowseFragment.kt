@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.games.GameDetailsFragment
+import com.wawrzacz.entertainmentassistant.activity_main.games.details.GameDetailsFragment
 import com.wawrzacz.entertainmentassistant.activity_main.movies.details.MovieDetailsFragment
 import com.wawrzacz.entertainmentassistant.activity_main.series.details.SeriesDetailsFragment
 import com.wawrzacz.entertainmentassistant.data.enums.ItemType
@@ -49,7 +49,7 @@ class BrowseFragment: Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val activity = (requireActivity() as MainActivity)
-        activity.changeCurrentCategory(MediaCategory.BROWSE)
+        activity.setCurrentCategory(MediaCategory.BROWSE)
         val actionBar = activity.supportActionBar
         actionBar?.title = getString(R.string.label_browse)
         actionBar?.setIcon(R.drawable.browse_24)
@@ -75,7 +75,7 @@ class BrowseFragment: Fragment() {
         moviesAdapter = CommonListAdapter(browseViewModel)
         val moviesLayoutManager = LinearLayoutManager(context)
 
-        binding.moviesRecyclerView.apply {
+        binding.recyclerView.apply {
             layoutManager = moviesLayoutManager
             itemAnimator = DefaultItemAnimator()
             adapter = moviesAdapter
@@ -145,17 +145,17 @@ class BrowseFragment: Fragment() {
     }
 
     private fun openMovieDetailsFragment(id: String) {
-        val movieDetailsFragment = MovieDetailsFragment(id, binding.moviesRecyclerView)
+        val movieDetailsFragment = MovieDetailsFragment(id, binding.recyclerView)
         openDetailsFragment(movieDetailsFragment)
     }
 
     private fun openSeriesDetailsFragment(id: String) {
-        val seriesDetailsFragment = SeriesDetailsFragment(id, binding.moviesRecyclerView)
+        val seriesDetailsFragment = SeriesDetailsFragment(id, binding.recyclerView)
         openDetailsFragment(seriesDetailsFragment)
     }
 
     private fun openGameDetailsFragment(id: String) {
-        val gamesDetailsFragment = GameDetailsFragment(id)
+        val gamesDetailsFragment = GameDetailsFragment(id, binding.recyclerView)
         openDetailsFragment(gamesDetailsFragment)
     }
 
@@ -189,11 +189,11 @@ class BrowseFragment: Fragment() {
     }
 
     private fun showResults() {
-        binding.moviesRecyclerView.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
     }
 
     private fun hideResults() {
-        binding.moviesRecyclerView.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
     }
     //#endregion
 }

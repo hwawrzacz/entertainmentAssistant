@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -17,7 +18,9 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.account.AccountFragment
-import com.wawrzacz.entertainmentassistant.activity_main.movies.creation.MovieEditionFragment
+import com.wawrzacz.entertainmentassistant.activity_main.games.edition.GameEditionFragment
+import com.wawrzacz.entertainmentassistant.activity_main.movies.edition.MovieEditionFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.edition.SeriesEditionFragment
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.databinding.ActivityMainBinding
 
@@ -68,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     private fun initializeBindings() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.fabOpenCreationFragment.setOnClickListener {
-            openCreationDialog()
+            onOpenCreationDialog()
         }
     }
 
@@ -102,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         searchView?.clearFocus()
     }
 
-    fun changeCurrentCategory(category: MediaCategory) {
+    fun setCurrentCategory(category: MediaCategory) {
         when (category) {
             MediaCategory.BROWSE -> binding.fabOpenCreationFragment.hide()
             else -> binding.fabOpenCreationFragment.show()
@@ -110,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         currentCategory = category
     }
 
-    private fun openCreationDialog() {
+    private fun onOpenCreationDialog() {
         when (currentCategory) {
             MediaCategory.BROWSE -> {}
             MediaCategory.MOVIES -> openMovieCreationFragment()
@@ -120,20 +123,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMovieCreationFragment() {
-        val fragmentManager = supportFragmentManager
         val fragment = MovieEditionFragment(binding.fabOpenCreationFragment, false, null)
+        openCreationFragment(fragment)
+    }
+
+    private fun openSeriesCreationFragment() {
+        val fragment = SeriesEditionFragment(binding.fabOpenCreationFragment, false, null)
+        openCreationFragment(fragment)
+    }
+
+    private fun openGameCreationFragment() {
+        val fragment = GameEditionFragment(binding.fabOpenCreationFragment, false, null)
+        openCreationFragment(fragment)
+    }
+
+    private fun openCreationFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
         }.commit()
-    }
-
-    private fun openSeriesCreationFragment() {
-        openSnackbarShort("Create new series")
-    }
-
-    private fun openGameCreationFragment() {
-        openSnackbarShort("Create new game")
     }
 
     private fun openSnackbarShort(message: String) {

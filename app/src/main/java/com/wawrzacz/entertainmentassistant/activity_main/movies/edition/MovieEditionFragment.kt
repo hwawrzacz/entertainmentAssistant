@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.creation
+package com.wawrzacz.entertainmentassistant.activity_main.movies.edition
 
 import android.os.Bundle
 import android.text.Editable
@@ -18,10 +18,10 @@ import com.wawrzacz.entertainmentassistant.activity_main.movies.details.MovieDet
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.databinding.FragmentCreationMovieBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentEditionMovieBinding
 
 class MovieEditionFragment(val parentView: View, val isEdit: Boolean, val detailsViewModel: MovieDetailsViewModel?): DialogFragment() {
-    private lateinit var binding: FragmentCreationMovieBinding
+    private lateinit var binding: FragmentEditionMovieBinding
     private lateinit var movieEditionViewModel: MovieEditionViewModel
     private lateinit var mainActivity: MainActivity
     private var hasChanges = false
@@ -31,7 +31,7 @@ class MovieEditionFragment(val parentView: View, val isEdit: Boolean, val detail
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_creation_movie, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_edition_movie, container, false)
 
         initializeViewModel()
         prepareView()

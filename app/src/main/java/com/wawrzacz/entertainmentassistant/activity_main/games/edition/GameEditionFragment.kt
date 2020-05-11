@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.series.creation
+package com.wawrzacz.entertainmentassistant.activity_main.games.edition
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,18 +14,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.series.details.SeriesDetailsViewModel
+import com.wawrzacz.entertainmentassistant.activity_main.games.details.GameDetailsViewModel
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
 import com.wawrzacz.entertainmentassistant.data.response_statuses.FormValidationState
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.databinding.FragmentEditionSeriesBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentEditionGameBinding
 
-class SeriesEditionFragment(private val parentView: View,
-                            private val isEdit: Boolean,
-                            private val detailsViewModel: SeriesDetailsViewModel?
-): DialogFragment() {
-    private lateinit var binding: FragmentEditionSeriesBinding
-    private lateinit var seriesEditionViewModel: SeriesEditionViewModel
+class GameEditionFragment(val parentView: View, val isEdit: Boolean, val detailsViewModel: GameDetailsViewModel?): DialogFragment() {
+    private lateinit var binding: FragmentEditionGameBinding
+    private lateinit var gameEditionViewModel: GameEditionViewModel
     private lateinit var mainActivity: MainActivity
     private var hasChanges = false
 
@@ -34,7 +31,7 @@ class SeriesEditionFragment(private val parentView: View,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_edition_series, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_edition_game, container, false)
 
         initializeViewModel()
         prepareView()
@@ -64,9 +61,9 @@ class SeriesEditionFragment(private val parentView: View,
             android.R.id.home -> mainActivity.onBackPressed()
             R.id.menu_save_item -> {
                 if (isEdit)
-                    seriesEditionViewModel.updateSeries()
+                    gameEditionViewModel.updateGame()
                 else
-                    seriesEditionViewModel.createSeries()
+                    gameEditionViewModel.createGame()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -80,14 +77,14 @@ class SeriesEditionFragment(private val parentView: View,
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setHomeAsUpIndicator(R.drawable.arrow_back_24)
-        actionBar?.title = getString(R.string.title_create_series)
+        actionBar?.title = getString(R.string.title_create_game)
 
         setHasOptionsMenu(true)
     }
 
     private fun initializeViewModel() {
-        seriesEditionViewModel = ViewModelProvider(viewModelStore, SeriesEditionViewModelFactory())
-            .get(SeriesEditionViewModel::class.java)
+        gameEditionViewModel = ViewModelProvider(viewModelStore, GameEditionViewModelFactory())
+            .get(GameEditionViewModel::class.java)
     }
 
     private fun prepareView() {
@@ -96,27 +93,27 @@ class SeriesEditionFragment(private val parentView: View,
     }
 
     private fun observeViewModelChanges() {
-        seriesEditionViewModel.titleValidity.observe(viewLifecycleOwner, Observer {
+        gameEditionViewModel.titleValidity.observe(viewLifecycleOwner, Observer {
             setTextViewError(binding.titleWrapper, it)
         })
 
-        seriesEditionViewModel.yearValidity.observe(viewLifecycleOwner, Observer {
+        gameEditionViewModel.yearValidity.observe(viewLifecycleOwner, Observer {
             setTextViewError(binding.yearWrapper, it)
         })
 
-        seriesEditionViewModel.writerValidity.observe(viewLifecycleOwner, Observer {
-            setTextViewError(binding.writerWrapper, it)
+        gameEditionViewModel.directorValidity.observe(viewLifecycleOwner, Observer {
+            setTextViewError(binding.directorWrapper, it)
         })
 
-        seriesEditionViewModel.plotValidity.observe(viewLifecycleOwner, Observer {
+        gameEditionViewModel.plotValidity.observe(viewLifecycleOwner, Observer {
             setTextViewError(binding.plotWrapper, it)
         })
 
-        seriesEditionViewModel.formValidity.observe(viewLifecycleOwner, Observer {
+        gameEditionViewModel.formValidity.observe(viewLifecycleOwner, Observer {
             binding.create.isEnabled = it
         })
 
-        seriesEditionViewModel.seriesCreationStatus.observe(viewLifecycleOwner, Observer {
+        gameEditionViewModel.gameCreationStatus.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 when (it) {
                     ResponseStatus.IN_PROGRESS -> setAllInputsEnable(false)
@@ -139,7 +136,7 @@ class SeriesEditionFragment(private val parentView: View,
             }
         })
 
-        seriesEditionViewModel.hasChanges.observe(viewLifecycleOwner, Observer {
+        gameEditionViewModel.hasChanges.observe(viewLifecycleOwner, Observer {
             hasChanges = it
         })
 
@@ -152,32 +149,29 @@ class SeriesEditionFragment(private val parentView: View,
     }
 
     private fun populateFieldsWithData(item: DetailedItem) {
-        seriesEditionViewModel.setSeriesId(item.id)
+        gameEditionViewModel.setGameId(item.id)
         binding.posterUrl.setText(item.posterUrl)
         binding.title.setText(item.title)
         binding.year.setText(item.year)
-        binding.seasons.setText(item.totalSeasons)
-        binding.writer.setText(item.writer)
+        binding.director.setText(item.director)
         binding.genre.setText(item.genre)
         binding.plot.setText(item.plot)
     }
 
     private fun addTextInputsListeners() {
-        val onPosterUrlChanged: (String) -> Unit = { value -> seriesEditionViewModel.onPosterUrlChanged(value) }
-        val onTitleChanged: (String) -> Unit = { value -> seriesEditionViewModel.onTitleChanged(value) }
-        val onYearChanged: (String) -> Unit = { value -> seriesEditionViewModel.onYearChanged(value) }
-        val onWriterChanged: (String) -> Unit = { value -> seriesEditionViewModel.onWriterChanged(value) }
-        val onPlotChanged: (String) -> Unit = { value -> seriesEditionViewModel.onPlotChanged(value) }
-        val onSeasonsChanged: (String) -> Unit = { value -> seriesEditionViewModel.onSeasonsChanged(value) }
-        val onGenreChanged: (String) -> Unit = { value -> seriesEditionViewModel.onGenreChanged(value) }
+        val onPosterUrlChanged: (String) -> Unit = { value -> gameEditionViewModel.onPosterUrlChanged(value) }
+        val onTitleChanged: (String) -> Unit = { value -> gameEditionViewModel.onTitleChanged(value) }
+        val onYearChanged: (String) -> Unit = { value -> gameEditionViewModel.onYearChanged(value) }
+        val onDirectorChanged: (String) -> Unit = { value -> gameEditionViewModel.onDirectorChanged(value) }
+        val onPlotChanged: (String) -> Unit = { value -> gameEditionViewModel.onPlotChanged(value) }
+        val onGenreChanged: (String) -> Unit = { value -> gameEditionViewModel.onGenreChanged(value) }
 
 
         binding.posterUrl.addTextChangedListener(MyTextWatcher( onPosterUrlChanged ))
         binding.title.addTextChangedListener(MyTextWatcher( onTitleChanged ))
         binding.year.addTextChangedListener(MyTextWatcher( onYearChanged ))
-        binding.writer.addTextChangedListener(MyTextWatcher( onWriterChanged ))
+        binding.director.addTextChangedListener(MyTextWatcher( onDirectorChanged ))
         binding.plot.addTextChangedListener(MyTextWatcher( onPlotChanged ))
-        binding.seasons.addTextChangedListener(MyTextWatcher( onSeasonsChanged ))
         binding.genre.addTextChangedListener(MyTextWatcher( onGenreChanged ))
     }
 
@@ -192,9 +186,9 @@ class SeriesEditionFragment(private val parentView: View,
     private fun addButtonsListeners() {
         binding.create.setOnClickListener {
             if (isEdit)
-                seriesEditionViewModel.updateSeries()
+                gameEditionViewModel.updateGame()
             else
-                seriesEditionViewModel.createSeries()
+                gameEditionViewModel.createGame()
         }
 
         binding.cancel.setOnClickListener {
@@ -206,8 +200,7 @@ class SeriesEditionFragment(private val parentView: View,
         // TextBoxes
         binding.title.isEnabled = value
         binding.yearWrapper.isEnabled = value
-        binding.seasonsWrapper.isEnabled = value
-        binding.writerWrapper.isEnabled = value
+        binding.directorWrapper.isEnabled = value
         binding.genreWrapper.isEnabled = value
         binding.plotWrapper.isEnabled = value
         
@@ -222,31 +215,31 @@ class SeriesEditionFragment(private val parentView: View,
     }
 
     private fun showSnackbarOnCreationSucceed() {
-        val message = getString(R.string.message_series_created_successfully)
+        val message = getString(R.string.message_game_created_successfully)
         val actionCallback = {}
 
         showSnackbarLong(parentView, message, null, actionCallback)
     }
 
     private fun showSnackbarOnCreationFailed() {
-        val message = getString(R.string.error_creating_series)
+        val message = getString(R.string.error_creating_game)
         val actionMessage = getString(R.string.action_retry)
-        val actionCallback = { seriesEditionViewModel.createSeries() }
+        val actionCallback = { gameEditionViewModel.createGame() }
         val view = binding.toolbar
         showSnackbarLong(view, message, actionMessage, actionCallback)
     }
 
     private fun showSnackbarOnUpdateSucceed() {
-        val message = getString(R.string.message_series_updated_successfully)
+        val message = getString(R.string.message_game_created_successfully)
         val actionCallback = {}
 
         showSnackbarLong(parentView, message, null, actionCallback)
     }
 
     private fun showSnackbarOnUpdateFailed() {
-        val message = getString(R.string.error_creating_series)
+        val message = getString(R.string.error_creating_game)
         val actionMessage = getString(R.string.action_retry)
-        val actionCallback = { seriesEditionViewModel.updateSeries() }
+        val actionCallback = { gameEditionViewModel.updateGame() }
         val view = binding.toolbar
         showSnackbarLong(view, message, actionMessage, actionCallback)
     }

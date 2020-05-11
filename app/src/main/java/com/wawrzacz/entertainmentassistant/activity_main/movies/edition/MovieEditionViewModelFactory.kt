@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.creation
+package com.wawrzacz.entertainmentassistant.activity_main.movies.edition
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

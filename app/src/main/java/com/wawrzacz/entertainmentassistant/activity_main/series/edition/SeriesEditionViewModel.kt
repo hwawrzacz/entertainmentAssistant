@@ -1,6 +1,5 @@
-package com.wawrzacz.entertainmentassistant.activity_main.series.creation
+package com.wawrzacz.entertainmentassistant.activity_main.series.edition
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations

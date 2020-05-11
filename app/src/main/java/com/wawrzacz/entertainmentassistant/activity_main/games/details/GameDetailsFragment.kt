@@ -1,4 +1,4 @@
-package com.wawrzacz.entertainmentassistant.activity_main.movies.details
+package com.wawrzacz.entertainmentassistant.activity_main.games.details
 
 import android.os.Bundle
 import android.view.*
@@ -14,25 +14,25 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
-import com.wawrzacz.entertainmentassistant.activity_main.movies.edition.MovieEditionFragment
+import com.wawrzacz.entertainmentassistant.activity_main.games.edition.GameEditionFragment
 import com.wawrzacz.entertainmentassistant.data.enums.ItemSource
 import com.wawrzacz.entertainmentassistant.data.model.DetailedItem
-import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
+import com.wawrzacz.entertainmentassistant.data.enums.PlayableSection
 import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
-import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsMovieBinding
+import com.wawrzacz.entertainmentassistant.databinding.FragmentDetailsGameBinding
 
-class MovieDetailsFragment(private val movieId: String, private val parentView: View): DialogFragment() {
+class GameDetailsFragment(private val gameId: String, private val parentView: View): DialogFragment() {
 
-    private lateinit var binding: FragmentDetailsMovieBinding
-    private lateinit var detailsViewModel: MovieDetailsViewModel
+    private lateinit var binding: FragmentDetailsGameBinding
+    private lateinit var detailsViewModel: GameDetailsViewModel
     private lateinit var mainActivity: MainActivity
-    private var toWatchIconInitialized = false
-    private var watchedIconInitialized = false
+    private var toPlayIconInitialized = false
+    private var playedIconInitialized = false
     private var favIconInitialized = false
 
     private object DetailsMenu {
-        lateinit var toWatch: MenuItem
-        lateinit var watched: MenuItem
+        lateinit var toPlay: MenuItem
+        lateinit var played: MenuItem
         lateinit var favourites: MenuItem
     }
 
@@ -41,7 +41,7 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_movie, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details_game, container, false)
 
         initializeViewModel()
         observeViewModelChanges()
@@ -59,10 +59,10 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_details_watchable, menu)
+        inflater.inflate(R.menu.menu_details_playable, menu)
 
-        DetailsMenu.toWatch = menu.findItem(R.id.add_to_to_watch)
-        DetailsMenu.watched = menu.findItem(R.id.add_to_watched)
+        DetailsMenu.toPlay = menu.findItem(R.id.add_to_to_play)
+        DetailsMenu.played = menu.findItem(R.id.add_to_played)
         DetailsMenu.favourites = menu.findItem(R.id.add_to_favourites)
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -71,9 +71,9 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> mainActivity.onBackPressed()
-            R.id.add_to_to_watch -> detailsViewModel.toggleItemSection(WatchableSection.TO_WATCH)
-            R.id.add_to_watched -> detailsViewModel.toggleItemSection(WatchableSection.WATCHED)
-            R.id.add_to_favourites -> detailsViewModel.toggleItemSection(WatchableSection.FAVOURITES)
+            R.id.add_to_to_play -> detailsViewModel.toggleItemSection(PlayableSection.TO_PLAY)
+            R.id.add_to_played -> detailsViewModel.toggleItemSection(PlayableSection.PLAYED)
+            R.id.add_to_favourites -> detailsViewModel.toggleItemSection(PlayableSection.FAVOURITES)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -92,14 +92,14 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
     }
 
     private fun initializeViewModel() {
-        detailsViewModel = ViewModelProvider(requireActivity().viewModelStore, MovieDetailsViewModelFactory())
-            .get(MovieDetailsViewModel::class.java)
+        detailsViewModel = ViewModelProvider(requireActivity().viewModelStore, GameDetailsViewModelFactory())
+            .get(GameDetailsViewModel::class.java)
     }
 
     private fun observeViewModelChanges() {
-        detailsViewModel.getDetailedItem(movieId).observe(viewLifecycleOwner, Observer { firebaseMovie ->
-            if (firebaseMovie != null)
-                populateViewWithData(firebaseMovie)
+        detailsViewModel.getDetailedItem(gameId).observe(viewLifecycleOwner, Observer { firebaseGame ->
+            if (firebaseGame != null)
+                populateViewWithData(firebaseGame)
         })
 
         detailsViewModel.responseStatus.observe(viewLifecycleOwner, Observer {
@@ -134,7 +134,7 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
         })
 
         detailsViewModel.currentItem.observe(viewLifecycleOwner, Observer {
-            if (it?.id != movieId) hideDetailsContent()
+            if (it?.id != gameId) hideDetailsContent()
             else showDetailsContent()
         })
 
@@ -142,38 +142,38 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
     }
 
     private fun observeSectionChanges() {
-        detailsViewModel.isMovieInToWatch(movieId).observe(viewLifecycleOwner, Observer {
+        detailsViewModel.isGameInToPlay(gameId).observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                setSectionIconFilled(WatchableSection.TO_WATCH)
-                if (toWatchIconInitialized) showMessageAddedToSection(WatchableSection.TO_WATCH)
+                setSectionIconFilled(PlayableSection.TO_PLAY)
+                if (toPlayIconInitialized) showMessageAddedToSection(PlayableSection.TO_PLAY)
             }
             else {
-                setSectionIconOutlined(WatchableSection.TO_WATCH)
-                if (toWatchIconInitialized) showMessageRemovedFromSection(WatchableSection.TO_WATCH)
+                setSectionIconOutlined(PlayableSection.TO_PLAY)
+                if (toPlayIconInitialized) showMessageRemovedFromSection(PlayableSection.TO_PLAY)
             }
-            toWatchIconInitialized = true
+            toPlayIconInitialized = true
         })
 
-        detailsViewModel.isMovieInWatched(movieId).observe(viewLifecycleOwner, Observer {
+        detailsViewModel.isGameInPlayed(gameId).observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                setSectionIconFilled(WatchableSection.WATCHED)
-                if (watchedIconInitialized) showMessageAddedToSection(WatchableSection.WATCHED)
+                setSectionIconFilled(PlayableSection.PLAYED)
+                if (playedIconInitialized) showMessageAddedToSection(PlayableSection.PLAYED)
             }
             else {
-                setSectionIconOutlined(WatchableSection.WATCHED)
-                if (watchedIconInitialized) showMessageRemovedFromSection(WatchableSection.WATCHED)
+                setSectionIconOutlined(PlayableSection.PLAYED)
+                if (playedIconInitialized) showMessageRemovedFromSection(PlayableSection.PLAYED)
             }
-            watchedIconInitialized = true
+            playedIconInitialized = true
         })
 
-        detailsViewModel.isMovieInFavourite(movieId).observe(viewLifecycleOwner, Observer {
+        detailsViewModel.isGameInFavourite(gameId).observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                setSectionIconFilled(WatchableSection.FAVOURITES)
-                if (favIconInitialized) showMessageAddedToSection(WatchableSection.FAVOURITES)
+                setSectionIconFilled(PlayableSection.FAVOURITES)
+                if (favIconInitialized) showMessageAddedToSection(PlayableSection.FAVOURITES)
             }
             else {
-                setSectionIconOutlined(WatchableSection.FAVOURITES)
-                if (favIconInitialized) showMessageRemovedFromSection(WatchableSection.FAVOURITES)
+                setSectionIconOutlined(PlayableSection.FAVOURITES)
+                if (favIconInitialized) showMessageRemovedFromSection(PlayableSection.FAVOURITES)
             }
             favIconInitialized = true
         })
@@ -186,84 +186,82 @@ class MovieDetailsFragment(private val movieId: String, private val parentView: 
     }
 
     private fun openEditFragment() {
-        val fragment = MovieEditionFragment(parentView, true, detailsViewModel)
+        val fragment = GameEditionFragment(parentView, true, detailsViewModel)
         (requireActivity() as MainActivity).supportFragmentManager.beginTransaction().apply {
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             replace(android.R.id.content, fragment, "CREATION_FRAGMENT")
         }.commit()
     }
     
-    private fun populateViewWithData(movie: DetailedItem) {
-        setPosterBasedOnUrl(movie, binding.poster)
-        binding.title.text = movie.title
-        binding.production.text = movie.production
-        binding.typeIcon.setImageResource(R.drawable.movie_24)
-        binding.year.text = movie.year
-        binding.duration.text = movie.duration
-        binding.genre.text = movie.genre
-        binding.director.text = movie.director
-        binding.plot.text = movie.plot
-        binding.fabEdit.isVisible = movie.source == ItemSource.FIREBASE
+    private fun populateViewWithData(game: DetailedItem) {
+        setPosterBasedOnUrl(game, binding.poster)
+        binding.title.text = game.title
+        binding.typeIcon.setImageResource(R.drawable.gamepad_filled)
+        binding.year.text = game.year
+        binding.genre.text = game.genre
+        binding.director.text = game.director
+        binding.plot.text = game.plot
+        binding.fabEdit.isVisible = game.source == ItemSource.FIREBASE
     }
 
     private fun setPosterBasedOnUrl(item: DetailedItem, view: ImageView) {
-        if (item.posterUrl != "N/A" && !item.posterUrl.isNullOrBlank())
+        if (item.posterUrl != "N/A" && !item.posterUrl.isBlank())
             Picasso.get().load(item.posterUrl).into(view)
     }
 
-    private fun setSectionIconFilled(section: WatchableSection) {
+    private fun setSectionIconFilled(section: PlayableSection) {
         when (section) {
-            WatchableSection.TO_WATCH -> DetailsMenu.toWatch.setIcon(R.drawable.bookmark_filled_24)
-            WatchableSection.WATCHED -> DetailsMenu.watched.setIcon(R.drawable.eye_filled_24)
-            WatchableSection.FAVOURITES -> DetailsMenu.favourites.setIcon(R.drawable.heart_filled_24)
+            PlayableSection.TO_PLAY -> DetailsMenu.toPlay.setIcon(R.drawable.bookmark_filled_24)
+            PlayableSection.PLAYED -> DetailsMenu.played.setIcon(R.drawable.gamepad_filled)
+            PlayableSection.FAVOURITES -> DetailsMenu.favourites.setIcon(R.drawable.heart_filled_24)
         }
     }
 
-    private fun setSectionIconOutlined(section: WatchableSection) {
+    private fun setSectionIconOutlined(section: PlayableSection) {
         when (section) {
-            WatchableSection.TO_WATCH -> DetailsMenu.toWatch.setIcon(R.drawable.bookmark_outlined_24)
-            WatchableSection.WATCHED -> DetailsMenu.watched.setIcon(R.drawable.eye_outlined_24)
-            WatchableSection.FAVOURITES -> DetailsMenu.favourites.setIcon(R.drawable.heart_outlined_24)
+            PlayableSection.TO_PLAY -> DetailsMenu.toPlay.setIcon(R.drawable.bookmark_outlined_24)
+            PlayableSection.PLAYED -> DetailsMenu.played.setIcon(R.drawable.gamepad_outlined_24)
+            PlayableSection.FAVOURITES -> DetailsMenu.favourites.setIcon(R.drawable.heart_outlined_24)
         }
     }
 
-    private fun showMessageAddedToSection(section: WatchableSection) {
+    private fun showMessageAddedToSection(section: PlayableSection) {
         var actionMessage = getString(R.string.error_general)
         var callback: () -> Unit = {}
 
         when (section) {
-            WatchableSection.TO_WATCH -> {
-                actionMessage = getString(R.string.action_message_added_to_to_watch)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.TO_WATCH) }
+            PlayableSection.TO_PLAY -> {
+                actionMessage = getString(R.string.action_message_added_to_to_play)
+                callback = { detailsViewModel.toggleItemSection(PlayableSection.TO_PLAY) }
             }
-            WatchableSection.WATCHED -> {
-                actionMessage = getString(R.string.action_message_added_to_watched)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.WATCHED) }
+            PlayableSection.PLAYED -> {
+                actionMessage = getString(R.string.action_message_added_to_played)
+                callback = { detailsViewModel.toggleItemSection(PlayableSection.PLAYED) }
             }
-            WatchableSection.FAVOURITES -> {
+            PlayableSection.FAVOURITES -> {
                 actionMessage = getString(R.string.action_message_added_to_favourites)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.FAVOURITES) }
+                callback = { detailsViewModel.toggleItemSection(PlayableSection.FAVOURITES) }
             }
         }
         showSectionSnackbar(actionMessage, callback)
     }
 
-    private fun showMessageRemovedFromSection(section: WatchableSection) {
+    private fun showMessageRemovedFromSection(section: PlayableSection) {
         var actionMessage = getString(R.string.error_general)
         var callback: () -> Unit = {}
 
         when (section) {
-            WatchableSection.TO_WATCH -> {
-                actionMessage = getString(R.string.action_message_removed_from_to_watch)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.TO_WATCH) }
+            PlayableSection.TO_PLAY -> {
+                actionMessage = getString(R.string.action_message_removed_from_to_play)
+                callback = { detailsViewModel.toggleItemSection(PlayableSection.TO_PLAY) }
             }
-            WatchableSection.WATCHED -> {
-                actionMessage = getString(R.string.action_message_removed_from_watched)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.WATCHED) }
+            PlayableSection.PLAYED -> {
+                actionMessage = getString(R.string.action_message_removed_from_played)
+                callback = { detailsViewModel.toggleItemSection(PlayableSection.PLAYED) }
             }
-            WatchableSection.FAVOURITES -> {
+            PlayableSection.FAVOURITES -> {
                 actionMessage = getString(R.string.action_message_removed_from_favourites)
-                callback = { detailsViewModel.toggleItemSection(WatchableSection.FAVOURITES) }
+                callback = { detailsViewModel.toggleItemSection(PlayableSection.FAVOURITES) }
             }
         }
         showSectionSnackbar(actionMessage, callback)
