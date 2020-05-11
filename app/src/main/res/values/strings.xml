@@ -117,9 +117,9 @@
     <string name="error_creating_movie">An error occurred while creating a movie</string>
     <string name="error_creating_series">An error occurred while creating a series</string>
     <string name="error_creating_game">An error occurred while creating a game</string>
-    <string name="error_saving_movie">An error occurred while saving a movie</string>
-    <string name="error_saving_series">An error occurred while saving a series</string>
-    <string name="error_saving_game">An error occurred while saving a game</string>
+    <string name="error_updating_movie">An error occurred while updating a movie</string>
+    <string name="error_updating_series">An error occurred while updating a series</string>
+    <string name="error_updating_game">An error occurred while updating a game</string>
 
     <!-- Dialogs, prompts -->
     <string name="title_delete_account">Delete account</string>

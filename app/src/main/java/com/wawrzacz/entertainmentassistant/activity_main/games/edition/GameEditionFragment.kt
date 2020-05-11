@@ -120,17 +120,17 @@ class GameEditionFragment(val parentView: View, val isEdit: Boolean, val details
                     ResponseStatus.SUCCESS -> {
                         setAllInputsEnable(true)
                         if (isEdit)
-                            showSnackbarOnCreationSucceed()
-                        else
                             showSnackbarOnUpdateSucceed()
+                        else
+                            showSnackbarOnCreationSucceed()
                         mainActivity.onBackPressed()
                     }
                     ResponseStatus.ERROR -> {
                         setAllInputsEnable(true)
                         if (isEdit)
-                            showSnackbarOnCreationFailed()
-                        else
                             showSnackbarOnUpdateFailed()
+                        else
+                            showSnackbarOnCreationFailed()
                     }
                 }
             }
@@ -230,14 +230,14 @@ class GameEditionFragment(val parentView: View, val isEdit: Boolean, val details
     }
 
     private fun showSnackbarOnUpdateSucceed() {
-        val message = getString(R.string.message_game_created_successfully)
+        val message = getString(R.string.message_game_updated_successfully)
         val actionCallback = {}
 
         showSnackbarLong(parentView, message, null, actionCallback)
     }
 
     private fun showSnackbarOnUpdateFailed() {
-        val message = getString(R.string.error_creating_game)
+        val message = getString(R.string.error_updating_game)
         val actionMessage = getString(R.string.action_retry)
         val actionCallback = { gameEditionViewModel.updateGame() }
         val view = binding.toolbar

@@ -26,6 +26,7 @@ object GeneralFirebaseRepository {
         usersReference = firebaseDatabase.getReference(Path.USERS.value)
         itemsReference = firebaseDatabase.getReference(Path.ITEMS.value)
         itemsReference.keepSynced(true)
+        usersReference.keepSynced(true)
     }
 
     private val _foundAllMovies = MutableLiveData<CommonItemsListResponse>()

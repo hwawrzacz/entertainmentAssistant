@@ -118,8 +118,8 @@
                     app:boxBackgroundColor="@color/bg_movie_list_element"
 
                     app:layout_constraintEnd_toStartOf="@id/duration_wrapper"
-                    app:layout_constraintStart_toStartOf="@id/title_wrapper"
-                    app:layout_constraintTop_toBottomOf="@id/title_wrapper">
+                    app:layout_constraintStart_toStartOf="@id/production_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/production_wrapper">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/year"
@@ -144,8 +144,8 @@
                     app:startIconDrawable="@drawable/time_24"
 
                     app:layout_constraintStart_toEndOf="@id/year_wrapper"
-                    app:layout_constraintEnd_toEndOf="@id/title_wrapper"
-                    app:layout_constraintTop_toBottomOf="@id/title_wrapper">
+                    app:layout_constraintEnd_toEndOf="@id/production_wrapper"
+                    app:layout_constraintTop_toBottomOf="@id/production_wrapper">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/duration"

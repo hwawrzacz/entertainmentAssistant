@@ -120,17 +120,17 @@ class MovieEditionFragment(val parentView: View, val isEdit: Boolean, val detail
                     ResponseStatus.SUCCESS -> {
                         setAllInputsEnable(true)
                         if (isEdit)
-                            showSnackbarOnCreationSucceed()
-                        else
                             showSnackbarOnUpdateSucceed()
+                        else
+                            showSnackbarOnCreationSucceed()
                         mainActivity.onBackPressed()
                     }
                     ResponseStatus.ERROR -> {
                         setAllInputsEnable(true)
                         if (isEdit)
-                            showSnackbarOnCreationFailed()
-                        else
                             showSnackbarOnUpdateFailed()
+                        else
+                            showSnackbarOnCreationFailed()
                     }
                 }
             }
@@ -238,14 +238,14 @@ class MovieEditionFragment(val parentView: View, val isEdit: Boolean, val detail
     }
 
     private fun showSnackbarOnUpdateSucceed() {
-        val message = getString(R.string.message_movie_created_successfully)
+        val message = getString(R.string.message_movie_updated_successfully)
         val actionCallback = {}
 
         showSnackbarLong(parentView, message, null, actionCallback)
     }
 
     private fun showSnackbarOnUpdateFailed() {
-        val message = getString(R.string.error_creating_movie)
+        val message = getString(R.string.error_updating_movie)
         val actionMessage = getString(R.string.action_retry)
         val actionCallback = { movieEditionViewModel.updateMovie() }
         val view = binding.toolbar

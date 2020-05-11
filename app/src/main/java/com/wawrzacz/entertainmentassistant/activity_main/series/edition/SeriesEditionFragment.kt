@@ -123,17 +123,17 @@ class SeriesEditionFragment(private val parentView: View,
                     ResponseStatus.SUCCESS -> {
                         setAllInputsEnable(true)
                         if (isEdit)
-                            showSnackbarOnCreationSucceed()
-                        else
                             showSnackbarOnUpdateSucceed()
+                        else
+                        showSnackbarOnCreationSucceed()
                         mainActivity.onBackPressed()
                     }
                     ResponseStatus.ERROR -> {
                         setAllInputsEnable(true)
                         if (isEdit)
-                            showSnackbarOnCreationFailed()
-                        else
                             showSnackbarOnUpdateFailed()
+                        else
+                            showSnackbarOnCreationFailed()
                     }
                 }
             }
@@ -244,7 +244,7 @@ class SeriesEditionFragment(private val parentView: View,
     }
 
     private fun showSnackbarOnUpdateFailed() {
-        val message = getString(R.string.error_creating_series)
+        val message = getString(R.string.error_updating_series)
         val actionMessage = getString(R.string.action_retry)
         val actionCallback = { seriesEditionViewModel.updateSeries() }
         val view = binding.toolbar
