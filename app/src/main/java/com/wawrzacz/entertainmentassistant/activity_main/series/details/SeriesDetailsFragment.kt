@@ -1,6 +1,7 @@
 package com.wawrzacz.entertainmentassistant.activity_main.series.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity

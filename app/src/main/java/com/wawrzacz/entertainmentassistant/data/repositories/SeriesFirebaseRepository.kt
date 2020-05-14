@@ -62,9 +62,8 @@ object SeriesFirebaseRepository {
 
     fun getSeriesSectionValue(seriesId: String?, section: WatchableSection): LiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
-
         if (currentUser != null && seriesId != null) {
-            val path = "${currentUser.uid}/${Path.SERIES}/${section.value}/$seriesId"
+            val path = "${currentUser.uid}/${Path.SERIES.value}/${section.value}/$seriesId"
 
             usersReference.child(path).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -78,7 +77,6 @@ object SeriesFirebaseRepository {
         }
         return result
     }
-
 
     fun findItemsInSection(section: WatchableSection, title: String?) {
         val userId = firebaseAuth.currentUser?.uid

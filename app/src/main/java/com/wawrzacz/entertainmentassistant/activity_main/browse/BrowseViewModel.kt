@@ -25,7 +25,6 @@ class BrowseViewModel: ViewModel(), ItemPassingViewModel {
     Transformations.switchMap(query) { query ->
         Transformations.map(browseRepository.findItems(query)){
             _responseStatus.value = it.responseStatus
-            Log.i("schab", "receved: ${it?.items?.size} items")
             it.items
         }
     }
