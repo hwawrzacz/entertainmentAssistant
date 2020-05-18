@@ -223,7 +223,6 @@ class LoginFragment: Fragment() {
     }
 
     private fun getErrorFirebaseErrorCodeFromString(value: String?): String? {
-        Log.i("schabik", value?.replace(Regex("[^0-9]"), ""))
         return value?.replace(Regex("[^0-9]"), "")
     }
 

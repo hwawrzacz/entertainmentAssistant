@@ -101,7 +101,6 @@ class BrowseFragment: Fragment() {
                         showBanner(getString(R.string.message_action_browse))
                     }
                     ResponseStatus.IN_PROGRESS -> {
-                        Log.i("schab", "IN_PROGRESS")
                         hideResults()
                         hideBanner()
                         showProgressBar()

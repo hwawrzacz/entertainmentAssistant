@@ -228,7 +228,6 @@ object SeriesFirebaseRepository {
                 when {
                     it.isSuccessful -> {
                         toggleSectionMovieValue(userId, movie, section)
-                        Log.i("schab", "Added to general movies")
                     }
                     it.isComplete -> {
                         Log.i("schab", it.exception?.message.toString())

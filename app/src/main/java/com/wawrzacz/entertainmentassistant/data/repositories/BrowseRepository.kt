@@ -76,8 +76,6 @@ object BrowseRepository {
         apiResults?.forEach {
             if (!contains(mergedResults, it)) mergedResults.add(it)
         }
-
-        Log.i("schabMERGE", "Found ${mergedResults.size} results")
         return mergedResults
     }
 

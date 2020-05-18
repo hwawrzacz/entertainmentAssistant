@@ -111,7 +111,6 @@ class GamesListFragment(private val section: PlayableSection): Fragment() {
     }
 
     private fun handleResponseStatusChange(responseStatus: ResponseStatus) {
-        Log.i("schab", "${responseStatus}")
         when (responseStatus) {
             ResponseStatus.NOT_INITIALIZED -> {
                 hideProgressBar()
