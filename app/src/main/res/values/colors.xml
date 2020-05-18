@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <!--    Main -->
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="colorPrimaryTransparent">#ee6200EE</color>
-    <color name="colorPrimaryDarkTransparent">#ee3700B3</color>
-    <color name="colorAccentTransparent">#ee03DAC5</color>
+    <color name="colorPrimary">#66483E</color>
+    <color name="colorPrimaryDark">#61443B</color>
+
+    <color name="colorAccent">#33CCCC</color>
 
 <!--    Background -->
-    <color name="bg_main">#FFFFFF</color>
-    <color name="bg_bottom_sheet">#FFFFFF</color>
-    <color name="bg_movies">#AC7DB5</color>
-    <color name="bg_movie_list_element">#CE93D8</color>
-    <color name="bg_books">#FFF59D</color>
-    <color name="bg_games">#A5D6A7</color>
+    <color name="bg_default">#FFFFFF</color>
+    <color name="bg_primary">#A3776A</color>
+    <color name="bg_card">#B8978D</color>
+
     <color name="bg_darker">#22000000</color>
 
 <!--    Text -->
+    <color name="title_on_card">#553B33</color>
+    <color name="subtitle_on_card">#704F45</color>
+
     <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_accent">#333333</color>
+
     <color name="text_lighter">#CCFFFFFF</color>
     <color name="text_darker">#66000000</color>
     <color name="text_high_emphasis">#dd000000</color>

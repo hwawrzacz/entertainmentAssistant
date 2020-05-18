@@ -9,7 +9,7 @@
     android:layout_marginStart="@dimen/margin_small"
     android:layout_marginEnd="@dimen/margin_small"
     android:maxHeight="@dimen/movie_item_height"
-    android:backgroundTint="@color/bg_movie_list_element"
+    android:backgroundTint="@color/bg_card"
     app:contentPadding="@dimen/padding_fragment_regular"
     app:cardCornerRadius="@dimen/border_radius"
     >

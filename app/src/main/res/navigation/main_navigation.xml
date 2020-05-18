@@ -29,7 +29,7 @@
         android:id="@+id/nav_series"
         android:name="com.wawrzacz.entertainmentassistant.activity_main.series.SeriesTabsFragment"
         android:label="BooksFragment"
-        tools:layout="@layout/fragment_series">
+        tools:layout="@layout/fragment_tabs">
         <action
             android:id="@+id/action_nav_books_to_nav_games"
             app:destination="@id/nav_games" />
@@ -39,7 +39,7 @@
         android:id="@+id/nav_games"
         android:name="com.wawrzacz.entertainmentassistant.activity_main.games.GamesTabsFragment"
         android:label="GamesFragment"
-        tools:layout="@layout/fragment_games">
+        tools:layout="@layout/fragment_tabs">
         <action
             android:id="@+id/action_nav_games_to_nav_browse"
             app:destination="@id/nav_browse" />

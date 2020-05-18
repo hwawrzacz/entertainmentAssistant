@@ -4,7 +4,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_movies">
+        android:background="@color/bg_primary">
 
         <ProgressBar
             android:id="@+id/progress_bar"

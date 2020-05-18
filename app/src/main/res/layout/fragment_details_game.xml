@@ -24,7 +24,7 @@
             android:orientation="vertical"
             android:layout_marginTop="?attr/actionBarSize"
             android:padding="@dimen/padding_fragment_regular"
-            android:background="@color/bg_movies">
+            android:background="@color/bg_primary">
 
             <ProgressBar
                 android:id="@+id/progress_bar"

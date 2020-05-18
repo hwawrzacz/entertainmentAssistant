@@ -4,7 +4,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_movies">
+        android:background="@color/bg_primary">
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -26,7 +26,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
+            app:layout_constraintTop_toBottomOf="@id/progress_bar"
+            android:background="@color/bg_primary" />
 
         <TextView
             android:id="@+id/banner_message"

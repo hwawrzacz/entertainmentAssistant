@@ -5,7 +5,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_movies"
+        android:background="@color/bg_primary"
         android:clickable="true"
         android:focusable="true"
         android:windowTranslucentStatus="false">
@@ -28,7 +28,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/poster_url_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -55,7 +55,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/title_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -86,7 +86,7 @@
                     android:layout_marginTop="@dimen/margin_tiny"
 
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     app:errorEnabled="true"
                     android:hint="@string/label_production"
                     app:startIconDrawable="@drawable/production_icon_24"
@@ -115,7 +115,7 @@
                     app:startIconDrawable="@drawable/calendar_24"
 
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
 
                     app:layout_constraintEnd_toStartOf="@id/duration_wrapper"
                     app:layout_constraintStart_toStartOf="@id/production_wrapper"
@@ -132,7 +132,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/duration_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
 
@@ -158,7 +158,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/director_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_tiny"
@@ -182,7 +182,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/genre_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_tiny"
@@ -205,7 +205,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/plot_wrapper"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                    app:boxBackgroundColor="@color/bg_movie_list_element"
+                    app:boxBackgroundColor="@color/bg_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_tiny"

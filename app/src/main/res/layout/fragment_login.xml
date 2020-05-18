@@ -6,164 +6,185 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_fragment_regular"
-        android:background="@color/bg_main">
+        android:background="@android:color/white">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="gone"
+            android:padding="@dimen/padding_fragment_regular"
+            android:background="@color/bg_default"
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_wrapper" />
-
-        <TextView
-            android:id="@+id/fragment_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:text="@string/action_sign_in"
-
-            android:textSize="@dimen/font_fragment_title"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/email_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_regular"
-
-            android:hint="@string/hint_email"
-            app:errorEnabled="true"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxCornerRadiusTopStart="@dimen/border_radius"
-            app:boxCornerRadiusBottomStart="@dimen/border_radius"
-            app:boxCornerRadiusTopEnd="@dimen/border_radius"
-            app:boxCornerRadiusBottomEnd="@dimen/border_radius"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/fragment_title"
-            app:layout_constraintStart_toStartOf="@+id/fragment_title"
-            app:layout_constraintTop_toTopOf="@+id/fragment_title"
-            app:layout_constraintVertical_bias="0.2">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:indeterminate="true"
+                android:visibility="gone"
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/password_wrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_tiny"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/password_wrapper" />
 
-            android:hint="@string/hint_password"
-            app:errorEnabled="true"
+            <ImageView
+                android:id="@+id/login_image"
+                android:layout_width="@dimen/account_image_size"
+                android:layout_height="@dimen/account_image_size"
+                android:src="@drawable/account_circle_24"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxCornerRadiusBottomEnd="@dimen/border_radius"
-            app:boxCornerRadiusBottomStart="@dimen/border_radius"
-            app:boxCornerRadiusTopEnd="@dimen/border_radius"
-            app:boxCornerRadiusTopStart="@dimen/border_radius"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/email_wrapper"
-            app:layout_constraintStart_toStartOf="@+id/email_wrapper"
-            app:layout_constraintTop_toBottomOf="@+id/email_wrapper"
-            app:layout_constraintVertical_bias="0.0">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+            <TextView
+                android:id="@+id/fragment_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_regular"
+                android:text="@string/action_sign_in"
 
-            android:text="@string/action_sign_in"
+                android:textSize="@dimen/font_fragment_title"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_image"
+                app:layout_constraintVertical_bias="0.0" />
 
-            app:boxCornerRadiusBottomEnd="@dimen/border_radius"
-            app:boxCornerRadiusBottomStart="@dimen/border_radius"
-            app:boxCornerRadiusTopEnd="@dimen/border_radius"
-            app:boxCornerRadiusTopStart="@dimen/border_radius"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_regular"
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/password_wrapper"
-            app:layout_constraintStart_toStartOf="@+id/password_wrapper"
-            app:layout_constraintTop_toBottomOf="@+id/password_wrapper"
-            app:layout_constraintVertical_bias="0.0" />
+                android:hint="@string/hint_email"
+                app:errorEnabled="true"
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_sign_in_with_google"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_tiny"
-            app:strokeColor="@color/colorPrimary"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusTopStart="@dimen/border_radius"
+                app:boxCornerRadiusBottomStart="@dimen/border_radius"
+                app:boxCornerRadiusTopEnd="@dimen/border_radius"
+                app:boxCornerRadiusBottomEnd="@dimen/border_radius"
 
-            android:text="@string/action_sign_in_with_google"
-            android:drawableLeft="@drawable/icons8_google"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/fragment_title"
+                app:layout_constraintStart_toStartOf="@+id/fragment_title"
+                app:layout_constraintTop_toTopOf="@+id/fragment_title"
+                app:layout_constraintVertical_bias="0.2">
 
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:boxCornerRadiusBottomEnd="@dimen/border_radius"
-            app:boxCornerRadiusBottomStart="@dimen/border_radius"
-            app:boxCornerRadiusTopEnd="@dimen/border_radius"
-            app:boxCornerRadiusTopStart="@dimen/border_radius"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
-            app:layout_constraintStart_toStartOf="@+id/button_sign_in"
-            app:layout_constraintTop_toBottomOf="@+id/button_sign_in"
-            app:layout_constraintVertical_bias="0.0" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/password_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
 
-        <TextView
-            android:id="@+id/text_or"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+                android:hint="@string/hint_password"
+                app:errorEnabled="true"
 
-            android:text="@string/label_or"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxCornerRadiusBottomEnd="@dimen/border_radius"
+                app:boxCornerRadiusBottomStart="@dimen/border_radius"
+                app:boxCornerRadiusTopEnd="@dimen/border_radius"
+                app:boxCornerRadiusTopStart="@dimen/border_radius"
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/button_sign_in_with_google"
-            app:layout_constraintStart_toStartOf="@+id/button_sign_in_with_google"
-            app:layout_constraintTop_toBottomOf="@+id/button_sign_in_with_google"
-            app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/email_wrapper"
+                app:layout_constraintStart_toStartOf="@+id/email_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/email_wrapper"
+                app:layout_constraintVertical_bias="0.0">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            android:text="@string/action_register"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_regular"
 
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:boxCornerRadiusBottomEnd="@dimen/border_radius"
-            app:boxCornerRadiusBottomStart="@dimen/border_radius"
-            app:boxCornerRadiusTopEnd="@dimen/border_radius"
-            app:boxCornerRadiusTopStart="@dimen/border_radius"
+                android:text="@string/action_sign_in"
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/text_or"
-            app:layout_constraintStart_toStartOf="@+id/text_or"
-            app:layout_constraintTop_toBottomOf="@+id/text_or"
-            app:layout_constraintVertical_bias="0.0" />
+                app:boxCornerRadiusBottomEnd="@dimen/border_radius"
+                app:boxCornerRadiusBottomStart="@dimen/border_radius"
+                app:boxCornerRadiusTopEnd="@dimen/border_radius"
+                app:boxCornerRadiusTopStart="@dimen/border_radius"
 
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/password_wrapper"
+                app:layout_constraintStart_toStartOf="@+id/password_wrapper"
+                app:layout_constraintTop_toBottomOf="@+id/password_wrapper"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_sign_in_with_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_tiny"
+
+                android:text="@string/action_sign_in_with_google"
+                android:drawableLeft="@drawable/icons8_google"
+
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:boxCornerRadiusBottomEnd="@dimen/border_radius"
+                app:boxCornerRadiusBottomStart="@dimen/border_radius"
+                app:boxCornerRadiusTopEnd="@dimen/border_radius"
+                app:boxCornerRadiusTopStart="@dimen/border_radius"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
+                app:layout_constraintStart_toStartOf="@+id/button_sign_in"
+                app:layout_constraintTop_toBottomOf="@+id/button_sign_in"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/text_or"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+
+                android:text="@string/label_or"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/button_sign_in_with_google"
+                app:layout_constraintStart_toStartOf="@+id/button_sign_in_with_google"
+                app:layout_constraintTop_toBottomOf="@+id/button_sign_in_with_google"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="@string/action_register"
+
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:boxCornerRadiusBottomEnd="@dimen/border_radius"
+                app:boxCornerRadiusBottomStart="@dimen/border_radius"
+                app:boxCornerRadiusTopEnd="@dimen/border_radius"
+                app:boxCornerRadiusTopStart="@dimen/border_radius"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/text_or"
+                app:layout_constraintStart_toStartOf="@+id/text_or"
+                app:layout_constraintTop_toBottomOf="@+id/text_or"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
