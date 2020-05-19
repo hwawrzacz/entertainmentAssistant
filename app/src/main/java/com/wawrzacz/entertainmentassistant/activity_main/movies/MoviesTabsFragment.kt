@@ -18,18 +18,8 @@ class MoviesTabsFragment: Fragment() {
     private lateinit var binding: FragmentTabsBinding
 
     private lateinit var viewPager: ViewPager2
-    private val moviesFragments = listOf(
-        MoviesListFragment(
-            WatchableSection.TO_WATCH
-        ),
-        MoviesListFragment(
-            WatchableSection.WATCHED
-        ),
-        MoviesListFragment(
-            WatchableSection.FAVOURITES
-        )
-    )
-    private var currentMovieFragment: MoviesListFragment = moviesFragments[0]
+    private lateinit var moviesFragments: List<MoviesListFragment>
+    private lateinit var currentMovieFragment: MoviesListFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +28,7 @@ class MoviesTabsFragment: Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_tabs, container, false)
 
+        initializeFragmentsList();
         initializeViewPager()
         initializeTabLayout()
 
@@ -50,6 +41,15 @@ class MoviesTabsFragment: Fragment() {
         activity.setCurrentCategory(MediaCategory.MOVIES)
         setUpActionBar()
         setTabChangeListeners()
+    }
+
+    private fun initializeFragmentsList() {
+        moviesFragments = listOf(
+            MoviesListFragment.newInstance(WatchableSection.TO_WATCH),
+            MoviesListFragment.newInstance(WatchableSection.WATCHED),
+            MoviesListFragment.newInstance(WatchableSection.FAVOURITES)
+        )
+        currentMovieFragment = moviesFragments[0]
     }
 
     private fun initializeViewPager() {
