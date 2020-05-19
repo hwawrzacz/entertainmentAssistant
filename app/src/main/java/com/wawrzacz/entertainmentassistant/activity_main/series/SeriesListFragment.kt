@@ -20,11 +20,12 @@ import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
-class SeriesListFragment(private val section: WatchableSection): Fragment() {
+abstract class SeriesListFragment: Fragment() {
 
     private lateinit var binding: FragmentListBinding
     private lateinit var moviesViewModel: SeriesViewModel
     private lateinit var moviesAdapter: CommonListAdapter
+    protected abstract val section: WatchableSection
 
     override fun onCreateView(
         inflater: LayoutInflater,

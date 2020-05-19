@@ -6,7 +6,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,19 +18,19 @@ import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
-class MoviesListFragment: Fragment() {
+abstract class MoviesListFragment: Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var moviesViewModel: MoviesViewModel
     private lateinit var moviesAdapter: CommonListAdapter
-    private lateinit var section: WatchableSection
+    protected abstract val section: WatchableSection
 
-    companion object {
-        fun newInstance(section: WatchableSection): MoviesListFragment {
-            val fragment = MoviesListFragment()
-            fragment.section = section
-            return fragment
-        }
-    }
+//    companion object {
+//        fun newInstance(section: WatchableSection): MoviesListFragment {
+//            val fragment = MoviesListFragment()
+//            fragment.section = section
+//            return fragment
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

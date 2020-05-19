@@ -9,6 +9,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
+import com.wawrzacz.entertainmentassistant.activity_main.games.sections.FavouritesGamesListFragment
+import com.wawrzacz.entertainmentassistant.activity_main.games.sections.PlayedGamesListFragment
+import com.wawrzacz.entertainmentassistant.activity_main.games.sections.ToPlayGamesListFragment
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.enums.PlayableSection
 import com.wawrzacz.entertainmentassistant.databinding.FragmentTabsBinding
@@ -19,15 +22,9 @@ class GamesTabsFragment: Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private val gamesFragments = listOf(
-        GamesListFragment(
-            PlayableSection.TO_PLAY
-        ),
-        GamesListFragment(
-            PlayableSection.PLAYED
-        ),
-        GamesListFragment(
-            PlayableSection.FAVOURITES
-        )
+        ToPlayGamesListFragment(),
+        PlayedGamesListFragment(),
+        FavouritesGamesListFragment()
     )
     private var currentMovieFragment: GamesListFragment = gamesFragments[0]
 

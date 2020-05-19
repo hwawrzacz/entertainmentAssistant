@@ -9,6 +9,9 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.wawrzacz.entertainmentassistant.R
 import com.wawrzacz.entertainmentassistant.activity_main.MainActivity
+import com.wawrzacz.entertainmentassistant.activity_main.series.sections.FavouritesSeriesListFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.sections.ToWatchSeriesListFragment
+import com.wawrzacz.entertainmentassistant.activity_main.series.sections.WatchedSeriesListFragment
 import com.wawrzacz.entertainmentassistant.data.enums.MediaCategory
 import com.wawrzacz.entertainmentassistant.data.enums.WatchableSection
 import com.wawrzacz.entertainmentassistant.databinding.FragmentTabsBinding
@@ -19,15 +22,9 @@ class SeriesTabsFragment: Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private val seriesFragments = listOf(
-        SeriesListFragment(
-            WatchableSection.TO_WATCH
-        ),
-        SeriesListFragment(
-            WatchableSection.WATCHED
-        ),
-        SeriesListFragment(
-            WatchableSection.FAVOURITES
-        )
+        ToWatchSeriesListFragment(),
+        WatchedSeriesListFragment(),
+        FavouritesSeriesListFragment()
     )
     private var currentSeriesFragment: SeriesListFragment = seriesFragments[0]
 

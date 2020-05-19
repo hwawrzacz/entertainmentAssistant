@@ -19,11 +19,12 @@ import com.wawrzacz.entertainmentassistant.data.response_statuses.ResponseStatus
 import com.wawrzacz.entertainmentassistant.databinding.FragmentListBinding
 import com.wawrzacz.entertainmentassistant.ui.adapters.CommonListAdapter
 
-class GamesListFragment(private val section: PlayableSection): Fragment() {
+abstract class GamesListFragment: Fragment() {
 
     private lateinit var binding: FragmentListBinding
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var gamesAdapter: CommonListAdapter
+    protected abstract val section: PlayableSection
 
     override fun onCreateView(
         inflater: LayoutInflater,
